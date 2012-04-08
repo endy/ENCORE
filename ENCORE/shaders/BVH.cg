@@ -1,0 +1,136 @@
+/** Used for ray/triangle intersection testing.
+* @param a first triangle vertex
+* @param b second triangle vertex
+* @param c third triangle vertex
+* @param o is the ray origin
+* @param d is the ray direction
+* @param minT the intersection only counts if the t-value is greater
+* @param mat_index the material index of the tested triangle.
+* @param lasthit is the hitrecord for the previous hit where
+* .x=u, .y=v, .z=t, .w=material index for best hit
+* where u and v are two of the barycentric coordinates of the hit.
+* @return a new hit record with the same format as the input.
+* It is a new hit record if we found a hit, otherwise we return
+the old one.*/
+float4 Intersects(float3 a, float3 b, float3 c, float3 o, float3 d,
+float minT, float mat_index, float4 lasthit)
+{
+    // uses intersection test from
+    //"a fast minimum-storage triangle intersection test"
+    //lasthit contains information of the previous hit -
+    float3 e1 = b - a;
+    float3 e2 = c - a;
+    float3 p = cross(d, e2);
+    float det = dot(p, e1);
+    bool isHit = det > 0.00001f; //the triangle is nearly edge-on
+    float invdet = 1.0f / det;
+    float3 tvec = o - a;
+    float u = dot(p, tvec) * invdet;
+    float3 q = cross(tvec, e1);
+    float v = dot(q, d) * invdet;
+    float t = dot(q, e2) * invdet;
+    isHit = (u >= 0.0f) && (v >= 0.0f)
+            && (u + v <= 1.0f)
+            && (t >= 0.0f)
+            && (t < lasthit.x)
+            && (t > minT);
+
+    return isHit ? float4(t, u, v, mat_index) : lasthit;
+}
+
+
+
+/** Checks for intersection between a ray and a box.
+* @param box_min the minimum corner of the box.
+* @param box_max the maximum corner of the box.
+* @param o the origin of the ray
+* @param d the direction of the ray
+* @param bestHit the previously best known hit.
+* @param tMin the hit only counts if the t-value is greater than tMin
+* @return true if the ray intersects inside [tMin, bestHit.z] */
+bool BoxIntersects(float3 box_min, float3 box_max, float3 o,
+float3 d, float4 bestHit, float tMin) 
+{
+    float3 tmin, tmax;
+    tmin = (box_min - o) / d;
+    tmax = (box_max - o) / d;
+    float3 real_min = min(tmin, tmax);
+    float3 real_max = max(tmin, tmax);
+    float minmax = min(min(real_max.x, real_max.y), real_max.z);
+    float maxmin = max(max(real_min.x, real_min.y), real_min.z);
+
+    bool res = minmax >= maxmin;
+    return res && bestHit.x >= maxmin && tMin < minmax;
+}
+
+
+//this is the type for the output of our main program
+struct FS_OUT
+{
+    float4 bestHit : COLOR0; //best hit so far
+    float4 renderState : COLOR1; //records how far we are
+};
+
+/** the main ray/scene intersection/traversal program (kernel).
+* returns the best hit so far and the index to the next element */
+FS_OUT main
+(
+//    uniform samplerRECT geometry, //a texture representation of the BVH and the triangles
+    uniform samplerRECT v0t,
+    uniform samplerRECT v1t,
+    uniform samplerRECT v2t,
+    uniform samplerRECT rayStartMap, //a list of ray origins
+    uniform samplerRECT rayDirMap, //a list of ray directions
+    uniform samplerRECT hitInfoMap, //the best hits found so far
+    uniform samplerRECT trav0Map, //records how far we are in the traversal
+    uniform samplerRECT trav1Map, // unused
+    uniform float maxIndex, //maximum legal index in geometry texture
+    float2 streampos : TEXCOORD0, //texcoord to ray and best hit
+    uniform float looplimit) //maximum number of allowed loops
+{
+    float4 renderState = texRECT(trav0Map, streampos);
+    float datapos = renderState.x;
+
+    if (datapos >= maxIndex) discard;
+
+    //find the ray and the previously best hit
+    float3 origin = texRECT(rayStartMap, streampos);
+    float3 direction = texRECT(rayDirMap, streampos);
+    float4 bestHit = texRECT(hitInfoMap, streampos);
+    int loopcount = looplimit;
+    while (loopcount > 0 && renderState.x < maxIndex)
+    {
+        float2 index;
+        index.x = modf(datapos*0.000244140625, index.y)*4096;
+
+        //vertex A or box_min depending on the type of node
+        float4 data1 = texRECT(v0t, index);
+        //vertex B or box_max depending on the type of node
+        float4 data2 = texRECT(v1t, index);
+        //vertex C (we don’t use it for bounding boxes)
+        float4 data3 = texRECT(v2t, index);
+
+        if (data1.w > 0) // current element is a bbox
+        {
+            if (BoxIntersects(data1, data2, origin, direction, bestHit, 0.0f))
+                renderState.x += 1; //ray intersects the box, so we need to look at children now
+            else //data2.w points to the next piece of data in the traversal
+                renderState.x += data2.w;
+        }
+        else //current element is a triangle
+        {
+            //data3.w contains the material index of this triangle
+            // instead of data3.w, we pass in the current datapos
+            bestHit = Intersects(data1.xyz, data2.xyz, data3.xyz, origin.xyz, direction.xyz, 0.0, datapos, bestHit);
+            renderState.x += 1; //no matter what, we need to check the next round of data
+        }
+        datapos = renderState.x;
+        loopcount--;
+    }
+
+    FS_OUT result;
+    result.bestHit = bestHit;
+    result.renderState = renderState;
+
+    return result;
+}

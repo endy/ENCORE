@@ -1,0 +1,31 @@
+*format is as follows:*
+*LIGHT locX locY locZ colorR colorG colorB (up to 8 lights)*
+*pathtomodel locX locY locZ size angle Xaxis Yaxis Zaxis*
+CAMERA 0 0 170 0 0 0 0 0 1 45 1 0.1 1000
+MATERIAL 1.0 1.0 1.0 0 0 0 1.0 1.0 1.0 0 0 0 0
+RECT_LIGHT 1.0 1.0 1.0
+MATERIAL 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0 0 0 0
+* right wall *
+MATERIAL 0.36 0.36 0.6 0.36 0.36 0.6 0.36 0.36 0.6 0 0 0 0
+MODEL models/bwl/cornell_rightwall.ply 50 0 0 100 0 0 1 0
+* left wall *
+MATERIAL 0.6 0.36 0.36 0.6 0.36 0.36 0.6 0.36 0.36  0 0 0 0
+MODEL models/bwl/cornell_leftwall.ply -50 0 0 100 0 0 1 0
+
+MATERIAL .7 .7 .7 0 0 0 0.7 0.7 0.7 0 0 0 0
+
+* ceiling wall *
+MODEL models/bwl/cornell_ceiling.ply 0 50 0 100 0 0 1 0
+* floor *
+MODEL models/bwl/cornell_floor.ply 0 -50 0 100 0 0 1 0
+* back wall *
+MODEL models/bwl/cornell_backwall.ply 0 0 -50 100 0 0 1 0
+
+*OBJECTS*
+MATERIAL 0 0 0 0.3 0.3 0.6 0.2 0.2 0.2 0 0 0 0
+SPHERE 20 -29.9 20 20 1 0 0 1 0
+MATERIAL 0 0 0 0.6 0.3 0.3 0.2 0.2 0.2 0 0 0 0
+SPHERE -20 -29.5 -20 20 1 0 0 1 0
+
+*MODEL models/bwl/box.ply 40 -37.5 15 25 -30 0 1 0 
+*MODEL models/bwl/tallbox.ply -18 -19.5 -20 60 20 0 1 0 

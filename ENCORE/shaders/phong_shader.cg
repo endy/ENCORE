@@ -1,0 +1,96 @@
+struct vfconn
+{
+	float4 HPOS		: POSITION;
+	float2 texc		: TEXCOORD0;
+	//float4 COL0		: COLOR;
+};
+
+struct lightinfo
+{
+	uniform float3 L;
+	uniform float3 Lc;
+	uniform float3 Ia;
+	uniform float3 Id;
+	uniform float3 Is;
+	uniform float  f;
+};
+
+struct trinormal
+{
+	uniform samplerRECT n0;
+	uniform samplerRECT n1;
+	uniform samplerRECT n2;
+};
+
+struct data
+{
+	float3 color	: COL0;
+//	float3 norm		: COL1;
+//	float4 hpos		: COL2;
+};
+
+#define EP 0.001
+float INF() {return 60000.0f;}
+
+//2/20/06
+// since hitinfo.w now contain iteration
+// if it successfully come into shader with a non zero time
+// hitinfo.w is the index to the triangle normal
+// therefore; grid is no longer needed to pass in
+data main(
+		   vfconn IN,
+		   lightinfo IN2,
+   uniform samplerRECT eyePos,
+   uniform samplerRECT hitinfo,
+   uniform samplerRECT raydir,
+             trinormal TRI_N,
+   uniform samplerRECT material,
+   uniform float4 backgroundColor )
+{
+	float3 col;
+	float4 teye = texRECT(eyePos, IN.texc);
+	float3 eye = teye.xyz;
+	float4 hit_info = texRECT(hitinfo, IN.texc); // t, u ,v ,coord iteration
+    data OUT;
+
+    if ( hit_info.w == -1 )
+    {
+        OUT.color = backgroundColor.rgb;
+    }
+    else 
+    {
+	    float3 HP = ( eye + ( texRECT(raydir, IN.texc).xyz) * hit_info.x ).xyz;
+
+	    float2 index;
+
+	    // compute normal
+	    float3 normal;
+
+	    index.x = modf(hit_info.w*0.000244140625, index.y)*4096;
+	    float3 nn = texRECT(TRI_N.n0, index).xyz;
+	    float3 nU = texRECT(TRI_N.n1, index).xyz-nn;
+	    float3 nV = texRECT(TRI_N.n2, index).xyz-nn;
+	    normal = nn + nU*hit_info.y + nV*hit_info.z;
+    	
+	    normal = normalize(normal);
+
+        float4 mat = texRECT(material, index);
+
+	    float3 LL;
+
+	    // calculate phong shading
+	    float3 s = normalize(IN2.L-HP);
+	    float3 v = normalize(eye.xyz-HP);
+	    float ndotl = dot(s, normal);
+	    float ndoth = dot(normalize(s+v), normal);
+    //	float4 cof = lit(ndotl, ndoth, IN2.f);
+    //	LL = IN2.Ia+IN2.Id*cof.y+IN2.Is*cof.z;
+	    float4 cof = lit(ndotl, ndoth, mat.w);
+	    LL = mat.xyz*cof.y+IN2.Is*cof.z;
+
+	    OUT.color = LL; //(hit_info.x > 0) ? LL : backgroundColor.rgb;
+	}
+//	OUT.norm = normal;
+//	OUT.hpos = hit_info.x > 0 ? float4(HP,0) : float4(HP,-1);
+	return OUT;
+}

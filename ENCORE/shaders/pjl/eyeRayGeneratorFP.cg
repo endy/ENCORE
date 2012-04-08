@@ -1,0 +1,44 @@
+/*
+ * Author: Peter Lohrmann
+ * Date: 1/22/06
+ * MS THESIS: RayTracing on the GPU
+ */
+
+struct Output {
+	float4 dir: COLOR1;
+	float4 start: COLOR0;
+};
+
+
+/***********
+* genPers  *
+************
+* generate rays from the eye
+* for a Perspective view
+* of the scene
+***********/
+
+Output main(float2 pixelPosition: TEXCOORD0,
+			   uniform float3 u,
+			   uniform float3 v,
+			   uniform float3 n,
+			   uniform float3 eyePosition,
+			   uniform float2 worldwindow,
+			   uniform float2 viewport,
+			   uniform float nearDist)
+{
+	Output OUT;
+
+	float x = -worldwindow.x + 2*pixelPosition.x*worldwindow.x/viewport.x;
+	float y = -worldwindow.y + 2*pixelPosition.y*worldwindow.y/viewport.y;
+
+	OUT.dir = float4(	-nearDist*n.x + x*u.x + y * v.x,
+						-nearDist*n.y + x*u.y + y * v.y,
+						-nearDist*n.z + x*u.z + y * v.z,
+						0);
+
+	normalize(OUT.dir);
+	
+	OUT.start = float4( eyePosition, 0 );
+	return OUT;
+}

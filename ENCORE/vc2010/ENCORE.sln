@@ -1,0 +1,37 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encore", "encore\encore.vcxproj", "{AF509057-3666-4632-ACA7-685DF15985AA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageViewer", "..\tools\ImageViewer\ImageViewer.vcxproj", "{46B29593-AD14-4DFE-AEE5-CAA970CDD6FA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImageAnalyzer", "..\tools\ImageAnalyzer\ImageAnalyzer.vcxproj", "{B1DBDA75-39FF-4161-8B6A-F6F5C5347F95}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EncoreBatch", "..\tools\EncoreBatch\EncoreBatch.vcxproj", "{C0BBFE36-0FC5-4633-9F14-5FF6FB47B98E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF509057-3666-4632-ACA7-685DF15985AA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AF509057-3666-4632-ACA7-685DF15985AA}.Debug|Win32.Build.0 = Debug|Win32
+		{AF509057-3666-4632-ACA7-685DF15985AA}.Release|Win32.ActiveCfg = Release|Win32
+		{AF509057-3666-4632-ACA7-685DF15985AA}.Release|Win32.Build.0 = Release|Win32
+		{46B29593-AD14-4DFE-AEE5-CAA970CDD6FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{46B29593-AD14-4DFE-AEE5-CAA970CDD6FA}.Debug|Win32.Build.0 = Debug|Win32
+		{46B29593-AD14-4DFE-AEE5-CAA970CDD6FA}.Release|Win32.ActiveCfg = Release|Win32
+		{46B29593-AD14-4DFE-AEE5-CAA970CDD6FA}.Release|Win32.Build.0 = Release|Win32
+		{B1DBDA75-39FF-4161-8B6A-F6F5C5347F95}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B1DBDA75-39FF-4161-8B6A-F6F5C5347F95}.Debug|Win32.Build.0 = Debug|Win32
+		{B1DBDA75-39FF-4161-8B6A-F6F5C5347F95}.Release|Win32.ActiveCfg = Release|Win32
+		{B1DBDA75-39FF-4161-8B6A-F6F5C5347F95}.Release|Win32.Build.0 = Release|Win32
+		{C0BBFE36-0FC5-4633-9F14-5FF6FB47B98E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0BBFE36-0FC5-4633-9F14-5FF6FB47B98E}.Debug|Win32.Build.0 = Debug|Win32
+		{C0BBFE36-0FC5-4633-9F14-5FF6FB47B98E}.Release|Win32.ActiveCfg = Release|Win32
+		{C0BBFE36-0FC5-4633-9F14-5FF6FB47B98E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

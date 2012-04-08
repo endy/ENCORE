@@ -1,0 +1,11 @@
+*format is as follows:*
+*LIGHT locX locY locZ colorR colorG colorB (up to 8 lights)*
+*pathtomodel locX locY locZ size angle Xaxis Yaxis Zaxis*
+LIGHT 0 0 2 1 1 1
+LIGHT 0 0 -2 1 1 1
+LIGHT 0 2 0 1 1 1
+LIGHT 0 -2 0 1 1 1
+LIGHT -2 0 0 1 1 1
+LIGHT 2 0 0 1 1 1
+MATERIAL 0.0 0.3 0.7 0.0 0.3 0.7 0.0 0.3 0.7 0.0 0.0
+SPHERE 0 0 0 1 0.25 0 0 1 0 

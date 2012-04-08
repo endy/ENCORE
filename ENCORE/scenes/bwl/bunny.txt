@@ -1,0 +1,6 @@
+*format is as follows:*
+*LIGHT locX locY locZ colorR colorG colorB (up to 8 lights)*
+*pathtomodel locX locY locZ size angle Xaxis Yaxis Zaxis*
+LIGHT 0 0 30 1 1 1
+MATERIAL 0.7 0.0 0.0 0.7 0.0 0.0 0.7 0.0 0.0 0.0 0.0
+MODEL models/bwl/bun_zipper_res4.ply 0 0 -10 10 0 1 1 0

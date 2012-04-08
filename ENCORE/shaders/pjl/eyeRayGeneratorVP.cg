@@ -1,0 +1,34 @@
+
+struct Output{
+    float2 texCoord : TEXCOORD0;
+    float4 rayStart : TEXCOORD1;
+    float4 rayDir   : TEXCOORD2;
+};
+
+
+Output main(    float2 pixelPosition : TEXCOORD0,
+                uniform float3 u,
+			    uniform float3 v,
+			    uniform float3 n,
+			    uniform float2 worldwindow,
+			    uniform float2 viewport,
+			    uniform float nearDist,
+			    uniform float3 eyePos)
+{
+	Output OUT;
+
+	float x = -worldwindow.x + 2*pixelPosition.x*worldwindow.x/viewport.x;
+	float y = -worldwindow.y + 2*pixelPosition.y*worldwindow.y/viewport.y;
+
+    OUT.rayStart.xyz = eyePos;
+    OUT.rayStart.w = 0;
+    OUT.texCoord = pixelPosition;
+	OUT.rayDir = float4(	-nearDist*n.x + x*u.x + y * v.x,
+						    -nearDist*n.y + x*u.y + y * v.y,
+						    -nearDist*n.z + x*u.z + y * v.z,
+						    0);
+
+	normalize(OUT.rayDir);
+
+	return OUT;
+}

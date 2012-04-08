@@ -1,0 +1,19 @@
+# a comment
+testDir=.
+resultsDir=highPoly
+imagesDir=images
+exe=encore.exe
+batchFile=highPoly.bat
+scriptFile=highPoly.sh
+
+# batch <batch name> <control>
+batch bunny bunny1.txt
+bunny2.txt
+bunny3.txt
+bunny4.txt
+
+# batch <batch name> <control>
+batch dragon dragon2.txt
+dragon3.txt
+dragon4.txt
+

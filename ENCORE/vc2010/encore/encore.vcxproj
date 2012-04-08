@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AF509057-3666-4632-ACA7-685DF15985AA}</ProjectGuid>
+    <RootNamespace>encore</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(TargetDir)lib\include;$(TargetDir)NvidiaSDK\inc;$(TargetDir)src\math;$(TargetDir)src\renderers;$(TargetDir)src\misc;$(TargetDir)src\scene;$(TargetDir)src\accelerators;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>zlib.lib  libpng.lib  %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>corona.lib;zlib.lib;libpng.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)encore_debug.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(TargetDir)lib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)encore_debug.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>$(TargetDir)lib\include;$(TargetDir)NvidiaSDK\inc;$(TargetDir)src\math;$(TargetDir)src\renderers;$(TargetDir)src\misc;$(TargetDir)src\scene;$(TargetDir)src\accelerators;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>corona.lib;libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)encore.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(TargetDir)lib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\math\Affine4.cpp" />
+    <ClCompile Include="..\..\src\math\Ray.cpp" />
+    <ClCompile Include="..\..\src\misc\Common.cpp" />
+    <ClCompile Include="..\..\src\misc\Logfile.cpp" />
+    <ClCompile Include="..\..\src\misc\Options.cpp" />
+    <ClCompile Include="..\..\src\misc\Pixel.cpp" />
+    <ClCompile Include="..\..\src\misc\SimpleProfiler.cpp" />
+    <ClCompile Include="..\..\src\misc\Texture.cpp" />
+    <ClCompile Include="..\..\src\misc\TextureMaker.cpp" />
+    <ClCompile Include="..\..\src\misc\TextureManager.cpp" />
+    <ClCompile Include="..\..\src\renderers\CPURTRenderer.cpp" />
+    <ClCompile Include="..\..\src\renderers\GPURayTracer.cpp" />
+    <ClCompile Include="..\..\src\renderers\OpenGLRenderer.cpp" />
+    <ClCompile Include="..\..\src\renderers\PhotonMapperCPU.cpp" />
+    <ClCompile Include="..\..\src\renderers\RayTracer.cpp" />
+    <ClCompile Include="..\..\src\renderers\Renderer.cpp" />
+    <ClCompile Include="..\..\src\renderers\FrameBufferObject.cpp" />
+    <ClCompile Include="..\..\src\renderers\Photon.cpp" />
+    <ClCompile Include="..\..\src\renderers\PhotonMap.cpp" />
+    <ClCompile Include="..\..\src\renderers\Sampler.cpp" />
+    <ClCompile Include="..\..\src\renderers\Shader.cpp" />
+    <ClCompile Include="..\..\src\renderers\ShaderManager.cpp" />
+    <ClCompile Include="..\..\src\renderers\Tonemap.cpp" />
+    <ClCompile Include="..\..\src\accelerators\BasicAS.cpp" />
+    <ClCompile Include="..\..\src\accelerators\BVH.cpp" />
+    <ClCompile Include="..\..\src\accelerators\GPUAccelerationStructureData.cpp" />
+    <ClCompile Include="..\..\src\accelerators\IrradianceCache.cpp" />
+    <ClCompile Include="..\..\src\accelerators\Kdtree.cpp" />
+    <ClCompile Include="..\..\src\accelerators\UniformGrid.cpp" />
+    <ClCompile Include="..\..\src\scene\AABB.cpp" />
+    <ClCompile Include="..\..\src\scene\Camera.cpp" />
+    <ClCompile Include="..\..\src\scene\Color.cpp" />
+    <ClCompile Include="..\..\src\scene\DynamicScene.cpp" />
+    <ClCompile Include="..\..\src\scene\HitInfo.cpp" />
+    <ClCompile Include="..\..\src\scene\Material.cpp" />
+    <ClCompile Include="..\..\src\scene\Scene.cpp" />
+    <ClCompile Include="..\..\src\scene\Triangle.cpp" />
+    <ClCompile Include="..\..\src\scene\Vertex.cpp" />
+    <ClCompile Include="..\..\src\scene\PointLightPrim.cpp" />
+    <ClCompile Include="..\..\src\scene\RectangleLight.cpp" />
+    <ClCompile Include="..\..\src\scene\SpherePrim.cpp" />
+    <ClCompile Include="..\..\src\scene\TriangleLight.cpp" />
+    <ClCompile Include="..\..\src\scene\TrianglePrim.cpp" />
+    <ClCompile Include="..\..\src\scene\DynamicModel.cpp" />
+    <ClCompile Include="..\..\src\scene\IModel.cpp" />
+    <ClCompile Include="..\..\src\scene\Model.cpp" />
+    <ClCompile Include="..\..\src\scene\Objloader.cpp" />
+    <ClCompile Include="..\..\src\scene\ObjModelloader.cpp" />
+    <ClCompile Include="..\..\src\misc\BatteryPowerWin32.cpp" />
+    <ClCompile Include="..\..\src\misc\Timer.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\math\Affine4.h" />
+    <ClInclude Include="..\..\src\math\Ray.h" />
+    <ClInclude Include="..\..\src\math\TAffineMatrix.h" />
+    <ClInclude Include="..\..\src\math\TPoint3.h" />
+    <ClInclude Include="..\..\src\math\TVector3.h" />
+    <ClInclude Include="..\..\src\misc\Common.h" />
+    <ClInclude Include="..\..\src\misc\Logfile.h" />
+    <ClInclude Include="..\..\src\misc\Options.h" />
+    <ClInclude Include="..\..\src\misc\Pixel.h" />
+    <ClInclude Include="..\..\src\misc\SimpleProfiler.h" />
+    <ClInclude Include="..\..\src\misc\Singleton.h" />
+    <ClInclude Include="..\..\src\misc\Texture.h" />
+    <ClInclude Include="..\..\src\misc\TextureMaker.h" />
+    <ClInclude Include="..\..\src\misc\TextureManager.h" />
+    <ClInclude Include="..\..\src\renderers\CPURTRenderer.h" />
+    <ClInclude Include="..\..\src\renderers\GPURayTracer.h" />
+    <ClInclude Include="..\..\src\renderers\OpenGLRenderer.h" />
+    <ClInclude Include="..\..\src\renderers\PhotonMapperCPU.h" />
+    <ClInclude Include="..\..\src\renderers\RayTracer.h" />
+    <ClInclude Include="..\..\src\renderers\Renderer.h" />
+    <ClInclude Include="..\..\src\renderers\FrameBufferObject.h" />
+    <ClInclude Include="..\..\src\renderers\Photon.h" />
+    <ClInclude Include="..\..\src\renderers\PhotonMap.h" />
+    <ClInclude Include="..\..\src\renderers\Sampler.h" />
+    <ClInclude Include="..\..\src\renderers\Shader.h" />
+    <ClInclude Include="..\..\src\renderers\ShaderManager.h" />
+    <ClInclude Include="..\..\src\renderers\Tonemap.h" />
+    <ClInclude Include="..\..\src\accelerators\AccelerationStructure.h" />
+    <ClInclude Include="..\..\src\accelerators\BasicAS.h" />
+    <ClInclude Include="..\..\src\accelerators\BVH.h" />
+    <ClInclude Include="..\..\src\accelerators\GPUAccelerationStructureData.h" />
+    <ClInclude Include="..\..\src\accelerators\IrradianceCache.h" />
+    <ClInclude Include="..\..\src\accelerators\IrrCacheOctree.h" />
+    <ClInclude Include="..\..\src\accelerators\Kdtree.h" />
+    <ClInclude Include="..\..\src\accelerators\TOctree.h" />
+    <ClInclude Include="..\..\src\accelerators\UniformGrid.h" />
+    <ClInclude Include="..\..\src\scene\AABB.h" />
+    <ClInclude Include="..\..\src\scene\Camera.h" />
+    <ClInclude Include="..\..\src\scene\Color.h" />
+    <ClInclude Include="..\..\src\scene\DynamicScene.h" />
+    <ClInclude Include="..\..\src\scene\Emissive.h" />
+    <ClInclude Include="..\..\src\scene\HitInfo.h" />
+    <ClInclude Include="..\..\src\scene\Material.h" />
+    <ClInclude Include="..\..\src\scene\Scene.h" />
+    <ClInclude Include="..\..\src\scene\Triangle.h" />
+    <ClInclude Include="..\..\src\scene\Vertex.h" />
+    <ClInclude Include="..\..\src\scene\PointLightPrim.h" />
+    <ClInclude Include="..\..\src\scene\Primitive.h" />
+    <ClInclude Include="..\..\src\scene\RectangleLight.h" />
+    <ClInclude Include="..\..\src\scene\SpherePrim.h" />
+    <ClInclude Include="..\..\src\scene\TriangleLight.h" />
+    <ClInclude Include="..\..\src\scene\TrianglePrim.h" />
+    <ClInclude Include="..\..\src\scene\DynamicModel.h" />
+    <ClInclude Include="..\..\src\scene\IModel.h" />
+    <ClInclude Include="..\..\src\scene\Model.h" />
+    <ClInclude Include="..\..\src\scene\Objloader.h" />
+    <ClInclude Include="..\..\src\scene\ObjModelloader.h" />
+    <ClInclude Include="..\..\src\misc\BatteryPowerWin32.h" />
+    <ClInclude Include="..\..\src\misc\Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\config\config.txt" />
+    <None Include="..\..\config\config2.txt" />
+    <None Include="..\..\scenes\bwl\cornell2.txt" />
+    <None Include="..\..\Config\pmConfig.txt" />
+    <None Include="..\..\scenes\scene1.txt" />
+    <None Include="..\..\scenes\scene2.txt" />
+    <None Include="..\..\shaders\BasicAS.cg" />
+    <None Include="..\..\shaders\BVH.cg" />
+    <None Include="..\..\shaders\Kdtree_restart.cg" />
+    <None Include="..\..\shaders\phong_shader.cg" />
+    <None Include="..\..\shaders\UniformGrid.cg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties DevPartner_IsInstrumented="0" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

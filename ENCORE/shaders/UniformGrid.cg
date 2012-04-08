@@ -1,0 +1,253 @@
+//2/22/06
+// there are two bugs in traverser
+// there is random noise that occur that cause some of the traverse to be wrong
+// especially in negative z directions
+// another one is when z ray direction is positive, it will think the first voxel it hit is out
+// both need to be look at in more detail later
+
+//2/28/06
+// major code change after seeing Niel Thrane, Lars Ole Simonsen's thesis paper
+// traverser and intersector are now one!
+
+#define EP 0.001
+float INF() {return 600000000.0f;}
+
+// voxel .w : 0 mean keep going, 1 mean done
+// hitinfo  : x = t, y = u, z = v, w = index
+struct stepinfo
+{
+    float4 hitinfo  : COL0;
+    float4 voxel    : COL1;
+    float4 tMax     : COL2;
+};
+
+//code from niels thrane, lars ole simonsen in their thesis paper
+bool ray_box_intersect(float3 rayD, float3 gmin, float3 gmax, float3 eyePos, out float t_hit)
+{
+    float3 tmin, tmax;
+    
+    // masking to find ray direction that is zero or close to zero
+    // mask is 1 for xyz that are cloes to zero
+    //float3 mask = rayD < float3(EP,EP,EP);
+    //mask = mask && (rayD > float3(-EP,-EP,-EP));
+    
+    tmin = (gmin-eyePos)/rayD;// + mask*INF();
+    tmax = (gmax-eyePos)/rayD;// + mask*INF();
+    
+    float3 r_min = min(tmin, tmax);
+    float3 r_max = max(tmin, tmax);
+    
+    float minmax = min(min(r_max.x, r_max.y), r_max.z);
+    float maxmin = max(max(r_min.x, r_min.y), r_min.z);
+    t_hit = maxmin;
+    return minmax > maxmin;
+}
+
+float3 getvoxelindex(float3 p, float3 gmin, float3 gridsize, float3 len)
+{
+    return clamp(floor((p-gmin)/len),float3(0.0,0.0,0.0), (gridsize-float3(1.0,1.0,1.0)));
+}
+
+stepinfo getvoxel(float3 rayD, float3 gmin, float3 gmax, float3 eyePos, float3 cell_width, float3 resolution, out float time)
+{
+    stepinfo o;
+    float t;
+    float3 gridOrig = eyePos;
+    o.tMax = float4(INF(),INF(),INF(), 1);
+
+    if( ray_box_intersect( rayD, gmin, gmax, eyePos, t ) )
+    {
+        gridOrig = time > 0.0f ? eyePos+rayD*t : gridOrig;
+        o.voxel.xyz = getvoxelindex(gridOrig, gmin, resolution, cell_width);
+        o.voxel.w = 0;
+    }
+    else
+    {
+        // ray outside of box, so it'll never intersect
+        o.tMax.w = -1;
+    }
+    
+    time = t > 0.0f ? t : 0;
+    float3 cell_min, cell_max;
+
+    cell_min = gmin+cell_width*o.voxel.xyz;
+    cell_max = cell_min + cell_width;
+
+    float3 t1 = (cell_min-gridOrig)/rayD;
+    float3 t2 = (cell_max-gridOrig)/rayD;
+
+    float3 p = sign(rayD.xyz) == float3(1,1,1);
+    float3 n = sign(rayD.xyz) == float3(-1,-1,-1);
+
+    o.tMax.xyz = t1*n + t2*p; 
+
+    if(rayD.x < EP && rayD.x > -EP) o.tMax.x = INF();
+    if(rayD.y < EP && rayD.y > -EP) o.tMax.y = INF();
+    if(rayD.z < EP && rayD.z > -EP) o.tMax.z = INF();
+
+    o.tMax.xyz += time;
+
+    return o;
+}
+
+// v0, v1, v2 = 3 vertex of triangle
+// rayD, rayStart is self explain
+// lasthit is a hit from last intersect that is valid
+// index is index of this triangle
+//
+float4 intersect(float3 v0, float3 v1, float3 v2, float3 rayDir, float3 rayStart, float4 lasthit, float index)
+{
+    float3 edge1, edge2;
+    float3 pvec, tvec, qvec;
+    float det, inv_det, t, u, v;
+    
+    edge1 = v1 - v0;
+    edge2 = v2 - v0;    
+    
+    pvec = cross(rayDir, edge2);
+    det = dot(pvec, edge1);
+    bool isHit = det > EP;
+    
+    inv_det = 1/det;
+
+    tvec = rayStart - v0;
+    u = dot(pvec, tvec)*inv_det;
+
+    qvec = cross(tvec, edge1);
+    v = dot(qvec, rayDir)*inv_det;          
+    t = dot(qvec, edge2)*inv_det;
+    
+    isHit = (u >= 0) && (v >= 0) && (u+v <= 1.0)
+             && (t > 0.0) && (t < lasthit.x) ;
+    
+    return isHit ? float4(t,u,v,index) : lasthit;
+}
+
+// cell_info contain index to triangle, number of triangle, 0 ,0
+// voxel status: 2 mean there is a hit, 0 mean has not been traversed at all, 1 mean its out of bound, dont check
+stepinfo main(
+    uniform samplerRECT rayDirMap,
+    uniform samplerRECT rayStartMap,
+    uniform samplerRECT cellData0,
+    uniform samplerRECT hitInfoMap,
+    uniform samplerRECT trav0Map,
+    uniform samplerRECT trav1Map,
+    uniform samplerRECT v0t,
+    uniform samplerRECT v1t,
+    uniform samplerRECT v2t,
+    uniform float len,
+    uniform float gridsize,
+    uniform float gmin,
+    uniform float gmax,
+    uniform float maxloop,
+    float2 texc : TEXCOORD0)
+{
+    stepinfo o;
+
+    float4 timeInfo = texRECT( trav1Map, texc );
+    // x = tMax x
+    // y = tMax y
+    // z = tMax z
+    // w = -1: finished
+    //      0: initial state
+    //      1: traversing or intersecting
+    
+    // finished, then don't process
+    if ( timeInfo.w == -1 )
+        discard;
+    
+    // get some information
+    float3 rayD = texRECT(rayDirMap, texc).xyz;
+    float3 resolution = float3(gridsize,gridsize,gridsize);
+    float3 cell_width = float3(len,len,len);
+
+    // figure out step direction and boundary
+    float3 eyePos = texRECT(rayStartMap, texc).xyz;
+    float3 step = sign(rayD);
+    float3 delta = abs(cell_width/rayD);
+    if(rayD.x < EP && rayD.x > -EP) delta.x = INF();
+    if(rayD.y < EP && rayD.y > -EP) delta.y = INF();
+    if(rayD.z < EP && rayD.z > -EP) delta.z = INF();
+    float t;
+
+    // if first pass, then generate some data
+    if ( all( timeInfo == float4(0,0,0,0) ) )
+    {
+        o = getvoxel(rayD, gmin, gmax, eyePos, cell_width, resolution, t);
+    }
+    else
+    {
+        // read it in from textures
+        o.tMax = timeInfo;
+        
+        o.voxel = texRECT( trav0Map, texc );
+        // x = voxel x
+        // y = voxel y
+        // z = voxel z
+        // w = 0 : initial state (traversing)
+        //     1+: intersecting with index w-1 triangle
+    }
+
+    // hit information is always read in from texture
+    o.hitinfo = texRECT( hitInfoMap, texc );
+
+    float maxloops = 2500;
+    float3 v0,v1,v2;
+    float2 index;
+
+    while(o.tMax.w != -1 && maxloops > 0)
+    {
+        index.x = o.voxel.x + o.voxel.y*gridsize + o.voxel.z*gridsize*gridsize;
+        index.x = modf(index.x*0.000244140625, index.y)*4096;
+        
+        // format : triangle index, triangle count,0,0
+        float4 info = texRECT(cellData0, index);
+
+        // if there are triangles in this voxel
+        // then intersect with them
+        float start = info.x + o.voxel.w;
+        float end = info.x+info.y;
+        while(start < end && maxloops > 0) // start intersect test
+        {
+            index.x = modf(start*0.000244140625, index.y)*4096;
+
+            v0 = texRECT(v0t, index).xyz;
+            v1 = texRECT(v1t, index).xyz;
+            v2 = texRECT(v2t, index).xyz;
+            o.hitinfo = intersect(v0,v1,v2,rayD,eyePos,o.hitinfo,start);
+            start++;
+            maxloops--;
+        } // end intersect test
+
+        // do we still have loops left?
+        if ( maxloops > 0 )
+        {
+            float tMin = min( o.tMax.x, min( o.tMax.y, o.tMax.z ) );
+            
+            // we have a hit
+            if ( o.hitinfo.w >= 0 )
+            {
+//                float tMin = min( o.tMax.x, min( o.tMax.y, o.tMax.z ) );
+//                o.tMax.w = o.hitinfo.x < tMin ? -1 : 1;
+                o.tMax.w = -1; // for now indicate we are done
+            }
+            
+            //traverse
+            float3 mask = float3(tMin, tMin, tMin) == o.tMax.xyz;
+
+            // update voxel and t value
+            o.voxel.xyz = o.voxel.xyz + step*mask;
+            o.tMax.xyz = o.tMax.xyz + delta*mask;
+
+            // find out if we stepped outside the grid
+            float3 lt = o.voxel.xyz >= resolution;
+            float3 gt = o.voxel.xyz < float3(0.0,0.0,0.0);
+            if(any(lt) || any(gt))
+                o.tMax.w = -1;
+        }
+  
+        maxloops--;      
+    }
+    
+    return o;
+}

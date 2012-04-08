@@ -1,0 +1,156 @@
+/**********************************************
+* Traversal of Basic Acceleration Structure
+* Author: Peter Lohrmann
+* Date: July 16, 2006
+* Note: most code taken from earlier project 
+*       and Uniform Grid traversal for my
+*       MS Thesis at WPI
+**********************************************/
+/**********************************************
+* Input: CellData0 texture
+*           x = number of triangles
+*        CellData1 texture (unused)
+*        VertexN texture (N c {0,1,2} ) and
+*        NormalN texture (N c {0,1,2} )
+*           x = x coord
+*           y = y coord
+*           z = z coord
+*
+*
+* Output: HitInfo texture
+*           x = hit time
+*           y = alpha
+*           z = beta
+*           w = triangle index
+**********************************************/
+#define EP 0.001
+float INF() {return 600000000.0f;}
+
+// v0, v1, v2 = 3 vertex of triangle
+// rayDir, rayStart is direction and start position of the ray
+// lasthit is a hit from last intersect that is valid
+// index is index of this triangle
+//
+float4 intersect(float3 v0, float3 v1, float3 v2, float3 rayDir, float3 rayStart, float4 lasthit, float index)
+{
+
+    float3 edge1, edge2;
+    float3 pvec, tvec, qvec;
+    float det, inv_det, t, u, v;
+    
+    edge1 = v1 - v0;
+    edge2 = v2 - v0;
+
+    pvec = cross(rayDir, edge2);
+    det = dot(pvec, edge1);
+    bool isHit = det > EP;
+
+    inv_det = 1/det;
+
+    tvec = rayStart - v0;
+    u = dot(pvec, tvec)*inv_det;
+
+    qvec = cross(tvec, edge1);
+    v = dot(qvec, rayDir)*inv_det;
+    t = dot(qvec, edge2)*inv_det;
+
+    isHit = (u >= 0) && (v >= 0) && (u+v <= 1.0)
+             && (t > 0.0) && (t < lasthit.x);
+    
+    return isHit ? float4(t,u,v,index) : lasthit;
+}
+
+struct Output
+{
+	float4 f4HitInfo    : COLOR0;
+	float4 f4Trav0      : COLOR1;
+};
+
+// voxel status: 2 mean there is a hit, 0 mean has not been traversed at all, 1 mean its out of bound, dont check
+Output main(
+    float2 texc     : TEXCOORD0,
+    float4 rayStart : TEXCOORD1,
+    float4 rayDir   : TEXCOORD2,
+    uniform samplerRECT rayStartMap,
+    uniform samplerRECT rayDirMap,
+    uniform samplerRECT cellData0,
+    uniform samplerRECT hitInfoMap,
+    uniform samplerRECT trav0Map,
+    uniform samplerRECT trav1Map,
+    uniform samplerRECT v0t,
+    uniform samplerRECT v1t,
+    uniform samplerRECT v2t)
+{
+    Output o;
+
+    float4 travInfo = texRECT( trav0Map, texc );
+    // x: 0
+    // y: 0
+    // z: 0
+    // w: 0+ = current index
+    //    -1 = finished (discard)
+    
+    if ( travInfo.w == -1 )
+    {
+        discard;
+    }
+    
+    rayDir = texRECT( rayDirMap, texc );
+    rayStart = texRECT( rayStartMap, texc );
+    
+    o.f4HitInfo = texRECT( hitInfoMap, texc );
+  
+        //    // if the ray Direction is not set, then we need to get 
+        //    // the start pos and direction from the textures
+        //    if ( rayDir.x == 0 && rayDir.y == 0 && rayDir.z == 0 )
+        //    {
+        //        rayDir = texRECT(rayDirMap, texc);
+        //        rayStart = texRECT(rayStartMap, texc);
+        //    }
+
+    float3 v0,v1,v2;
+    float2 index;
+
+    float fTriangleCount = texRECT( cellData0, float2(0,0) ).x;
+
+    float start = travInfo.w;
+    float end = fTriangleCount;
+    float maxLoops = 2500;
+    float ten = 10; // ten is the most number of times a nested loop will be unrolled
+    // while there are triangles to test
+    while(start < end && ten > 0)
+    {
+        ten--;
+        // double loop to loop over 256 times (10*256 actually)
+        //        float a = 0;
+        //        while( a < 10)
+        //        {
+        //        a += 1;
+        while(start < end && maxLoops > 0) // start intersect test
+        {
+            index.x = modf(start*0.000244140625, index.y)*4096;
+
+            v0 = texRECT(v0t, index).xyz;
+            v1 = texRECT(v1t, index).xyz;
+            v2 = texRECT(v2t, index).xyz;
+            o.f4HitInfo = intersect( v0, v1, v2, rayDir.xyz, rayStart.xyz, o.f4HitInfo, start );
+            start++;
+            maxLoops--;
+        } // end intersect test
+    }
+
+    // check if we finished intersecting
+    if ( start >= end )
+    {
+        // we got through all the triangles, so indicate that we are done
+        o.f4Trav0 = float4( 0, start, end, -1 );
+    }
+    else
+    {
+        // we didn't finish
+        o.f4Trav0 = float4( 0, 0, end, start );
+    }
+    
+    return o;
+
+}

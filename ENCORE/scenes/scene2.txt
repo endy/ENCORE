@@ -1,0 +1,15 @@
+*format is as follows:
+*POINT_LIGHT locX locY locZ colorR colorG colorB
+*MODEL pathtomodel locX locY locZ size angle Xaxis Yaxis Zaxis
+*CAMERA eyeX eyeY eyeZ lookX lookY lookZ upX upY upZ vAngle vAspect nearDist farDist
+*BACKGROUND_COLOR red green blue alpha
+CAMERA 0 0 15 0 0 0 0 1 0 90 1 .1 1000
+BACKGROUND_COLOR 0.4 0.4 0.4 1
+POINT_LIGHT 5 5 5 1 1 1
+*DYNAMIC models/obj/Toasters 1 0 0 0 15 0 1 0 0
+*MODEL models/obj/Toasters/Toasters014.obj 0 0 0 30 0 1 0 0
+*MODEL models/ply/urn2.ply 0 0 0 15 0 -1 0 0
+*MODEL models/ply/egret.ply 3 0 0 5 90 -1 0 0
+*MODEL models/ply/buddha3.ply 0 0 0 30 0 1 0 0
+MODEL models/ply/bunny1.ply 0 0 0 15 0 1 0 0
+*MODEL models/ply/dragon3.ply 0 0 0 20 0 1 0 0

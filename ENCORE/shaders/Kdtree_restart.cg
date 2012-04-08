@@ -1,0 +1,314 @@
+
+#define EP 0.001
+float INF() {return 600000000.0f;}
+
+/** Checks for intersection between a ray and a box.
+* @param box_min the minimum corner of the box.
+* @param box_max the maximum corner of the box.
+* @param o the origin of the ray
+* @param d the direction of the ray
+* @param t_enter is used to return the t-value where the ray enters the box
+* @param t_exit is used to return the t-value where the ray exits the box
+* @return true if the ray intersects the box*/
+bool BoxIntersects(float3 box_min, float3 box_max, float3 o, float3 d,
+    out float t_enter, out float t_exit )
+{
+    float t0 = 0.0f;
+    float t1 = INF();
+    float3 tmin, tmax;
+    tmin = (box_min - o) / d;
+    tmax = (box_max - o) / d;
+    float3 real_min = min(tmin, tmax);
+    float3 real_max = max(tmin, tmax);
+    float minmax = min(min(real_max.x, real_max.y), real_max.z);
+    float maxmin = max(max(real_min.x, real_min.y), real_min.z);
+    t_enter = maxmin;
+    t_exit = minmax;
+    return minmax >= maxmin;
+}
+
+/**************************************
+* float4 intersect( ... )
+*
+* v0, v1, v2 = 3 vertex of triangle
+* rayD, rayStart are self explanitory
+* lasthit is a hit from last intersection that is valid
+* index is index of this triangle
+**************************************/
+float4 Intersects(float3 v0, float3 v1, float3 v2, float3 rayStart, float3 rayDir, float index, float4 lasthit)
+{
+    float3 edge1, edge2;
+    float3 pvec, tvec, qvec;
+    float det, inv_det, t, u, v;
+    
+    edge1 = v1 - v0;
+    edge2 = v2 - v0;
+
+    pvec = cross(rayDir, edge2);
+    det = dot(pvec, edge1);
+    bool isHit = det > EP;
+
+    inv_det = 1/det;
+
+    tvec = rayStart - v0;
+    u = dot(pvec, tvec)*inv_det;
+
+    qvec = cross(tvec, edge1);
+    v = dot(qvec, rayDir)*inv_det;
+    t = dot(qvec, edge2)*inv_det;
+
+    isHit = (u >= 0) && (v >= 0) && (u+v <= 1.0)
+             && (t > 0.0) && (t < lasthit.x);
+
+//    return isHit? float4(0,1,0,0) : float4(1,0,0,0);//float4(t,u,v,0);
+    
+    return isHit ? float4(t,u,v,index) : lasthit;
+}
+
+struct main_out
+{
+    float4 bestHit : COLOR0;
+    float4 renderState : COLOR1;
+    float4 renderState2: COLOR2;
+};
+
+// Intermediate nodes:
+// x: index of left child (right child is +1 to left child)
+// y: split value
+// z: index of parent node
+// w: conditional:
+//             -2: X split axis
+//             -3: Y split axis
+//             -4: Z split axis
+//             0+: leaf node
+
+// Leaf nodes:
+// x: index of 1st triangle
+// y: unused
+// z: unused
+// w: # triangles
+// 
+
+// Traversal State
+// x: conditional:
+//             -2: moving up
+//             -1: moving down
+//             0+: iterating over triangle list
+// y: index to tree node, -1: finished processing
+// z: Tmin
+// w: Tmax
+// 
+
+/** The main kd-restart traversal/intersection kernel
+* returns a new traversalState and a new bestHit*/
+main_out main(
+                    uniform samplerRECT rayStartMap, //the texture of ray origins
+                    uniform samplerRECT rayDirMap, //the texture of ray directions
+                    uniform samplerRECT hitInfoMap, //the best hit so far
+                    uniform samplerRECT trav0Map, //traversal state
+                    uniform samplerRECT trav1Map, //more traversal state
+                    uniform samplerRECT cellData0, //a texture representation of the kd-tree
+                    uniform samplerRECT v0t,
+                    uniform samplerRECT v1t,
+                    uniform samplerRECT v2t,
+                    
+                    uniform float3 gmin,
+                    uniform float3 gmax, 
+                    uniform float maxloop,
+                    
+//                    uniform sampler2D triLists, //a texture with the triangle lists
+//                    uniform sampler2D triangles, //the actual triangle vertices
+                    float2 tc : TEXCOORD0 //texture coordinate indicating which ray we look up
+                )
+{
+
+    float4 traversalState = texRECT(trav0Map, tc);
+    
+    if ( traversalState.y == -1 )
+        discard;
+
+    float4 orig = texRECT(rayStartMap, tc);
+    float4 dir = texRECT(rayDirMap, tc);
+
+    float global_t_max;
+    
+    // if this is the first node
+    if ( all( traversalState.xyzw == float4(0,0,0,0) ) )
+    {
+        /* stuff taken from initializer */
+        bool hit = BoxIntersects( gmin, gmax, orig.xyz, dir.xyz, traversalState.z, traversalState.w );        
+        traversalState.xy = float2(-1.0f, hit ? 0.0f : -1.0f);
+        // traversalState.zw is gotten from BoxIntersects call above
+        global_t_max = traversalState.w;
+    }
+    else
+    {
+        global_t_max = texRECT(trav1Map, tc).x;
+    }
+
+    //find the ray and the previous best hit
+    float4 bestHit = texRECT(hitInfoMap, tc);    
+
+    //traversalState.x = down: -1, up: -2: [0;INF] traversing triangle list
+    //traversalState.y = tree pointer
+    //traversalState.z = t_min
+    //traversalState.w = t_max
+    //traversalState2.x = global_t_max
+    
+    int kdtreeIndex = traversalState.y;
+    float t_min = traversalState.z;
+    float t_max = traversalState.w;
+    
+
+    float listIndex;
+    bool isFinished = (traversalState.y == -1);
+    float loopLimit = 2500;//maxloop;
+    float loop = 10;
+    
+    while ( loop-- > 0 )
+    while(!isFinished && loopLimit > 0)
+    {
+        float2 kdindex;
+        kdindex.x = modf(kdtreeIndex*0.000244140625, kdindex.y)*4096;
+
+        float4 node_info = texRECT( cellData0, kdindex );
+
+        // INTERMEDIATE NODE
+        //node_info.x = left child pointer
+        //node_info.y = split value along split axis
+        //node_info.z = parent pointer (not used in restart)
+        //node_info.w = split axis if in {-2,-3,-4}
+        //node_info.w = leaf node if 0+
+
+        // LEAF NODE
+        //node_info.x = index to 1st triangle
+        //node_info.w = # triangles in node
+
+        if(node_info.w < -1)
+        {
+            //this is an internal node -> traverse downwards a step
+            // calculates when ray hits split plane
+            float3 splits = (float3(node_info.y) - orig.xyz) / dir.xyz;
+            float t_split = node_info.w == -2 ?
+                splits.x :
+                node_info.w == -3 ? 
+                    splits.y : 
+                    splits.z;
+                        
+            // keep count of split directions to help visualize the nodes
+//            x += node_info.w == -2 ? 1: 0;
+//            y += node_info.w == -3 ? 1: 0;
+//            z += node_info.w == -4 ? 1: 0;
+            
+            // determine if we should go up/down, left/right, front/back
+            float3 dirSigns = sign(dir).xyz;
+            float dirSign = node_info.w == -2 ?
+                dirSigns.x :
+                node_info.w == -3 ? 
+                    dirSigns.y : 
+                    dirSigns.z;
+
+            //determine which child is nearest
+            float leftchild = node_info.x;
+            float rightchild = leftchild + 1;
+
+            float first = dirSign == 1 ? leftchild : rightchild;
+            float second = dirSign == 1 ? rightchild : leftchild;
+
+            if( (t_split < t_max && t_split > t_min) || t_split == 0 )
+            {
+                // split time is within tree
+                // ray travels through first then second
+                // so go through first now
+                kdtreeIndex = first;
+                t_max = t_split;
+            }
+            else if(t_split >= t_max || t_split < 0.0f)  //ray only passes through one child
+            {
+                // if t_split is             
+                if (t_split < 0.0) {
+                    kdtreeIndex = second;
+                }else {
+                    kdtreeIndex = first;
+                }
+            }
+            else
+//            else if(t_split <= t_min) //ray only passes through second
+            {
+                kdtreeIndex = second;
+            } 
+
+        }
+        else
+        {
+            //this is a leaf - lookup list index and traverse it
+            
+            //Are we just starting list traversal at this node then start at the beginning,
+            //else start where we got to
+            float triIndex = node_info.x;
+            float triCount = node_info.w;
+
+            //traverse triangle list
+            while( triCount > 0 && loopLimit > 0 )
+            {
+                float2 index;
+                index.x = modf(triIndex*0.000244140625, index.y)*4096;
+
+                float3 a = texRECT( v0t, index ).xyz;
+                float3 b = texRECT( v1t, index ).xyz;
+                float3 c = texRECT( v2t, index ).xyz;
+
+                bestHit = Intersects( a, b, c, orig.xyz, dir.xyz, triIndex, bestHit );
+                triIndex++;
+                triCount--;
+
+                loopLimit--;
+            }
+
+//loopLimit = 0;
+//bestHit = float4(x/2,y/2,z/2,0);
+
+            // if we have a hit inside this cell
+            if( bestHit.x <= t_max )
+            {
+                loopLimit = 0;
+                // then we're finished
+                isFinished = true;
+            }
+            else
+            {
+                // we traveled through the back of the volume
+                if( t_max == global_t_max )
+                {
+                    // so we're finished
+                    isFinished = true;
+                }
+                else
+                {
+                    // there's more traversing to do
+                    // 'restart' from the beginning
+                    kdtreeIndex = 0; 
+
+                    // with updated min and max times
+                    t_min = t_max;
+                    t_max = global_t_max;
+                }
+            }
+        }
+        loopLimit--;
+    }
+
+    traversalState.y = isFinished ? -1 : kdtreeIndex;
+    traversalState.z = t_min;
+    traversalState.w = t_max;
+
+//    if ( bestHit.x == INF() )
+//        bestHit = float4(0,0,0,-1);
+
+    main_out OUT;
+    //set output variables
+    OUT.renderState = traversalState;
+    OUT.renderState2 = float4( global_t_max, 0, 0, 0 );
+    OUT.bestHit = bestHit;
+    return OUT;
+}
