@@ -221,32 +221,42 @@ void PhotonMap::BalanceAndConstruct(int minIndex, int maxIndex, int level)
 }
 
 
-void PhotonMap::GetNearestNPhotons(const int N, float rSquared, Point3f location, Vector3f normal, int minIndex, int maxIndex, vector<PhotonDistPair>& nearest)
+void PhotonMap::GetNearestNPhotons(
+    const int N, 
+    float rSquared, 
+    const Point3f& location, 
+    const Vector3f& normal, 
+    const int minIndex, 
+    const int maxIndex,
+    vector<PhotonDistPair>& nearest)
 {
 	if(maxIndex - minIndex >= 0)
 	{
 		int nodeIndex = (maxIndex + minIndex) / 2;
 
         // CONSIDER ADDING THIS NODE TO PHOTON HEAP
-		Photon p = m_photons[nodeIndex];
-        float distSquared = Vector3f(location, p.Position()).MagnitudeSquared();
+		const Photon* p = &m_photons[nodeIndex];
+        float x = location.X() - p->Position().X();
+        float y = location.Y() - p->Position().Y();
+        float z = location.Z() - p->Position().Z();
+        float distSquared = (x*x)+(y*y)+(z*z);
 		
-        if(distSquared < rSquared && (IGNORE_NORMAL || p.SurfNormal() == normal))
+        if(distSquared < rSquared && (IGNORE_NORMAL || p->SurfNormal() == normal))
         {
             if((int)nearest.size() < N - 1)
             {
-                nearest.push_back(PhotonDistPair(p, distSquared));
+                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
             }
             else if((int)nearest.size() == N - 1)
             {
-                nearest.push_back(PhotonDistPair(p, distSquared));
+                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
                 std::make_heap(nearest.begin(), nearest.end());
 
                 rSquared = nearest[0].m_Distance;
             }
             else
             {
-                nearest.push_back(PhotonDistPair(p, distSquared));
+                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
                 std::make_heap(nearest.begin(), nearest.end());
 
                 if(nearest.size() > N)
@@ -283,13 +293,6 @@ void PhotonMap::GetNearestNPhotons(const int N, float rSquared, Point3f location
             GetNearestNPhotons(N, rSquared, location, normal, minIndex, nodeIndex-1, nearest);
             GetNearestNPhotons(N, rSquared, location, normal, nodeIndex+1, maxIndex, nearest);
         }                                               
-
-
-
-
-
-
 	}
-
 }
 

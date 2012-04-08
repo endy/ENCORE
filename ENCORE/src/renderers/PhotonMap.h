@@ -89,7 +89,13 @@ protected: // DATA
 private: // FUNCTIONS
 	void BalanceAndConstruct(int minIndex, int maxIndex, int nodeIndex);
 
-	void GetNearestNPhotons(const int N, float maxDistance, Point3f location, Vector3f normal, int minIndex, int maxIndex, vector<PhotonDistPair>& nearest);
+	void GetNearestNPhotons(const int N, 
+                            float rSquared, 
+                            const Point3f& location, 
+                            const Vector3f& normal, 
+                            const int minIndex, 
+                            const int maxIndex, 
+                            vector<PhotonDistPair>& nearest);
 
 private: // DATA
 	

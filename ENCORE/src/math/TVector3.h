@@ -73,7 +73,7 @@ namespace encore
 		TVector3<T>& operator-=(const TVector3<T>& rhs);
         
         /// Compares two vectors. Returns true if they are equal, false otherwise
-		bool operator==(const TVector3<T>& rhs);
+		bool operator==(const TVector3<T>& rhs) const;
         
         float operator[](int i) const { return m_Components[i]; }
         float &operator[](int i) { return m_Components[i]; }
@@ -218,7 +218,7 @@ namespace encore
 		return *this;
 	}
 
-	template <class T> bool TVector3<T>::operator==(const TVector3<T>& rhs)
+	template <class T> bool TVector3<T>::operator==(const TVector3<T>& rhs) const
 	{
 		return this->X() == rhs.X() &&
 			   this->Y() == rhs.Y() &&

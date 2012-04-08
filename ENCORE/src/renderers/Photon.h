@@ -53,8 +53,8 @@ public:
 public: // public methods
 
     /// Get the photon position
-	Point3f Position(){ return m_position; }
-    Point3f Position() const { return m_position; }
+    Point3f& Position(){ return m_position; }
+    const Point3f& Position() const { return m_position; }
     /// Set the photon position
 	void Position(Point3f in_position){ m_position = in_position; }
     /// Get the photon's power
@@ -70,7 +70,7 @@ public: // public methods
     /// Set the incoming direction of the photon
 	void Direction(Vector3f in_dir){ m_incomingDir = in_dir; }
     /// Get the normal of the absorbing surface
-	Vector3f SurfNormal(){ return m_surfNormal; }
+	const Vector3f& SurfNormal() const { return m_surfNormal; }
     /// Stores the normal of the absorbing surface 
 	void SurfNormal(Vector3f in_normal){ m_surfNormal = in_normal; }
 	/// Set the type of the last reflection
