@@ -1,3 +1,9 @@
-*/Debug/*
+*/Debug
+*/Release
 *.suo
 *.user
+*.exe
+*.log
+*.pdb
+*.ilk
+*/ipch/*
