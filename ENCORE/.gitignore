@@ -1,3 +1,8 @@
-*/Debug/*
+Debug/
+Release/
+ipch/
 *.suo
 *.user
+*.vsp
+*.pdb
+*.ilk
