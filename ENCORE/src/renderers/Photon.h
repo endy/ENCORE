@@ -53,12 +53,12 @@ public:
 public: // public methods
 
     /// Get the photon position
-	Point3f Position(){ return m_position; }
-    Point3f Position() const { return m_position; }
+    Point3f Position(){ return m_position; }
+    const Point3f& Position() const { return m_position; }
     /// Set the photon position
 	void Position(Point3f in_position){ m_position = in_position; }
     /// Get the photon's power
-	Color Power(){ return m_power; }
+	Color Power() const { return m_power; }
     /// Set the photon's power
 	void Power(Color in_power){ m_power = in_power; }
     /// Get the axis that the dividing plane aligns with
@@ -66,11 +66,11 @@ public: // public methods
     /// Set the axis that the dividing plane algins with
 	void SetPlane(AXIS in_plane){ m_plane = in_plane; }
     /// Get the incoming direction of the photon
-	Vector3f Direction(){ return m_incomingDir; }
+	Vector3f Direction() const { return m_incomingDir; }
     /// Set the incoming direction of the photon
 	void Direction(Vector3f in_dir){ m_incomingDir = in_dir; }
     /// Get the normal of the absorbing surface
-	Vector3f SurfNormal(){ return m_surfNormal; }
+	const Vector3f& SurfNormal() const { return m_surfNormal; }
     /// Stores the normal of the absorbing surface 
 	void SurfNormal(Vector3f in_normal){ m_surfNormal = in_normal; }
 	/// Set the type of the last reflection
@@ -78,7 +78,7 @@ public: // public methods
     /// Get the type of the last reflection 
 	REFLECTION_TYPE LastReflection(){ return m_last; }
     /// Returns whether the photon is a shadow photon
-    bool IsShadowPhoton(){ return m_IsShadowPhoton; }
+    bool IsShadowPhoton() const { return m_IsShadowPhoton; }
     /// Change whether the photon is a shadow photon
     void SetShadowPhoton(bool isShadowPhoton){ m_IsShadowPhoton = isShadowPhoton; } 
 
@@ -103,14 +103,14 @@ private:
 class PhotonDistPair
 {
 public:
-    PhotonDistPair(const Photon& p = Photon(), const float& distance = 0.0)
+    PhotonDistPair(const Photon* p = NULL, const float distance = 0.0)
     {
-	    m_Photon = p;
+	    m_pPhoton = p;
 		m_Distance = distance;
 	}
 
 public:
-    Photon m_Photon;
+    const Photon* m_pPhoton;
 	float m_Distance;
 };
 

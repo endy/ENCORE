@@ -137,11 +137,11 @@ Color PhotonMap::GetRadianceEstimate(const int N, const float maxDistance, Point
  
     for(int index = 0; index < nearest.size(); ++index)
     {
-        Photon& p = nearest[index].m_Photon;
+        const Photon* p = nearest[index].m_pPhoton;
         
 
-        Color power = p.Power();
-        Vector3f photonDir = p.Direction(); 
+        Color power = p->Power();
+        Vector3f photonDir = p->Direction(); 
 
         double radius = nearest[index].m_Distance;
         double weight = (m_CausticsMap) ? (r - radius)/radius : 1;//smoothstep(0,1,1-radius/r);
@@ -221,17 +221,27 @@ void PhotonMap::BalanceAndConstruct(int minIndex, int maxIndex, int level)
 }
 
 
-void PhotonMap::GetNearestNPhotons(const int N, float rSquared, Point3f location, Vector3f normal, int minIndex, int maxIndex, vector<PhotonDistPair>& nearest)
+void PhotonMap::GetNearestNPhotons(
+    const int N, 
+    float rSquared, 
+    const Point3f& location, 
+    const Vector3f& normal, 
+    const int minIndex, 
+    const int maxIndex,
+    vector<PhotonDistPair>& nearest)
 {
 	if(maxIndex - minIndex >= 0)
 	{
 		int nodeIndex = (maxIndex + minIndex) / 2;
 
         // CONSIDER ADDING THIS NODE TO PHOTON HEAP
-		Photon p = m_photons[nodeIndex];
-        float distSquared = Vector3f(location, p.Position()).MagnitudeSquared();
+		const Photon* p = &m_photons[nodeIndex];
+        float x = location.X() - p->Position().X();
+        float y = location.Y() - p->Position().Y();
+        float z = location.Z() - p->Position().Z();
+        float distSquared = (x*x)+(y*y)+(z*z);
 		
-        if(distSquared < rSquared && (IGNORE_NORMAL || p.SurfNormal() == normal))
+        if(distSquared < rSquared && (IGNORE_NORMAL || p->SurfNormal() == normal))
         {
             if((int)nearest.size() < N - 1)
             {
@@ -283,13 +293,6 @@ void PhotonMap::GetNearestNPhotons(const int N, float rSquared, Point3f location
             GetNearestNPhotons(N, rSquared, location, normal, minIndex, nodeIndex-1, nearest);
             GetNearestNPhotons(N, rSquared, location, normal, nodeIndex+1, maxIndex, nearest);
         }                                               
-
-
-
-
-
-
 	}
-
 }
 

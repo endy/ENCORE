@@ -545,7 +545,8 @@ void myDisplay( void )
     {
         frameProf.Start();
         std::string logLine;
-        Singleton<Logfile>::Get().Stream() << "----------------- FRAME ";// << intToString(framecount) << " -------------------------" << std::endl;
+        Singleton<Logfile>::Get().Stream() << "----------------- FRAME "
+                                           << intToString(framecount) << " -------------------------" << std::endl;
 
         RenderCount++;
     }
