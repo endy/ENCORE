@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="accelerators">
+      <UniqueIdentifier>{0f8f921e-622a-44a0-b78b-d1886a1fdd5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configFiles">
+      <UniqueIdentifier>{e6b4ac1e-a0ba-419f-b990-32ca54c8d367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{cb1125a3-2bd5-49cd-9e40-5b6feed75ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{610c732f-6f6c-4a67-b3ff-354ccbb422aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="profiling">
+      <UniqueIdentifier>{b04db9a3-e3bc-466f-a3c7-2627583b4b10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderers">
+      <UniqueIdentifier>{d6653bed-9fe8-450c-97e8-84a3b6f51081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="renderers\lib">
+      <UniqueIdentifier>{d31a2d12-f875-45dd-b424-6af183de2fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{6ac92bf8-d9c0-4315-b016-fc0259b85c08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\models">
+      <UniqueIdentifier>{a8d7f01d-8cc0-445a-9ee5-65e099850f91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene\primitives">
+      <UniqueIdentifier>{0b15828d-f2d3-45c3-99c2-7f14147aa080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{2fb67ea7-db7c-44d9-8da6-d619caefd6d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\accelerators\BasicAS.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\accelerators\BVH.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\accelerators\GPUAccelerationStructureData.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\accelerators\IrradianceCache.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\accelerators\Kdtree.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\accelerators\UniformGrid.cpp">
+      <Filter>accelerators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\math\Affine4.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\math\Ray.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\BatteryPowerWin32.cpp">
+      <Filter>profiling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Common.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Logfile.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Options.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Pixel.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\SimpleProfiler.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Texture.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\TextureMaker.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\TextureManager.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\Timer.cpp">
+      <Filter>profiling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\CPURTRenderer.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\FrameBufferObject.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\GPURayTracer.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\OpenGLRenderer.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Photon.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\PhotonMap.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\PhotonMapperCPU.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\RayTracer.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Renderer.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Sampler.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Shader.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\ShaderManager.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Tonemap.cpp">
+      <Filter>renderers\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\AABB.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Camera.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Color.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\DynamicModel.cpp">
+      <Filter>scene\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\DynamicScene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\HitInfo.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\IModel.cpp">
+      <Filter>scene\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Material.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Model.cpp">
+      <Filter>scene\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Objloader.cpp">
+      <Filter>scene\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\ObjModelloader.cpp">
+      <Filter>scene\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\PointLightPrim.cpp">
+      <Filter>scene\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\RectangleLight.cpp">
+      <Filter>scene\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Scene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\SpherePrim.cpp">
+      <Filter>scene\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Triangle.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\TriangleLight.cpp">
+      <Filter>scene\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\TrianglePrim.cpp">
+      <Filter>scene\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Vertex.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\accelerators\AccelerationStructure.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\BasicAS.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\BVH.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\GPUAccelerationStructureData.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\IrradianceCache.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\IrrCacheOctree.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\Kdtree.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\TOctree.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\accelerators\UniformGrid.h">
+      <Filter>accelerators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\Affine4.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\Ray.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\TAffineMatrix.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\TPoint3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\TVector3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\BatteryPowerWin32.h">
+      <Filter>profiling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Common.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Logfile.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Options.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Pixel.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\SimpleProfiler.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Singleton.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Texture.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\TextureMaker.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\TextureManager.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\misc\Timer.h">
+      <Filter>profiling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\CPURTRenderer.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\FrameBufferObject.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\GPURayTracer.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\OpenGLRenderer.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Photon.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\PhotonMap.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\PhotonMapperCPU.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\RayTracer.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Renderer.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Sampler.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Shader.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\ShaderManager.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Tonemap.h">
+      <Filter>renderers\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\AABB.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Camera.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Color.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\DynamicModel.h">
+      <Filter>scene\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\DynamicScene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Emissive.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\HitInfo.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\IModel.h">
+      <Filter>scene\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Material.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Model.h">
+      <Filter>scene\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Objloader.h">
+      <Filter>scene\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\ObjModelloader.h">
+      <Filter>scene\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\PointLightPrim.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Primitive.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\RectangleLight.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\SpherePrim.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Triangle.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\TriangleLight.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\TrianglePrim.h">
+      <Filter>scene\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Vertex.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\config\config.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\config\config2.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\Config\pmConfig.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\scenes\bwl\cornell2.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\scenes\scene1.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\scenes\scene2.txt">
+      <Filter>configFiles</Filter>
+    </None>
+    <None Include="..\..\shaders\BasicAS.cg">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\BVH.cg">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\Kdtree_restart.cg">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\phong_shader.cg">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\shaders\UniformGrid.cg">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
