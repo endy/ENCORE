@@ -487,16 +487,16 @@ void PhotonMapperCPU::RenderPhotons()
     vector<PhotonDistPair> photons = m_causticsPhotonMap->GetNearestNPhotons(100000, 7000, loc, Vector3f(-1, 0, 0));
     for(int index = 0; index < photons.size(); ++index)
     {
-        Photon &p = photons[index].m_Photon;
+        const Photon* p = photons[index].m_pPhoton;
 
-        float R = p.Power().R();
-        float G = p.Power().G();
-        float B = p.Power().B();
+        float R = p->Power().R();
+        float G = p->Power().G();
+        float B = p->Power().B();
 
         Vector3f power(R, G, B); 
         power.Normalize();
 
-        if(p.IsShadowPhoton())
+        if(p->IsShadowPhoton())
         {
             glColor3f(0,0,1);
         }
@@ -508,7 +508,7 @@ void PhotonMapperCPU::RenderPhotons()
 
         glPointSize(1.0);
         glBegin(GL_POINTS);
-        glVertex3f(p.Position().X(), p.Position().Y(), p.Position().Z());
+        glVertex3f(p->Position().X(), p->Position().Y(), p->Position().Z());
         glEnd();
     }
 #endif
@@ -927,7 +927,7 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
     {
         for(int index = 0; index < photons.size(); ++index)
         {
-            if(photons[index].m_Photon.IsShadowPhoton())
+            if(photons[index].m_pPhoton->IsShadowPhoton())
             {
                 shadowPhotonCount++;
             }
@@ -1089,7 +1089,7 @@ Color PhotonMapperCPU::CalculateIndirectIllumination(Ray eyeRay, HitInfo hit)
             }
             else
             {
-                illumination = photons[0].m_Photon.Power();
+                illumination = photons[0].m_pPhoton->Power();
                 illumination *= hit.hitObject->getMaterial()->GetDiffuse();
             } 
         }
@@ -1156,7 +1156,7 @@ Color PhotonMapperCPU::CalculateIndirectIllumination(Ray eyeRay, HitInfo hit)
                     irrValue = Color(0.f, 0.f, 0.f); // black
                 }
                 else{
-                    irrValue = photons[0].m_Photon.Power() * sampleHit.hitObject->getMaterial()->GetDiffuse();
+                    irrValue = photons[0].m_pPhoton->Power() * sampleHit.hitObject->getMaterial()->GetDiffuse();
                 }
                 irrValue += m_DirectPhotonMap->GetRadianceEstimate(100, 2, sampleHit.hitPoint, sampleHit.hitNormal) *
                     sampleHit.hitObject->getMaterial()->GetDiffuse();  

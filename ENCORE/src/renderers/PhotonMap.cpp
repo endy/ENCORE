@@ -137,11 +137,11 @@ Color PhotonMap::GetRadianceEstimate(const int N, const float maxDistance, Point
  
     for(int index = 0; index < nearest.size(); ++index)
     {
-        Photon& p = nearest[index].m_Photon;
+        const Photon* p = nearest[index].m_pPhoton;
         
 
-        Color power = p.Power();
-        Vector3f photonDir = p.Direction(); 
+        Color power = p->Power();
+        Vector3f photonDir = p->Direction(); 
 
         double radius = nearest[index].m_Distance;
         double weight = (m_CausticsMap) ? (r - radius)/radius : 1;//smoothstep(0,1,1-radius/r);
@@ -245,18 +245,18 @@ void PhotonMap::GetNearestNPhotons(
         {
             if((int)nearest.size() < N - 1)
             {
-                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
+                nearest.push_back(PhotonDistPair(p, distSquared));
             }
             else if((int)nearest.size() == N - 1)
             {
-                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
+                nearest.push_back(PhotonDistPair(p, distSquared));
                 std::make_heap(nearest.begin(), nearest.end());
 
                 rSquared = nearest[0].m_Distance;
             }
             else
             {
-                nearest.push_back(PhotonDistPair(Photon(*p), distSquared));
+                nearest.push_back(PhotonDistPair(p, distSquared));
                 std::make_heap(nearest.begin(), nearest.end());
 
                 if(nearest.size() > N)
