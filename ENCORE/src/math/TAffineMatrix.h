@@ -11,10 +11,10 @@ A lightweight 4x4 affine matrix for graphics
 #pragma once
 
 #include <iostream>
-#include "TVector3.h"
+#include "Vector3.h"
 
-using encore::TPoint3;
-using encore::TVector3;
+using encore::Point3;
+using encore::Vector3;
 
 template <class T> class TAffineMatrix
 {
@@ -28,9 +28,9 @@ public:
 
     ////  STATIC METHODS  ////////////////////////////////////////////////
     static TAffineMatrix<T> GetIdentityMatrix();
-    static TAffineMatrix<T> GetTranslationMatrix(TVector3<T> transVector);
-    static TAffineMatrix<T> GetScaleMatrix(TVector3<T> scaleVector);
-    static TAffineMatrix<T> GetRotationMatrix(TVector3<T> axis, float angle);
+    static TAffineMatrix<T> GetTranslationMatrix(Vector3 transVector);
+    static TAffineMatrix<T> GetScaleMatrix(Vector3 scaleVector);
+    static TAffineMatrix<T> GetRotationMatrix(Vector3 axis, float angle);
 
     static TAffineMatrix<T> GetXRotationMatrix(T angle);
     static TAffineMatrix<T> GetYRotationMatrix(T angle);
@@ -49,7 +49,7 @@ public:
     TAffineMatrix<T>& operator*=(const TAffineMatrix<T> &rhs);
 
     TPoint3<T> operator*(const TPoint3<T> &rhs);
-    TVector3<T> operator*(const TVector3<T> &rhs);
+    Vector3 operator*(const TVector3<T> &rhs);
 
     // access operators
     T& operator()(unsigned int row, unsigned int col)
@@ -138,7 +138,7 @@ template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetIdentityMatrix()
     m(3,3) = 1;
     return m;
 }
-template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetTranslationMatrix(TVector3<T> transVector)
+template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetTranslationMatrix(Vector3 transVector)
 {
     TAffineMatrix<T> m = GetIdentityMatrix();
     m(0,3) = transVector.X();
@@ -146,7 +146,7 @@ template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetTranslationMatrix(TVect
     m(2,3) = transVector.Z();
     return m;
 }
-template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetScaleMatrix(TVector3<T> scaleVector)
+template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetScaleMatrix(Vector3 scaleVector)
 {
     TAffineMatrix<T> m;
     m(0,0) = scaleVector.X();
@@ -155,11 +155,11 @@ template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetScaleMatrix(TVector3<T>
     m(3,3) = 1;
     return m;
 }
-template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetRotationMatrix(TVector3<T> axis, float angle)
+template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetRotationMatrix(Vector3 axis, float angle)
 {
     TAffineMatrix<T> rMatrix;
-    TVector3<T> r = axis;
-    TVector3<T> s;
+    Vector3 r = axis;
+    Vector3 s;
 
     T x = abs(axis.X());
     T y = abs(axis.Y());
@@ -331,9 +331,9 @@ template <class T> TPoint3<T> TAffineMatrix<T>::operator*(const TPoint3<T> &rhs)
     return p;
 }
 
-template <class T> TVector3<T> TAffineMatrix<T>::operator *(const TVector3<T> &rhs)
+template <class T> Vector3 TAffineMatrix<T>::operator *(const TVector3<T> &rhs)
 {
-    TVector3<T> v;
+    Vector3 v;
 
     v.X() = (*this)(0,0) * rhs.X() + (*this)(0, 1) * rhs.Y() + (*this)(0, 2) * rhs.Z() + (*this)(0,3) * 1;
     v.Y() = (*this)(1,0) * rhs.X() + (*this)(1, 1) * rhs.Y() + (*this)(1, 2) * rhs.Z() + (*this)(1,3) * 1;

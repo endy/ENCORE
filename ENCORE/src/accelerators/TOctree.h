@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TVector3.h"
+#include "Vector3.h"
 #include <vector>
 #include <list>
 
@@ -9,53 +9,53 @@
 #include <GL/glut.h>
 #endif
 
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
 template <class T> class TElement
 {
 public:
-    TElement<T>(T data, Point3f location){ m_Data = data; m_Location = location; }
+    TElement<T>(T data, Point3 location){ m_Data = data; m_Location = location; }
 
     T& Data(){ return m_Data; }
-    Point3f& Location(){ return m_Location; }
+    Point3& Location(){ return m_Location; }
 
 private:
     T m_Data;
-    Point3f m_Location;
+    Point3 m_Location;
 };
 
 template <class T> class TOctree
 {
 public:
-    TOctree<T>(int elementsPerNode, Point3f minPoint, float xSize, float ySize, float zSize);
+    TOctree<T>(int elementsPerNode, Point3 minPoint, float xSize, float ySize, float zSize);
     ~TOctree<T>();
 
     // add an element to the tree at location
-    void AddElement(T element, Point3f location);
+    void AddElement(T element, Point3 location);
 
     // clear all elements from this tree
     void ClearAll();
 
     // fills a list with all of the elements within distance of point p
-    void GetAllElementsNearPoint(Point3f p, float distance, std::list< TElement<T> > &nearElements, int &maxDepth, int depth = 0);
+    void GetAllElementsNearPoint(Point3 p, float distance, std::list< TElement<T> > &nearElements, int &maxDepth, int depth = 0);
 
-    void ExhaustiveGetAll(Point3f p, float distance, std::list< TElement<T> > &nearElements);
+    void ExhaustiveGetAll(Point3 p, float distance, std::list< TElement<T> > &nearElements);
 
 private:
-    TOctree<T>(TOctree<T> *parent, int elementsPerNode, Point3f minPoint, float xSize, float ySize, float zSize);
+    TOctree<T>(TOctree<T> *parent, int elementsPerNode, Point3 minPoint, float xSize, float ySize, float zSize);
 
     // adds the element 
     void AddElement(TElement<T> element);
     // gets the child index for the point
-    int FindChildIndex(Point3f p);
+    int FindChildIndex(Point3 p);
     // splits this node into 8 subdivisions that become children
     void SplitNode();
     // determines if the point is in the node
-    bool IsInNode(Point3f p);
+    bool IsInNode(Point3 p);
 
     // determines whether to search this node for points near p
-    bool SearchNode(Point3f p, float distance);
+    bool SearchNode(Point3 p, float distance);
 
 private: // DATA
     TOctree<T> *m_Parent;
@@ -78,17 +78,17 @@ private: // DATA
     std::list< TElement<T> > m_Elements;  // elements in this node
     const int m_ELEMENTS_PER_NODE;
     
-    Point3f m_MinPoint;
-    Point3f m_Center;
-    Point3f m_Size;  // the width,length,depth of the octree stored as a point
+    Point3 m_MinPoint;
+    Point3 m_Center;
+    Point3 m_Size;  // the width,length,depth of the octree stored as a point
 
 };
 
-template <class T> TOctree<T>::TOctree(int elementsPerNode, Point3f minPoint, float xSize, float ySize, float zSize):
+template <class T> TOctree<T>::TOctree(int elementsPerNode, Point3 minPoint, float xSize, float ySize, float zSize):
     m_ELEMENTS_PER_NODE(elementsPerNode)
 {
     m_MinPoint = minPoint;
-    m_Size = Point3f(xSize, ySize, zSize);
+    m_Size = Point3(xSize, ySize, zSize);
 
     m_Center = m_MinPoint;
     m_Center.X() += xSize / 2.0f;
@@ -106,13 +106,13 @@ template <class T> TOctree<T>::TOctree(int elementsPerNode, Point3f minPoint, fl
     m_cElements = 0;
 }
 
-template <class T> TOctree<T>::TOctree(TOctree<T> *parent, int elementsPerNode, Point3f minPoint, float xSize, float ySize, float zSize):
+template <class T> TOctree<T>::TOctree(TOctree<T> *parent, int elementsPerNode, Point3 minPoint, float xSize, float ySize, float zSize):
     m_ELEMENTS_PER_NODE(elementsPerNode)
 {
     m_Parent = parent;
 
     m_MinPoint = minPoint;
-    m_Size = Point3f(xSize, ySize, zSize);
+    m_Size = Point3(xSize, ySize, zSize);
 
     m_Center = m_MinPoint;
     m_Center.X() += xSize / 2.0f;
@@ -142,9 +142,9 @@ template <class T> TOctree<T>::~TOctree<T>()
 }
 
 
-template <class T> void TOctree<T>::AddElement(T element, Point3f location)
+template <class T> void TOctree<T>::AddElement(T element, Point3 location)
 {
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
     if(location.X() < m_MinPoint.X() || maxPoint.X() < location.X() ||
        location.Y() < m_MinPoint.Y() || maxPoint.Y() < location.Y() ||
        location.Z() < m_MinPoint.Z() || maxPoint.Z() < location.Z())
@@ -161,7 +161,7 @@ template <class T> void TOctree<T>::ClearAll()
     assert(!"THIS METHOD NOT IMPLEMENTED");
 }
 
-template <class T> void TOctree<T>::GetAllElementsNearPoint(Point3f p, float distance, std::list< TElement<T> > &nearElements,  int &maxDepth, int depth /* = 0 */)
+template <class T> void TOctree<T>::GetAllElementsNearPoint(Point3 p, float distance, std::list< TElement<T> > &nearElements,  int &maxDepth, int depth /* = 0 */)
 {
     depth++;
 
@@ -172,7 +172,7 @@ template <class T> void TOctree<T>::GetAllElementsNearPoint(Point3f p, float dis
         typename std::list< TElement<T> >::iterator iter = m_Elements.begin();
         while(iter != m_Elements.end())
         {
-            Vector3f v(p, iter->Location());
+            Vector3 v(p, iter->Location());
             if(v.Magnitude() < distance)
             {
                 nearElements.push_back(*iter);
@@ -196,21 +196,21 @@ template <class T> void TOctree<T>::GetAllElementsNearPoint(Point3f p, float dis
     float scale = (depth / (float) maxDepth);
 
     glPushMatrix();
-    glColor3f(scale * abs(m_Center.X() / 100),scale * abs(m_Center.Y() / 100),scale * abs(m_Center.Z() / 100));
+    glColor3(scale * abs(m_Center.X() / 100),scale * abs(m_Center.Y() / 100),scale * abs(m_Center.Z() / 100));
     glTranslatef(m_Center.X(), m_Center.Y(), m_Center.Z());
     glutWireCube(m_Size.X());
     glPopMatrix();
 #endif
 }
 
-template <class T> void TOctree<T>::ExhaustiveGetAll(Point3f p, float distance, std::list< TElement<T> > &nearElements)
+template <class T> void TOctree<T>::ExhaustiveGetAll(Point3 p, float distance, std::list< TElement<T> > &nearElements)
 {
     if(m_IsLeafNode)
     {
         typename std::list< TElement<T> >::iterator iter = m_Elements.begin();
         while(iter != m_Elements.end())
         {
-            Vector3f v(p, iter->Location());
+            Vector3 v(p, iter->Location());
             if(v.Magnitude() < distance)
             {
                 nearElements.push_back(*iter);
@@ -254,9 +254,9 @@ template <class T> void TOctree<T>::AddElement(TElement<T> element)
     m_cElements++;
 }
 
-template <class T> int TOctree<T>::FindChildIndex(Point3f p)
+template <class T> int TOctree<T>::FindChildIndex(Point3 p)
 {
-    Vector3f dir(m_Center, p);
+    Vector3 dir(m_Center, p);
     dir.Normalize();
     /* indexes by octant
     0 x,y,z
@@ -284,7 +284,7 @@ template <class T> void TOctree<T>::SplitNode()
     // create children
     for(int index = 0; index < (int) m_Children.size(); ++index)
     {
-        Point3f nodeMinPoint = m_MinPoint;
+        Point3 nodeMinPoint = m_MinPoint;
         nodeMinPoint.X() += ((index % 2) < 1) ? xSize : 0; 
         nodeMinPoint.Y() += ((index % 4) < 2) ? ySize : 0;
         nodeMinPoint.Z() += ((index % 8) < 4) ? zSize : 0;
@@ -306,9 +306,9 @@ template <class T> void TOctree<T>::SplitNode()
     m_IsLeafNode = false;
 }
 
-template <class T> bool TOctree<T>::IsInNode(Point3f p)
+template <class T> bool TOctree<T>::IsInNode(Point3 p)
 {
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
     if(p.X() < m_MinPoint.X() || maxPoint.X() < p.X())
     {
         return false;
@@ -327,7 +327,7 @@ template <class T> bool TOctree<T>::IsInNode(Point3f p)
     }
 }
 
-template <class T> bool TOctree<T>::SearchNode(Point3f p, float distance)
+template <class T> bool TOctree<T>::SearchNode(Point3 p, float distance)
 { 
     if(IsInNode(p))
     {
@@ -338,7 +338,7 @@ template <class T> bool TOctree<T>::SearchNode(Point3f p, float distance)
     // point is not in the box, test sphere w/ r=distance against this box
     // if sphere and box overlap, search this node!
 
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
 
     float d = 0;
     for(int i = 0; i < 3; ++i)

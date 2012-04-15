@@ -9,9 +9,9 @@ Simple struct for storing color values
 ****************************************************************************/
 #pragma once 
 
-#include "TVector3.h"
+#include "Vector3.h"
 
-using encore::Vector3f;
+using encore::Vector3;
 
 namespace encore
 {

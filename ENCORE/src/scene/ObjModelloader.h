@@ -3,11 +3,11 @@
 #include<string>
 #include<list>
 #include<deque>
-#include "TVector3.h"
+#include "Vector3.h"
 #include "DynamicModel.h"
 
 using namespace std;
-using encore::Vector3f;
+using encore::Vector3;
 
 class ObjModelloader
 {
@@ -19,7 +19,7 @@ public:
     //list<DynamicModel*>* loadcomplete(const string& fname) {} // generates a warning...
     list<DynamicModel*>* loadsimple(const string& fname);
 
-    void setTransform( const Point3f& center, float size, float angle, const Vector3f& axis)
+    void setTransform( const Point& center, float size, float angle, const Vector3& axis)
     {
         toCenter = center; scale = size; rAngle = angle;
         rAxis = axis;
@@ -31,8 +31,8 @@ private:
     float gatherstf(string::const_iterator &cit);
     int gathersti(string::const_iterator &cit);
 
-    Point3f toCenter;
+    Point toCenter;
     float scale;
     float rAngle;
-    Vector3f rAxis;  
+    Vector3 rAxis;  
 };

@@ -4,7 +4,7 @@
 #include "TVector3.h"
 
 using namespace std;
-using encore::Vector3f;
+using encore::Vector3;
 
 struct TFace
 {
@@ -22,17 +22,17 @@ public:
     
     void load(const string &fname);
 
-    const deque<Vector3f>& getVertex() const { return vertice; }
-    const deque<Vector3f>& getTexCoord() const { return texcoord; }
-    const deque<Vector3f>& getNormal() const { return normal; }
+    const deque<Vector3>& getVertex() const { return vertice; }
+    const deque<Vector3>& getTexCoord() const { return texcoord; }
+    const deque<Vector3>& getNormal() const { return normal; }
     const deque<TFace>& getIndex() const { return index; }
     bool hasNormal() const { return hasNorm; }
     bool hasTexCoord() const { return hasTex; }
 private:
     string mtlname;
-    deque<Vector3f> vertice;
-    deque<Vector3f> texcoord;
-    deque<Vector3f> normal;
+    deque<Vector3> vertice;
+    deque<Vector3> texcoord;
+    deque<Vector3> normal;
     deque<TFace> index;
     bool hasNorm;
     bool hasTex;

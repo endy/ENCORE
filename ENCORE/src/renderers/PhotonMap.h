@@ -47,7 +47,7 @@ public:
     PhotonMap* PrecomputeIrradiance(int increment, const int N, const float maxDistance);
 	
 	// Gets N nearest photons to 'location'
-	vector<PhotonDistPair> GetNearestNPhotons(const int N, const float maxDistance, Point3f location, Vector3f normal);
+	vector<PhotonDistPair> GetNearestNPhotons(const int N, const float maxDistance, Point3f location, Vector3 normal);
 
 	// Scale the power of every photon by scaleFactor
 	void ScalePhotons(const float scaleFactor);
@@ -58,7 +58,7 @@ public:
     int GetCountStored(){ return (int) m_photons.size(); }
 
     // get the 
-    Color GetRadianceEstimate(const int N, const float maxDistance, Point3f location, Vector3f normal);
+    Color GetRadianceEstimate(const int N, const float maxDistance, Point3f location, Vector3 normal);
 
     size_t GetMaxPhotons(){ return MAX_PHOTON_COUNT; }
 
@@ -92,7 +92,7 @@ private: // FUNCTIONS
 	void GetNearestNPhotons(const int N, 
                             float rSquared, 
                             const Point3f& location, 
-                            const Vector3f& normal, 
+                            const Vector3& normal, 
                             const int minIndex, 
                             const int maxIndex, 
                             vector<PhotonDistPair>& nearest);

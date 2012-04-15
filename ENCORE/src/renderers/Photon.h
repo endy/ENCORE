@@ -12,12 +12,12 @@
 #pragma once
 
 #include "Color.h"
-#include "TPoint3.h"
-#include "TVector3.h"
+#include "Point3.h"
+#include "Vector3.h"
 
 using encore::Color;
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
 // enumeration for axis-aligned planes
 enum AXIS	
@@ -44,7 +44,7 @@ class Photon
 public:
 
 	Photon();
-	Photon(Point3f in_position, Color in_power, Vector3f in_direction);
+	Photon(Point3 in_position, Color in_power, Vector3 in_direction);
 
     /// Destroys the instance.
     /// NON-VIRTUAL destructor assumes that Photon will NOT be inherited
@@ -53,10 +53,10 @@ public:
 public: // public methods
 
     /// Get the photon position
-    Point3f Position(){ return m_position; }
-    const Point3f& Position() const { return m_position; }
+    Point3 Position(){ return m_position; }
+    const Point3& Position() const { return m_position; }
     /// Set the photon position
-	void Position(Point3f in_position){ m_position = in_position; }
+	void Position(Point3 in_position){ m_position = in_position; }
     /// Get the photon's power
 	Color Power() const { return m_power; }
     /// Set the photon's power
@@ -66,13 +66,13 @@ public: // public methods
     /// Set the axis that the dividing plane algins with
 	void SetPlane(AXIS in_plane){ m_plane = in_plane; }
     /// Get the incoming direction of the photon
-	Vector3f Direction() const { return m_incomingDir; }
+	Vector3 Direction() const { return m_incomingDir; }
     /// Set the incoming direction of the photon
-	void Direction(Vector3f in_dir){ m_incomingDir = in_dir; }
+	void Direction(Vector3 in_dir){ m_incomingDir = in_dir; }
     /// Get the normal of the absorbing surface
-	const Vector3f& SurfNormal() const { return m_surfNormal; }
+	const Vector3& SurfNormal() const { return m_surfNormal; }
     /// Stores the normal of the absorbing surface 
-	void SurfNormal(Vector3f in_normal){ m_surfNormal = in_normal; }
+	void SurfNormal(Vector3 in_normal){ m_surfNormal = in_normal; }
 	/// Set the type of the last reflection
 	void LastReflection(REFLECTION_TYPE r){ m_last = r; }
     /// Get the type of the last reflection 
@@ -84,13 +84,13 @@ public: // public methods
 
 private:
 	/// Point of absorbtion
-	Point3f m_position;
+	Point3 m_position;
 	/// Axis the splitting plane is aligned with
 	AXIS m_plane;
 	/// The incoming direction
-	Vector3f m_incomingDir;
+	Vector3 m_incomingDir;
 	/// Normal of the absorbing surface
-	Vector3f m_surfNormal;
+	Vector3 m_surfNormal;
     /// Power of the photon in RGB
 	Color m_power;
 	/// The type of the photon's most recent reflection

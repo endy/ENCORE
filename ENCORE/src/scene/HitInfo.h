@@ -1,9 +1,9 @@
 #pragma once
 
-#include "TVector3.h"
+#include "Vector3.h"
 
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
 // forward declarations
 class IPrimitive;
@@ -21,8 +21,8 @@ public:
     IPrimitive * hitObject;
     bool isEntering;
     int surface;
-    Point3f hitPoint;
-    Vector3f hitNormal;
-    Point3f hitVoxel;
+    Point3 hitPoint;
+    Vector3 hitNormal;
+    Point3 hitVoxel;
     bool bHasInfo;
 };

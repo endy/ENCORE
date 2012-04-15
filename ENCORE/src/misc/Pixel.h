@@ -29,7 +29,7 @@ public:
     //////////////////////////////////////////////
     void normalize( void )
     {
-        Vector3f p(x,y,z);
+        Vector3 p(x,y,z);
         p.Normalize();
         x = p.X(); y = p.Y(); z = p.Z();
     }

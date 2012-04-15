@@ -29,8 +29,8 @@
 // acceleration structures
 #include "BasicAS.h"
 #include "UniformGrid.h"
-#include "KDTree.h"
-#include "Bvh.h"
+#include "Kdtree.h"
+#include "BVH.h"
 
 #include "SimpleProfiler.h"
 
@@ -50,6 +50,8 @@
 #include <GL/glut.h>
 #elif __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
 #endif
 
 #ifndef WIN32

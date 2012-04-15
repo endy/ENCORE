@@ -13,6 +13,7 @@ A 3-dimentional point template class
 #include <cassert>
 #include <memory>
 
+
 namespace encore
 {
   template <class T> class TPoint3

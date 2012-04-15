@@ -75,7 +75,7 @@ private: // methods
 	//// PRIVATE HELPERS METHODS /////
 	
 	// shoot photon through scene...Russian roulette code goes here
-	void TracePhoton(Photon p, Vector3f initialDir);
+	void TracePhoton(Photon p, Vector3 initialDir);
 
 	void ReflectPhotonSpecularly(Photon *p, int bounces, Ray &photonPath, HitInfo surfaceInfo);
 	void ReflectPhotonDiffusely(Photon *p, int bounces, Ray &photonPath, HitInfo surfaceInfo);

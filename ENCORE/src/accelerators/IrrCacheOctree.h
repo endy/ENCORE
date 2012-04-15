@@ -10,20 +10,20 @@
 
 #pragma once
 
-#include "TVector3.h"
+#include "Vector3.h"
 #include <vector>
 #include <list>
 
 #include "Color.h"
 
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
 template <class T> class TCacheElement
 {
 public:
     TCacheElement<T>(){}
-    TCacheElement<T>(T data, Point3f location, Vector3f normal, float Ri)
+    TCacheElement<T>(T data, Point3 location, Vector3 normal, float Ri)
     {
         m_Data = data; 
         m_Location = location; 
@@ -32,28 +32,28 @@ public:
     }
 
     T& Data(){ return m_Data; }
-    Point3f& Location(){ return m_Location; }
-    Vector3f& Normal(){ return m_Normal; }    
+    Point3& Location(){ return m_Location; }
+    Vector3& Normal(){ return m_Normal; }    
     float& Ri(){ return m_Ri; }
 
-    double GetWeight(Point3f p, Vector3f n);
+    double GetWeight(Point3 p, Vector3 n);
     
-    double GetD(Point3f p, Vector3f n);
+    double GetD(Point3 p, Vector3 n);
 
 private:
     T m_Data;
-    Point3f m_Location;
-    Vector3f m_Normal;
+    Point3 m_Location;
+    Vector3 m_Normal;
 
     float m_Ri;
 };
 
-template <class T> double TCacheElement<T>::GetWeight(Point3f p, Vector3f n)
+template <class T> double TCacheElement<T>::GetWeight(Point3 p, Vector3 n)
 {
     // Equation 11.5 from Pg 141 in Jensen's book
     // weight = 1.0 /( (||xi-x|| /Ri) + Sqrt(1.0-dot(Ni, N)));
 
-    double distance = Vector3f(p, m_Location).Magnitude();
+    double distance = Vector3(p, m_Location).Magnitude();
 
     double distCalc = (m_Ri == 0) ? 0 : distance / m_Ri;
 
@@ -74,7 +74,7 @@ template <class T> double TCacheElement<T>::GetWeight(Point3f p, Vector3f n)
     return weight;
 }
 
-template <class T> double TCacheElement<T>::GetD(Point3f p, Vector3f n)
+template <class T> double TCacheElement<T>::GetD(Point3 p, Vector3 n)
 {
     return 1;
 }
@@ -92,7 +92,7 @@ public:
 template <class T> class IrrCache
 {
 public:
-    IrrCache<T>(float a, Point3f minPoint, float xSize, float ySize, float zSize);
+    IrrCache<T>(float a, Point3 minPoint, float xSize, float ySize, float zSize);
     ~IrrCache<T>();
 
     // adds the element to the octree
@@ -102,30 +102,30 @@ public:
     void ClearAll();
 
     // fills a list with all of the elements within distance of point p
-    float GetIrrValuesNearPoint(Point3f p, Vector3f normal, std::list< CacheValueWeightPair<T> > &nearElements);
+    float GetIrrValuesNearPoint(Point3 p, Vector3 normal, std::list< CacheValueWeightPair<T> > &nearElements);
 
-    float ExGetValues(Point3f p, Vector3f normal, std::list< CacheValueWeightPair<T> > &nearElements);
+    float ExGetValues(Point3 p, Vector3 normal, std::list< CacheValueWeightPair<T> > &nearElements);
 
 private:
-    IrrCache<T>(IrrCache<T> *parent, float a, Point3f minPoint, float xSize, float ySize, float zSize);
+    IrrCache<T>(IrrCache<T> *parent, float a, Point3 minPoint, float xSize, float ySize, float zSize);
 
     // creates children, subdivides this voxel into 8 smaller voxels
     void CreateChildren();
 
     // gets the child index for the point
-    int FindChildIndex(Point3f p);
+    int FindChildIndex(Point3 p);
     // determines if the point is in the node
-    bool IsInNode(Point3f p);
+    bool IsInNode(Point3 p);
 
     // determines whether to search this node for points near p
-    bool SearchNode(Point3f p);
+    bool SearchNode(Point3 p);
 
 private: // DATA
     IrrCache<T> *m_Parent;
 
-    Point3f m_MinPoint;
-    Point3f m_Center;
-    Point3f m_Size;  // the width,length,depth of the octree stored as a point
+    Point3 m_MinPoint;
+    Point3 m_Center;
+    Point3 m_Size;  // the width,length,depth of the octree stored as a point
 
     float m_A;  // user configurable value
 
@@ -148,12 +148,12 @@ private: // DATA
     std::list< TCacheElement<T> > m_Elements;  // elements in this node
 };
 
-template <class T> IrrCache<T>::IrrCache(float a, Point3f minPoint, float xSize, float ySize, float zSize)
+template <class T> IrrCache<T>::IrrCache(float a, Point3 minPoint, float xSize, float ySize, float zSize)
 {
     m_A = a;
 
     m_MinPoint = minPoint;
-    m_Size = Point3f(xSize, ySize, zSize);
+    m_Size = Point3(xSize, ySize, zSize);
 
     m_Center = m_MinPoint;
     m_Center.X() += xSize / 2.0f;
@@ -171,14 +171,14 @@ template <class T> IrrCache<T>::IrrCache(float a, Point3f minPoint, float xSize,
     m_cElements = 0;
 }
 
-template <class T> IrrCache<T>::IrrCache(IrrCache<T> *parent, float a, Point3f minPoint, float xSize, float ySize, float zSize)
+template <class T> IrrCache<T>::IrrCache(IrrCache<T> *parent, float a, Point3 minPoint, float xSize, float ySize, float zSize)
 {
     m_Parent = parent;
 
     m_A = a;
 
     m_MinPoint = minPoint;
-    m_Size = Point3f(xSize, ySize, zSize);
+    m_Size = Point3(xSize, ySize, zSize);
 
     m_Center = m_MinPoint;
     m_Center.X() += xSize / 2.0f;
@@ -210,7 +210,7 @@ template <class T> IrrCache<T>::~IrrCache<T>()
 
 template <class T> void IrrCache<T>::AddElement(TCacheElement<T> element)
 {
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
     if(element.Location().X() < m_MinPoint.X() || maxPoint.X() < element.Location().X() ||
        element.Location().Y() < m_MinPoint.Y() || maxPoint.Y() < element.Location().Y() ||
        element.Location().Z() < m_MinPoint.Z() || maxPoint.Z() < element.Location().Z())
@@ -252,7 +252,7 @@ template <class T> void IrrCache<T>::CreateChildren()
     // create children
     for(int index = 0; index < (int) m_Children.size(); ++index)
     {
-        Point3f nodeMinPoint = m_MinPoint;
+        Point3 nodeMinPoint = m_MinPoint;
         nodeMinPoint.X() += ((index % 2) < 1) ? xSize : 0; 
         nodeMinPoint.Y() += ((index % 4) < 2) ? ySize : 0;
         nodeMinPoint.Z() += ((index % 8) < 4) ? zSize : 0;
@@ -279,19 +279,19 @@ template <class T> void IrrCache<T>::ClearAll()
 }
 
 
-inline bool SampleInFront(const Point3f& p, const Point3f& sampleP, const Vector3f& n, const Vector3f& sampleN)
+inline bool SampleInFront(const Point3& p, const Point3& sampleP, const Vector3& n, const Vector3& sampleN)
 {
-    Vector3f navg;
+    Vector3 navg;
     navg.X() = sampleN.X() + n.X();
     navg.Y() = sampleN.Y() + n.Y();
     navg.Z() = sampleN.Z() + n.Z();
 
-    Vector3f pVec(sampleP, p);
+    Vector3 pVec(sampleP, p);
     pVec.Normalize();
     return (Dot(pVec, navg) < -0.1f); 
 }
 
-template <class T> float IrrCache<T>::GetIrrValuesNearPoint(Point3f p, Vector3f normal, std::list< CacheValueWeightPair<T> > &nearElements)
+template <class T> float IrrCache<T>::GetIrrValuesNearPoint(Point3 p, Vector3 normal, std::list< CacheValueWeightPair<T> > &nearElements)
 {
     float weightSum = 0;
 
@@ -325,7 +325,7 @@ template <class T> float IrrCache<T>::GetIrrValuesNearPoint(Point3f p, Vector3f 
     return weightSum;
 }
 
-template <class T> float IrrCache<T>::ExGetValues(Point3f p, Vector3f normal, std::list< CacheValueWeightPair<T> > &nearElements)
+template <class T> float IrrCache<T>::ExGetValues(Point3 p, Vector3 normal, std::list< CacheValueWeightPair<T> > &nearElements)
 {
     float weightSum = 0;
 
@@ -357,9 +357,9 @@ template <class T> float IrrCache<T>::ExGetValues(Point3f p, Vector3f normal, st
 }
 
 
-template <class T> int IrrCache<T>::FindChildIndex(Point3f p)
+template <class T> int IrrCache<T>::FindChildIndex(Point3 p)
 {
-    Vector3f dir(m_Center, p);
+    Vector3 dir(m_Center, p);
     dir.Normalize();
     /* indexes by octant
     0 x,y,z
@@ -378,9 +378,9 @@ template <class T> int IrrCache<T>::FindChildIndex(Point3f p)
     return index;
 }
 
-template <class T> bool IrrCache<T>::IsInNode(Point3f p)
+template <class T> bool IrrCache<T>::IsInNode(Point3 p)
 {
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
     if(p.X() < m_MinPoint.X() || maxPoint.X() < p.X())
     {
         return false;
@@ -399,10 +399,10 @@ template <class T> bool IrrCache<T>::IsInNode(Point3f p)
     }
 }
 
-template <class T> bool IrrCache<T>::SearchNode(Point3f p)
+template <class T> bool IrrCache<T>::SearchNode(Point3 p)
 { 
     float halfSize = m_Size.X() / 2;
-    Point3f maxPoint = m_MinPoint + m_Size;
+    Point3 maxPoint = m_MinPoint + m_Size;
 
     if(p.X() < m_MinPoint.X() - halfSize || maxPoint.X() + halfSize < p.X())
     {

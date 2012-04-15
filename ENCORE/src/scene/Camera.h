@@ -11,38 +11,38 @@
 #include <OpenGL/glu.h>
 #endif
 
-#include "TVector3.h"
+#include "Vector3.h"
 
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
-using encore::TVector3;
+using encore::Vector3;
 
 class Camera
 {
 public:
 	Camera(void);
-	Camera( Point3f eyePosition, Point3f lookAt, Vector3f upDirection);
-	Camera( Point3f eyePosition, Point3f lookAt, Vector3f upDirection,
+	Camera( Point3 eyePosition, Point3f lookAt, Vector3 upDirection);
+	Camera( Point3 eyePosition, Point3f lookAt, Vector3 upDirection,
 		  float viewAngle, float aspectRatio, float nearPlane, float farPlane);
 
     virtual ~Camera(void);
 
     //// ACCESSORS ////////////////////////////
-	void set(Point3f eye, Point3f look, Vector3f up);
+	void set(Point3 eye, Point3f look, Vector3 up);
 
-    Point3f GetEye(){ return m_Eye; }
+    Point3 GetEye(){ return m_Eye; }
 	void SetEye(float x, float y, float z);
-    Point3f GetLook(){ return m_Look; }
+    Point3 GetLook(){ return m_Look; }
 	void SetLook(float x, float y, float z);
-    Vector3f GetUp(){ return m_Up; }
+    Vector3 GetUp(){ return m_Up; }
 	void SetUp(float x, float y, float z);
 	
     void SetViewVolume(float vAng, float asp, float nearD, float farD);
 
-    Vector3f N(){ return m_N; }
-    Vector3f U(){ return m_U; }
-    Vector3f V(){ return m_V; }
+    Vector3 N(){ return m_N; }
+    Vector3 U(){ return m_U; }
+    Vector3 V(){ return m_V; }
 
     float GetViewAngle(){ return m_ViewAngle; }
     float GetAspect(){ return m_Aspect; }
@@ -76,9 +76,9 @@ private:
     void CalcCamVectors();
 
 private:
-	Point3f m_Eye, m_Look;
-	Vector3f m_Up;
-	Vector3f m_U, m_V, m_N;
+	Point3 m_Eye, m_Look;
+	Vector3 m_Up;
+	Vector3 m_U, m_V, m_N;
 	float m_ViewAngle, m_Aspect, m_NearClipPlane, m_FarClipPlane, m_WorldWidth, m_WorldHeight;
 	int m_ViewportWidth, m_ViewportHeight;
 

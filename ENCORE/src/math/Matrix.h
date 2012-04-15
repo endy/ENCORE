@@ -22,10 +22,10 @@ adjoint functions
 #include <iostream>
 #include <cassert>
 
-#include "TVector3.h"
+#include "Vector3.h"
 
-using encore::TPoint3;
-using encore::TVector3;
+using encore::Point3;
+using encore::Vector3; 
 
 template <class T> class TMatrix
 {
