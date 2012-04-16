@@ -3,7 +3,7 @@
 #include "Primitive.h"
 #include "Triangle.h"
 
-#include <math.h>
+#include <cmath>
 
 class TrianglePrim : public IPrimitive
 {

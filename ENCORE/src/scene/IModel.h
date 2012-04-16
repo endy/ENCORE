@@ -7,7 +7,7 @@
 class IPrimitive;
 class Triangle;
 
-using encore::Point3f;
+using encore::Point3;
 using encore::Material;
 
 using namespace std;
@@ -31,14 +31,14 @@ public:
     void SetMaterial(Material mat);
     Material GetMaterial(){ return *m_Material; }
 
-    Point3f& MaxPoint( void ) { return m_maxPoint; }
-    Point3f& MinPoint( void ) { return m_minPoint; }
+    Point3& MaxPoint( void ) { return m_maxPoint; }
+    Point3& MinPoint( void ) { return m_minPoint; }
 
 protected:
     Material *m_Material;
 
-    Point3f m_maxPoint;
-    Point3f m_minPoint;
+    Point3 m_maxPoint;
+    Point3 m_minPoint;
 
     std::list< IPrimitive* > m_PrimitiveList;
 };

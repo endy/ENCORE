@@ -1,6 +1,6 @@
 #include "DynamicModel.h"
 #include "TrianglePrim.h"
-#include <assert.h>
+#include <cassert>
 
 #include <iostream>
 using namespace std;
@@ -182,8 +182,8 @@ void DynamicModel::setTriangles( std::vector<Vertex> *f1, std::vector<Vertex> *f
         // use the face information to generate the triangles
         for( now = 0; now < m_FaceIndices.size(); now++ )
         {
-            Point3f c1,c2;
-            Vector3f n1,n2;
+            Point3 c1,c2;
+            Vector3 n1,n2;
             
             // interpolate the coordinates and normal for all three vertices
             Vertex v[3];
@@ -194,8 +194,8 @@ void DynamicModel::setTriangles( std::vector<Vertex> *f1, std::vector<Vertex> *f
                 n1 = (*f1)[m_FaceIndices[now].Index[i]].getNormal();
                 n2 = (*f2)[m_FaceIndices[now].Index[i]].getNormal();
 
-                Point3f nC = c1 + ((c2 - c1)/ff)*cf;
-                Vector3f nN = n1 + ((n2 - n1)/ff)*cf;
+                Point3 nC = c1 + ((c2 - c1)/ff)*cf;
+                Vector3 nN = n1 + ((n2 - n1)/ff)*cf;
                 
                 v[i].set( nC[0], nC[1], nC[2], nN[0], nN[1], nN[2] );
             }

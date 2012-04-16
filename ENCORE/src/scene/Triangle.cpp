@@ -1,5 +1,5 @@
 #include "Triangle.h"
-
+#include <cstdio>
 
 /***********
 * Triangle
@@ -17,9 +17,9 @@ Triangle::Triangle( Vertex& l_v0, Vertex& l_v1, Vertex& l_v2 )
 
 void Triangle::print( void )
 {
-    Point3f v0 = m_pV0->getCoordinates();
-    Point3f v1 = m_pV1->getCoordinates();
-    Point3f v2 = m_pV2->getCoordinates();
+    Point3 v0 = m_pV0->getCoordinates();
+    Point3 v1 = m_pV1->getCoordinates();
+    Point3 v2 = m_pV2->getCoordinates();
 
     printf("Vertex0: %f, %f, %f\n",   v0.X(), v0.Y(), v0.Z());
     printf("Vertex1: %f, %f, %f\n",   v1.X(), v1.Y(), v1.Z());

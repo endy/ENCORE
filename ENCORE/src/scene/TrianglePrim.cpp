@@ -25,9 +25,9 @@
 
 //#define SMOOTH_EDGES
 
-bool planeBoxOverlap(Vector3f normal, float d, Vector3f maxbox)
+bool planeBoxOverlap(Vector3 normal, float d, Vector3 maxbox)
 {
-    Vector3f vmin,vmax;
+    Vector3 vmin,vmax;
     // x axis
     if(normal.X()>0.0f){
         vmin.X()=-maxbox.X();
@@ -105,19 +105,19 @@ bool TrianglePrim::intersectAABB(AABB l_Box )
     /*       this gives 3x3=9 more tests */
 
     // POS is not center, it is the min point in this AABB
-    Vector3f boxhalfsize = Vector3f(Point3f(), l_Box.getSize()) * 0.5f;
-    Point3f center = l_Box.getPos() + boxhalfsize.ToPoint();
+    Vector3 boxhalfsize = Vector3(Point3(), l_Box.getSize()) * 0.5f;
+    Point3 center = l_Box.getPos() + boxhalfsize.ToPoint();
 
-    Point3f vp0 = m_pTriangle->getVertex0()->getCoordinates();
-    Point3f vp1 = m_pTriangle->getVertex1()->getCoordinates();
-    Point3f vp2 = m_pTriangle->getVertex2()->getCoordinates();
+    Point3 vp0 = m_pTriangle->getVertex0()->getCoordinates();
+    Point3 vp1 = m_pTriangle->getVertex1()->getCoordinates();
+    Point3 vp2 = m_pTriangle->getVertex2()->getCoordinates();
 
-    Vector3f normal;
-    Vector3f e0, e1, e2;
+    Vector3 normal;
+    Vector3 e0, e1, e2;
     float minCoord, maxCoord, p0, p1, p2, rad, fex, fey, fez;
-    Vector3f v0(center, vp0);
-    Vector3f v1(center, vp1);
-    Vector3f v2(center, vp2);
+    Vector3 v0(center, vp0);
+    Vector3 v1(center, vp1);
+    Vector3 v2(center, vp2);
 
     e0 = (v1 - v0); e1 = (v2 - v1); e2 = (v0 - v2);
 
@@ -183,11 +183,11 @@ bool TrianglePrim::intersectAABB(AABB l_Box )
 ******************/
 AABB TrianglePrim::getAABB( void ) const
 {
-    Point3f mins;
-    Point3f maxs;
-    Point3f v0 = m_pTriangle->getVertex0()->getCoordinates();
-    Point3f v1 = m_pTriangle->getVertex1()->getCoordinates();
-    Point3f v2 = m_pTriangle->getVertex2()->getCoordinates();
+    Point3 mins;
+    Point3 maxs;
+    Point3 v0 = m_pTriangle->getVertex0()->getCoordinates();
+    Point3 v1 = m_pTriangle->getVertex1()->getCoordinates();
+    Point3 v2 = m_pTriangle->getVertex2()->getCoordinates();
 
     mins.X() = dmin(dmin(v0.X(), v1.X()), v2.X());
     mins.Y() = dmin(dmin(v0.Y(), v1.Y()), v2.Y());
@@ -203,22 +203,22 @@ AABB TrianglePrim::getAABB( void ) const
 
 HitInfo TrianglePrim::intersect(Ray l_Ray)
 {
-    Point3f v0( m_pTriangle->getVertex0()->getCoordinates() );
-    Point3f v1( m_pTriangle->getVertex1()->getCoordinates() );
-    Point3f v2( m_pTriangle->getVertex2()->getCoordinates() );
+    Point3 v0( m_pTriangle->getVertex0()->getCoordinates() );
+    Point3 v1( m_pTriangle->getVertex1()->getCoordinates() );
+    Point3 v2( m_pTriangle->getVertex2()->getCoordinates() );
 
-    Vector3f edge1(v0, v1);
-    Vector3f edge2(v0, v2);
+    Vector3 edge1(v0, v1);
+    Vector3 edge2(v0, v2);
 
-    Vector3f pvec = Cross(l_Ray.Direction(), edge2);
+    Vector3 pvec = Cross(l_Ray.Direction(), edge2);
 
     float det = Dot(edge1, pvec);
     float invdet = 1.0f/det;
 
-    Vector3f svec(v0, l_Ray.Origin());
+    Vector3 svec(v0, l_Ray.Origin());
     float alpha = Dot(svec, pvec) * invdet;
 
-    Vector3f qvec = Cross(svec, edge1);
+    Vector3 qvec = Cross(svec, edge1);
     float beta = Dot(l_Ray.Direction(), qvec) * invdet;
 
     float time = Dot(edge2, qvec) * invdet;
@@ -230,11 +230,11 @@ HitInfo TrianglePrim::intersect(Ray l_Ray)
         info.hitTime = time;
 #ifdef SMOOTH_EDGES
         // calculate interpolated normal
-        Vector3f n0( m_pTriangle->getVertex0()->getNormal() );
-        Vector3f n1( m_pTriangle->getVertex1()->getNormal() );
-        Vector3f n2( m_pTriangle->getVertex2()->getNormal() );
+        Vector3 n0( m_pTriangle->getVertex0()->getNormal() );
+        Vector3 n1( m_pTriangle->getVertex1()->getNormal() );
+        Vector3 n2( m_pTriangle->getVertex2()->getNormal() );
 
-        Vector3f tempNormal = n0 + (n1-n0)*alpha + (n2-n0)*beta;
+        Vector3 tempNormal = n0 + (n1-n0)*alpha + (n2-n0)*beta;
         info.hitNormal = tempNormal;   
 #else
        info.hitNormal = Cross(edge1, edge2);

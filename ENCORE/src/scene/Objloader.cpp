@@ -1,5 +1,6 @@
-#include "ObjLoader.h"
-#include <stdio.h>
+#include "Objloader.h"
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 
@@ -102,7 +103,7 @@ void Objloader::load(const string &fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                normal.push_back(Vector3f(x,y,z)); // add normal data
+                normal.push_back(Vector3(x,y,z)); // add normal data
             }
             else if(*csi == 't')
             {
@@ -114,7 +115,7 @@ void Objloader::load(const string &fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                texcoord.push_back(Vector3f(x,y,z)); // hard copy
+                texcoord.push_back(Vector3(x,y,z)); // hard copy
             }
             else
             {
@@ -124,7 +125,7 @@ void Objloader::load(const string &fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                vertice.push_back(Vector3f(x,y,z)); // hard copy                
+                vertice.push_back(Vector3(x,y,z)); // hard copy                
             }            
             break;
         case 'f':

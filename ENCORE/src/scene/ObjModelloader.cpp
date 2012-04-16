@@ -1,6 +1,7 @@
 #include "ObjModelloader.h"
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 
@@ -86,7 +87,7 @@ list<DynamicModel*> ObjModelloader::loadmulti(const string& fname)
 
     // construct necessary holder and class
     DynamicModel *m = new DynamicModel();
-    deque<Vector3f> normal, vertice;//, texcoord;
+    deque<Vector3> normal, vertice;//, texcoord;
     //deque<FaceIndex> face;
 
     float x,y,z; // temp number to hold vertex, normal or texel
@@ -114,7 +115,7 @@ list<DynamicModel*> ObjModelloader::loadmulti(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                normal.push_back(Vector3f(x,y,z)); // add normal data
+                normal.push_back(Vector3(x,y,z)); // add normal data
             }
             else if(*csi == 't')
             {
@@ -126,8 +127,8 @@ list<DynamicModel*> ObjModelloader::loadmulti(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                //texcoord.push_back(Vector3f(x,y,z));
-                m->getTexCoords()->push_back(Vector3f(x,y,z)); // hard copy
+                //texcoord.push_back(Vector3(x,y,z));
+                m->getTexCoords()->push_back(Vector3(x,y,z)); // hard copy
             }
             else
             {
@@ -137,7 +138,7 @@ list<DynamicModel*> ObjModelloader::loadmulti(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                vertice.push_back(Vector3f(x,y,z)); // hard copy  
+                vertice.push_back(Vector3(x,y,z)); // hard copy  
 
                 m->MaxPoint()[0] = std::max(m->MaxPoint()[0], x);
                 m->MaxPoint()[1] = std::max(m->MaxPoint()[1], y);
@@ -260,7 +261,7 @@ list<DynamicModel*>* ObjModelloader::loadsimple(const string& fname)
 
     // construct necessary holder and class
     DynamicModel *m = new DynamicModel();
-    deque<Vector3f> normal, vertice;//, texcoord;
+    deque<Vector3> normal, vertice;//, texcoord;
     //deque<FaceIndex> face;
 
     float x,y,z; // temp number to hold vertex, normal or texel
@@ -288,7 +289,7 @@ list<DynamicModel*>* ObjModelloader::loadsimple(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                normal.push_back(Vector3f(x,y,z)); // add normal data
+                normal.push_back(Vector3(x,y,z)); // add normal data
             }
             else if(*csi == 't')
             {
@@ -300,8 +301,8 @@ list<DynamicModel*>* ObjModelloader::loadsimple(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                //texcoord.push_back(Vector3f(x,y,z));
-                m->getTexCoords()->push_back(Vector3f(x,y,z)); // hard copy
+                //texcoord.push_back(Vector3(x,y,z));
+                m->getTexCoords()->push_back(Vector3(x,y,z)); // hard copy
             }
             else
             {
@@ -311,7 +312,7 @@ list<DynamicModel*>* ObjModelloader::loadsimple(const string& fname)
                 y = gatherstf(csi);
                 skipWhiteSpace(csi);
                 z = gatherstf(csi);
-                vertice.push_back(Vector3f(x,y,z)); // hard copy  
+                vertice.push_back(Vector3(x,y,z)); // hard copy  
 
                 //m->MaxPoint()[0] = std::max(m->MaxPoint()[0], x);
                 //m->MaxPoint()[1] = std::max(m->MaxPoint()[1], y);

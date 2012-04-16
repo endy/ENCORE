@@ -12,13 +12,13 @@ class PointLightPrim :
 {
 public:
     PointLightPrim( void );
-    PointLightPrim( const Point3f& l_Position, const Color& l_Color );
+    PointLightPrim( const Point3& l_Position, const Color& l_Color );
     PointLightPrim( float x, float y, float z, float r, float g, float b );
     ~PointLightPrim( void );
 
     // IEmissive Interface
     virtual Ray EmitPhoton();
-    virtual Point3f GetPointOfEmission( void ) { return m_Position; }
+    virtual Point3 GetPointOfEmission( void ) { return m_Position; }
 
     // IPrimitive Interface
     HitInfo intersect(Ray l_Ray);
@@ -27,9 +27,9 @@ public:
     std::list<Triangle*>* getNewTesselation ( void ) { return new std::list<Triangle*>(); } // returns no triangles
 
     // PointLightPrim Public Methods
-    Point3f GetPosition(){ return m_Position; }
-    void SetPosition(Point3f position){ m_Position = position; }
+    Point3 GetPosition(){ return m_Position; }
+    void SetPosition(Point3 position){ m_Position = position; }
 
 private:
-    Point3f m_Position;
+    Point3 m_Position;
 };

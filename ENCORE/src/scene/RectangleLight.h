@@ -31,9 +31,9 @@ public:
     // return a ray that corresponds to the direction of an emitted photon
     virtual Ray EmitPhoton();
     // get the point, or a point of a photon emission
-    virtual Point3f GetPointOfEmission();
+    virtual Point3 GetPointOfEmission();
     // get sample points for soft shadows
-    virtual std::vector<Point3f> GetSamplePoints(int xDivisions, int yDivisions, int samplesPerDivision);
+    virtual std::vector<Point3> GetSamplePoints(int xDivisions, int yDivisions, int samplesPerDivision);
 
 private:
     void Init();
@@ -43,8 +43,8 @@ private:
     TrianglePrim *m_Prim1;
     TrianglePrim *m_Prim2;
 
-    Point3f m_Center;
-    Vector3f m_Normal;
+    Point3 m_Center;
+    Vector3 m_Normal;
 
     float m_Length;
     float m_Width;

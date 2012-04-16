@@ -7,7 +7,7 @@ class SpherePrim :
 {
 public:
     SpherePrim();
-    SpherePrim(Point3f center, float radius);
+    SpherePrim(Point3 center, float radius);
     virtual ~SpherePrim();
 
     //// IPrimitive Interface ////
@@ -17,6 +17,6 @@ public:
     virtual std::list<Triangle*>* getNewTesselation(void);
 
 private:
-    Point3f m_Center;
+    Point3 m_Center;
     float   m_Radius;
 };

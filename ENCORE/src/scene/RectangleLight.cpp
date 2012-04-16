@@ -13,20 +13,20 @@ RectangleLight::RectangleLight()
     float yCoord = 49.99999f;
     m_Vertices.resize(4);
 
-    m_Vertices[0].setCoordinates(Point3f(15, yCoord, 15));
-    m_Vertices[0].setNormal(Vector3f(0, -1, 0));
+    m_Vertices[0].setCoordinates(Point3(15, yCoord, 15));
+    m_Vertices[0].setNormal(Vector3(0, -1, 0));
 
     m_Vertices.push_back(Vertex());
-    m_Vertices[1].setCoordinates(Point3f(-15, yCoord, 15));
-    m_Vertices[1].setNormal(Vector3f(0, -1, 0));
+    m_Vertices[1].setCoordinates(Point3(-15, yCoord, 15));
+    m_Vertices[1].setNormal(Vector3(0, -1, 0));
 
     m_Vertices.push_back(Vertex());
-    m_Vertices[2].setCoordinates(Point3f(-15, yCoord, -15));
-    m_Vertices[2].setNormal(Vector3f(0, -1, 0));
+    m_Vertices[2].setCoordinates(Point3(-15, yCoord, -15));
+    m_Vertices[2].setNormal(Vector3(0, -1, 0));
 
     m_Vertices.push_back(Vertex());
-    m_Vertices[3].setCoordinates(Point3f(15, yCoord, -15));
-    m_Vertices[3].setNormal(Vector3f(0, -1, 0));
+    m_Vertices[3].setCoordinates(Point3(15, yCoord, -15));
+    m_Vertices[3].setNormal(Vector3(0, -1, 0));
    
     m_Prim1 = new TrianglePrim(m_Vertices[0], m_Vertices[1], m_Vertices[2]);
     m_Prim2 = new TrianglePrim(m_Vertices[2], m_Vertices[3], m_Vertices[0]);
@@ -65,14 +65,14 @@ void RectangleLight::Init()
 
     m_Normal = m_Vertices[0].getNormal();
 
-    Point3f p1 = m_Vertices[0].getCoordinates();
-    Point3f p2 = m_Vertices[1].getCoordinates();
-    Point3f p3 = m_Vertices[3].getCoordinates();
+    Point3 p1 = m_Vertices[0].getCoordinates();
+    Point3 p2 = m_Vertices[1].getCoordinates();
+    Point3 p3 = m_Vertices[3].getCoordinates();
 
-    Vector3f p1p2(p1, p2);
+    Vector3 p1p2(p1, p2);
     m_Length = p1p2.Magnitude();
 
-    Vector3f p1p3(p1, p3);
+    Vector3 p1p3(p1, p3);
     m_Width = p1p3.Magnitude();
 }
 
@@ -115,12 +115,12 @@ bool RectangleLight::intersectAABB(AABB box)
 {
     // check all points in the box
 
-    Point3f minPoint = box.getPos();
-    Point3f maxPoint = box.getPos() + box.getSize();
+    Point3 minPoint = box.getPos();
+    Point3 maxPoint = box.getPos() + box.getSize();
 
     for(int index = 0; index < (int)m_Vertices.size(); ++index)
     {
-        Point3f p = m_Vertices[index].getCoordinates();
+        Point3 p = m_Vertices[index].getCoordinates();
 
         if( minPoint.X() < p.X() && p.X() < maxPoint.X() &&
             minPoint.Y() < p.Y() && p.Y() < maxPoint.Y() &&
@@ -136,12 +136,12 @@ bool RectangleLight::intersectAABB(AABB box)
 
 AABB RectangleLight::getAABB() const
 {
-    Point3f minPoint = m_Vertices[0].getCoordinates();
-    Point3f maxPoint = m_Vertices[0].getCoordinates();
+    Point3 minPoint = m_Vertices[0].getCoordinates();
+    Point3 maxPoint = m_Vertices[0].getCoordinates();
 
     for(int index = 1; index < (int)m_Vertices.size(); ++index)
     {
-        Point3f p = m_Vertices[index].getCoordinates();
+        Point3 p = m_Vertices[index].getCoordinates();
 
         minPoint.X() = std::min(p.X(), minPoint.X());
         minPoint.Y() = std::min(p.Y(), minPoint.Y());
@@ -175,22 +175,22 @@ Ray RectangleLight::EmitPhoton()
     Sampler s(1, 1, 1);
     s.SetJitterPercent(1.0);
 
-    std::vector<Point3f> originList = s.GetSamplePointsForRect(m_Center, m_Normal, m_Length, m_Width);
-    Point3f origin = originList[0];
+    std::vector<Point3> originList = s.GetSamplePointsForRect(m_Center, m_Normal, m_Length, m_Width);
+    Point3 origin = originList[0];
 
-    Vector3f dir;
+    Vector3 dir;
 
     dir = randDirectionN(m_Normal);
 
     return Ray(origin, dir);
 }
 
-Point3f RectangleLight::GetPointOfEmission()
+Point3 RectangleLight::GetPointOfEmission()
 {
     return EmitPhoton().Origin();
 }
 
-std::vector<Point3f> RectangleLight::GetSamplePoints(int xDivisions, int yDivisions, int samplesPerCell)
+std::vector<Point3> RectangleLight::GetSamplePoints(int xDivisions, int yDivisions, int samplesPerCell)
 {
     Sampler s(xDivisions, yDivisions, samplesPerCell);
 

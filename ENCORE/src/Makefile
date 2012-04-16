@@ -26,7 +26,7 @@ CPPINCS = -I renderers/ \
            accelerators/UniformGrid.cpp \
            accelerators/GPUAccelerationStructureData.cpp
 
-CPPFILES = misc/BatteryPowerWin32.cpp \
+#CPPFILES = misc/BatteryPowerWin32.cpp \
            misc/Common.cpp \
            misc/Logfile.cpp \
            misc/Options.cpp \
@@ -37,6 +37,25 @@ CPPFILES = misc/BatteryPowerWin32.cpp \
            misc/TextureManager.cpp \
            misc/Timer.cpp
 
+CPPFILES = scene/AABB.cpp \
+           scene/Camera.cpp \
+           scene/Color.cpp \
+           scene/DynamicModel.cpp \
+           scene/DynamicScene.cpp \
+           scene/HitInfo.cpp \
+           scene/IModel.cpp \
+           scene/Material.cpp \
+           scene/Material.cpp \
+           scene/Model.cpp \
+           scene/Objloader.cpp \
+           scene/ObjModelloader.cpp \
+           scene/PointLightPrim.cpp \
+           scene/RectangleLight.cpp \
+           scene/Scene.cpp \
+           scene/Triangle.cpp \
+           scene/TriangleLight.cpp \
+           scene/TrianglePrim.cpp \
+           scene/Vertex.cpp
 
 main:
 	g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)

@@ -5,7 +5,7 @@ Ray TriangleLight::EmitPhoton()
     return Ray();
 }
 
-Point3f TriangleLight::GetPointOfEmission()
+Point3 TriangleLight::GetPointOfEmission()
 {
-    return Point3f();
+    return Point3();
 }

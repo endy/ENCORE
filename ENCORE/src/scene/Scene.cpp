@@ -101,10 +101,10 @@ void Scene::HandleSceneVariable( std::string variable, std::fstream& file )
         newLightModel->SetEmissiveColor(c);
         newLight->SetEmissiveColor(c);
 
-        Point3f center = Point3f();
+        Point3 center = Point3();
         float scale = 0;
         float angle = 0;
-        Vector3f rAxis = Vector3f();
+        Vector3 rAxis = Vector3();
 
         Material mat = m_currentMaterial;
         mat.SetEmissive(true);
@@ -132,14 +132,14 @@ void Scene::HandleSceneVariable( std::string variable, std::fstream& file )
     }
     else if(variable == "SPHERE")
     {
-        Point3f center;
+        Point3 center;
         float radius;
         file >> center.X() >> center.Y() >> center.Z() >> radius;
         SpherePrim *sphere = new SpherePrim(center, radius);
 
         float scale;
         float angle;
-        Vector3f rAxis;
+        Vector3 rAxis;
 
         file >> scale >> angle >> rAxis.X() >> rAxis.Y() >> rAxis.Z();
 
@@ -150,8 +150,8 @@ void Scene::HandleSceneVariable( std::string variable, std::fstream& file )
     }
     else if ( variable == "CAMERA" )
     {
-        Point3f eye, look;
-        Vector3f up;
+        Point3 eye, look;
+        Vector3 up;
         float ang, asp, nd, fd;
         file >> eye.X() >> eye.Y() >> eye.Z();
         file >> look.X() >> look.Y() >> look.Z();
@@ -163,10 +163,10 @@ void Scene::HandleSceneVariable( std::string variable, std::fstream& file )
     }
     else if ( variable == "MODEL" )
     {
-        Point3f c;
+        Point3 c;
         float scale;
         float angle;
-        Vector3f rAxis;
+        Vector3 rAxis;
         std::string filename = "";
         file >> filename;
         file >> c.X() >> c.Y() >> c.Z() >> scale;

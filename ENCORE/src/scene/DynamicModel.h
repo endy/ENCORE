@@ -30,7 +30,7 @@ public:
     std::vector<Vertex>* getVertices() { return &m_Vertices; }
     std::vector<Triangle>* getTriangles() { return &m_Triangles; }
 
-    vector<Vector3f>* getTexCoords() { return &m_TexCoords; }
+    vector<Vector3>* getTexCoords() { return &m_TexCoords; }
     vector<FaceIndex>* getFaces() { return &m_FaceIndices; }
     std::list<std::vector<Vertex>*>* getVerticesList() { return &m_VerticesList; }
 
@@ -53,7 +53,7 @@ protected:
     void setTriangles(std::vector<Vertex>* f1, std::vector<Vertex>* f2);
 
     // model faces and texture are assumed to never change over the course of animation
-    std::vector<Vector3f> m_TexCoords; // vector for texture coord data
+    std::vector<Vector3> m_TexCoords; // vector for texture coord data
     std::vector<FaceIndex> m_FaceIndices; // vector of indices
 
     // vertices are changing data

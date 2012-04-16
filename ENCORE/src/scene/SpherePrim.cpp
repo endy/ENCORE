@@ -6,11 +6,11 @@
 SpherePrim::SpherePrim()
 {
     // unit sphere
-    m_Center = Point3f(0.0f, 0.0f, 0.0f);
+    m_Center = Point3(0.0f, 0.0f, 0.0f);
     m_Radius = 1.0f;
 }
 
-SpherePrim::SpherePrim(Point3f center, float radius)
+SpherePrim::SpherePrim(Point3 center, float radius)
 {
     m_Center = center;
     m_Radius = radius;
@@ -31,7 +31,7 @@ HitInfo SpherePrim::intersect(Ray r)
     //  pg. 571.   Refer to that for details
     //
     // l is a vector from the ray's origin to the sphere's center
-    Vector3f rayToCenter(r.Origin(), m_Center);
+    Vector3 rayToCenter(r.Origin(), m_Center);
 
     float s             = Dot(rayToCenter, r.Direction());
     float rTCSquared    = Dot(rayToCenter, rayToCenter);
@@ -73,9 +73,9 @@ HitInfo SpherePrim::intersect(Ray r)
     }
 
     // calc hit location using hit time and ray
-    info.hitPoint  = Point3f( r.GetPositionAtTime((float) info.hitTime));
+    info.hitPoint  = Point3( r.GetPositionAtTime((float) info.hitTime));
 
-    info.hitNormal = Vector3f(m_Center, info.hitPoint);
+    info.hitNormal = Vector3(m_Center, info.hitPoint);
     info.hitNormal.Normalize();
 
     info.hitObject = this;
@@ -94,7 +94,7 @@ bool SpherePrim::intersectAABB(AABB box)
 
     float distance = 0;
 
-    Point3f minPoint = box.getPos();
+    Point3 minPoint = box.getPos();
 
     distance += (m_Center.X() < minPoint.X()) ?  (m_Center.X() - minPoint.X()) : (minPoint.X() - m_Center.X());
     distance += (m_Center.Y() < minPoint.Y()) ?  (m_Center.Y() - minPoint.Y()) : (minPoint.Y() - m_Center.Y());
@@ -116,12 +116,12 @@ bool SpherePrim::intersectAABB(AABB box)
 
 AABB SpherePrim::getAABB() const
 {
-    Point3f minPoint;
+    Point3 minPoint;
     minPoint.X() = m_Center.X() - m_Radius;
     minPoint.Y() = m_Center.Y() - m_Radius;
     minPoint.Z() = m_Center.Z() - m_Radius;
 
-    Point3f maxPoint;
+    Point3 maxPoint;
     maxPoint.X() = m_Center.X() + m_Radius;
     maxPoint.Y() = m_Center.Y() + m_Radius;
     maxPoint.Z() = m_Center.Z() + m_Radius;

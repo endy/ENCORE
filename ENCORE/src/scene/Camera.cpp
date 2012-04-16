@@ -3,13 +3,13 @@
 
 Camera::Camera(void)
 {
-	m_Eye = Point3f(0,0,1);
-	m_Look = Point3f(0,0,0);
-	m_Up = Vector3f(0,1,0);
+	m_Eye = Point3(0,0,1);
+	m_Look = Point3(0,0,0);
+	m_Up = Vector3(0,1,0);
 	CalcCamVectors();
 }
 
-Camera::Camera(Point3f eyePosition, Point3f lookAt, Vector3f upDirection)
+Camera::Camera(Point3 eyePosition, Point3 lookAt, Vector3 upDirection)
 {
     m_Eye = eyePosition;
     m_Look = lookAt;
@@ -17,7 +17,7 @@ Camera::Camera(Point3f eyePosition, Point3f lookAt, Vector3f upDirection)
     CalcCamVectors();
 }
 
-Camera::Camera(Point3f eyePosition, Point3f lookAt, Vector3f upDirection, float viewAngle, float aspectRatio, float nearPlane, float farPlane)
+Camera::Camera(Point3 eyePosition, Point3 lookAt, Vector3 upDirection, float viewAngle, float aspectRatio, float nearPlane, float farPlane)
 {
 	set(eyePosition, lookAt, upDirection);
 	SetViewVolume(viewAngle, aspectRatio, nearPlane, farPlane);
@@ -28,20 +28,20 @@ Camera::~Camera(void)
 }
 
 void Camera::SetEye(float x, float y, float z){
-	m_Eye = Point3f(x, y, z);
+	m_Eye = Point3(x, y, z);
 }
 void Camera::SetLook(float x, float y, float z){
-	m_Look = Point3f(x, y, z);
+	m_Look = Point3(x, y, z);
 }
 void Camera::SetUp(float x, float y, float z){
-	m_Up = Vector3f(x, y, z);
+	m_Up = Vector3(x, y, z);
 }
 
-void Camera::set(Point3f Eye, Point3f look, Vector3f up)
+void Camera::set(Point3 Eye, Point3 look, Vector3 up)
 {
-	m_Eye = Point3f(Eye); // store the given eye position
-	m_Look = Point3f(look);
-	m_Up = Vector3f(m_Up);
+	m_Eye = Point3(Eye); // store the given eye position
+	m_Look = Point3(look);
+	m_Up = Vector3(m_Up);
 
     CalcCamVectors();
 
@@ -64,7 +64,7 @@ void Camera::setModelViewMatrix(void)
 // 			  m_Up.X(), m_Up.Y(), m_Up.Z());
 
     GLfloat camera[16];
-    TVector3<GLfloat> eyeVector(m_Eye.X(), m_Eye.Y(), m_Eye.Z());
+    Vector3 eyeVector(m_Eye.X(), m_Eye.Y(), m_Eye.Z());
 
     camera[0] =  m_U.X(); camera[4] = m_U.Y(); camera[8]  = m_U.Z(); camera[12] = - Dot(eyeVector, m_U);
     camera[1] =  m_V.X(); camera[5] = m_V.Y(); camera[9]  = m_V.Z(); camera[13] = - Dot(eyeVector, m_V);
@@ -98,9 +98,9 @@ void Camera::Roll(float angle)
 	float cs = (float)cos(PI / 180 * angle);
 	float sn = (float)sin(PI / 180 * angle);
 
-	Vector3f t = m_U; // remember old u
-	m_U = Vector3f(cs*t.X() - sn*m_V.X(), cs*t.Y() - sn*m_V.Y(), cs*t.Z() - sn*m_V.Z());
-	m_V = Vector3f(sn*t.X() + cs*m_V.X(), sn*t.Y() + cs*m_V.Y(), sn*t.Z() + cs*m_V.Z());
+	Vector3 t = m_U; // remember old u
+	m_U = Vector3(cs*t.X() - sn*m_V.X(), cs*t.Y() - sn*m_V.Y(), cs*t.Z() - sn*m_V.Z());
+	m_V = Vector3(sn*t.X() + cs*m_V.X(), sn*t.Y() + cs*m_V.Y(), sn*t.Z() + cs*m_V.Z());
 }
 
 void Camera::Pitch(float angle)
@@ -108,9 +108,9 @@ void Camera::Pitch(float angle)
 	float cs = (float)cos(PI / 180.0 * angle);
 	float sn = (float)sin(PI / 180.0 * angle);
 
-	Vector3f t = m_V; // remember old u
-	m_V = Vector3f(cs*t.X() - sn*m_N.X(), cs*t.Y() - sn*m_N.Y(), cs*t.Z() - sn*m_N.Z());
-	m_N = Vector3f(sn*t.X() + cs*m_N.X(), sn*t.Y() + cs*m_N.Y(), sn*t.Z() + cs*m_N.Z());
+	Vector3 t = m_V; // remember old u
+	m_V = Vector3(cs*t.X() - sn*m_N.X(), cs*t.Y() - sn*m_N.Y(), cs*t.Z() - sn*m_N.Z());
+	m_N = Vector3(sn*t.X() + cs*m_N.X(), sn*t.Y() + cs*m_N.Y(), sn*t.Z() + cs*m_N.Z());
 }
 
 void Camera::Yaw(float angle)
@@ -118,9 +118,9 @@ void Camera::Yaw(float angle)
 	float cs = (float)cos(PI / 180 * angle);
 	float sn = (float)sin(PI / 180 * angle);
 
-	Vector3f t = m_U; // remember old u
-	m_U = Vector3f(cs*t.X() - sn*m_N.X(), cs*t.Y() - sn*m_N.Y(), cs*t.Z() - sn*m_N.Z());
-	m_N = Vector3f(sn*t.X() + cs*m_N.X(), sn*t.Y() + cs*m_N.Y(), sn*t.Z() + cs*m_N.Z());
+	Vector3 t = m_U; // remember old u
+	m_U = Vector3(cs*t.X() - sn*m_N.X(), cs*t.Y() - sn*m_N.Y(), cs*t.Z() - sn*m_N.Z());
+	m_N = Vector3(sn*t.X() + cs*m_N.X(), sn*t.Y() + cs*m_N.Y(), sn*t.Z() + cs*m_N.Z());
 }
 
 
@@ -128,17 +128,17 @@ void Camera::rotateAboutLook(float deltaX, float deltaY){
 	float cs = (float)cos(PI / 180 * -deltaX);
 	float sn = (float)sin(PI / 180 * -deltaX);
 
-	Vector3f t = Vector3f(m_Look, m_Eye); // remember old u
-	t = Vector3f(cs*t.X() + sn*t.Z(), t.Y(), -sn*t.X() + cs*t.Z());
-	t = t + Vector3f(Point3f(), m_Look);
+	Vector3 t = Vector3(m_Look, m_Eye); // remember old u
+	t = Vector3(cs*t.X() + sn*t.Z(), t.Y(), -sn*t.X() + cs*t.Z());
+	t = t + Vector3(Point3(), m_Look);
 
 	cs = (float)cos(PI / 180 * deltaY);
 	sn = (float)sin(PI / 180 * deltaY);
 
-	t = Vector3f(t.X(), cs*t.Y() + sn*t.Z(), -sn*t.Y() + cs*t.Z());
-	t = t + Vector3f(Point3f(), m_Look);
-	m_Eye = Point3f(t.X(), t.Y(), t.Z());
-	m_Up = Vector3f(m_Up.X(), cs*m_Up.Y() + sn*m_Up.Z(), -sn*m_Up.Y() + cs*m_Up.Z());
+	t = Vector3(t.X(), cs*t.Y() + sn*t.Z(), -sn*t.Y() + cs*t.Z());
+	t = t + Vector3(Point3(), m_Look);
+	m_Eye = Point3(t.X(), t.Y(), t.Z());
+	m_Up = Vector3(m_Up.X(), cs*m_Up.Y() + sn*m_Up.Z(), -sn*m_Up.Y() + cs*m_Up.Z());
 	
 	CalcCamVectors();
 }
@@ -156,11 +156,11 @@ void Camera::Slide(float deltaX, float deltaY, float deltaZ)
 
 void Camera::CalcCamVectors()
 {
-    m_N = Vector3f(m_Eye.X() - m_Look.X(), m_Eye.Y() - m_Look.Y(), m_Eye.Z() - m_Look.Z());	// make n
-    m_U = Vector3f(Cross(m_Up, m_N)); // make u = up X n
+    m_N = Vector3(m_Eye.X() - m_Look.X(), m_Eye.Y() - m_Look.Y(), m_Eye.Z() - m_Look.Z());	// make n
+    m_U = Vector3(Cross(m_Up, m_N)); // make u = up X n
 
     m_N.Normalize();
     m_U.Normalize();
 
-    m_V = Vector3f(Cross(m_N, m_U));	// make v = n X u
+    m_V = Vector3(Cross(m_N, m_U));	// make v = n X u
 }

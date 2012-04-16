@@ -9,6 +9,9 @@
 #elif __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
 #endif
 
 #include "Vector3.h"
@@ -22,14 +25,14 @@ class Camera
 {
 public:
 	Camera(void);
-	Camera( Point3 eyePosition, Point3f lookAt, Vector3 upDirection);
-	Camera( Point3 eyePosition, Point3f lookAt, Vector3 upDirection,
+	Camera( Point3 eyePosition, Point3 lookAt, Vector3 upDirection);
+	Camera( Point3 eyePosition, Point3 lookAt, Vector3 upDirection,
 		  float viewAngle, float aspectRatio, float nearPlane, float farPlane);
 
     virtual ~Camera(void);
 
     //// ACCESSORS ////////////////////////////
-	void set(Point3 eye, Point3f look, Vector3 up);
+	void set(Point3 eye, Point3 look, Vector3 up);
 
     Point3 GetEye(){ return m_Eye; }
 	void SetEye(float x, float y, float z);

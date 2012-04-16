@@ -9,5 +9,5 @@ class TriangleLight :
     // return a ray that corresponds to the direction of an emitted photon
     virtual Ray EmitPhoton();;
     // get the point, or a point of a photon emission
-    virtual Point3f GetPointOfEmission();
+    virtual Point3 GetPointOfEmission();
 };

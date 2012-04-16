@@ -1,11 +1,12 @@
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include "Model.h"
-#include "assert.h"
+#include <cassert>
 #include "TrianglePrim.h"
 #include "Objloader.h"
 
@@ -13,7 +14,7 @@
 
 using encore::Color;
 
-Model::Model(Point3f center, float size, float angle, Vector3f axis, Material material)
+Model::Model(Point3 center, float size, float angle, Vector3 axis, Material material)
 {
     m_CenterPoint       = center;
     m_Size              = size;
@@ -27,7 +28,7 @@ Model::Model(Point3f center, float size, float angle, Vector3f axis, Material ma
     m_bHasTexture = false;
 }
 
-Model::Model(std::string filename, const Point3f& center, float size, float angle, const Vector3f& axis, Material material)
+Model::Model(std::string filename, const Point3& center, float size, float angle, const Vector3& axis, Material material)
 {
     m_CenterPoint       = center;
     m_Size              = size;
@@ -55,8 +56,8 @@ Model::~Model( void )
 
 void Model::load( std::string fname )
 {
-    m_maxPoint = Point3f(NEG_INF, NEG_INF, NEG_INF);
-    m_minPoint = Point3f(POS_INF, POS_INF, POS_INF);
+    m_maxPoint = Point3(NEG_INF, NEG_INF, NEG_INF);
+    m_minPoint = Point3(POS_INF, POS_INF, POS_INF);
 
     // determine extension
     size_t extstart = fname.find_last_of('.',fname.length());
@@ -102,7 +103,7 @@ void Model::load( std::string fname )
     std::cout << "Primitive Count: " << (unsigned int)m_PrimitiveList.size() << std::endl;
 }
 
-void Model::centerModel(const Point3f& center, float size, float angle, const Vector3f& axis)
+void Model::centerModel(const Point3& center, float size, float angle, const Vector3& axis)
 {
     Affine4 centerMatrix = getCenterMatrix( center, size, angle, axis);
 
@@ -112,7 +113,7 @@ void Model::centerModel(const Point3f& center, float size, float angle, const Ve
     m_maxPoint[0] = m_maxPoint[1] = m_maxPoint[2] = NEG_INF;
     m_minPoint[0] = m_minPoint[1] = m_minPoint[2] = POS_INF;
 
-    Point3f newCoord;
+    Point3 newCoord;
 
     // translate, scale and rotate vertex
     std::vector<Vertex>::iterator iv;
@@ -136,18 +137,18 @@ void Model::centerModel(const Point3f& center, float size, float angle, const Ve
     }
 }
 
-Affine4 Model::getCenterMatrix( Point3f c, float s, float angle, const Vector3f& axis )
+Affine4 Model::getCenterMatrix( Point3 c, float s, float angle, const Vector3& axis )
 {
-    Vector3f modelLength( m_minPoint, m_maxPoint );
+    Vector3 modelLength( m_minPoint, m_maxPoint );
 
     float scale = s/max(modelLength.X(),
                         max(modelLength.Y(),
                             modelLength.Z()));
 
-    Point3f center = (m_maxPoint+m_minPoint)*.5;
+    Point3 center = (m_maxPoint+m_minPoint)*.5;
 
-    Point3f scaledCenter(center.X() * scale, center.Y() * scale, center.Z() * scale);
-    Vector3f offset(c, scaledCenter);
+    Point3 scaledCenter(center.X() * scale, center.Y() * scale, center.Z() * scale);
+    Vector3 offset(c, scaledCenter);
 
     Affine4 centerMatrix = rotate( angle, axis );
     // translate
@@ -168,7 +169,7 @@ Affine4 Model::getCenterMatrix( Point3f c, float s, float angle, const Vector3f&
     return centerMatrix;
 }
 
-Affine4 Model::rotate( float angle, const Vector3f& u )
+Affine4 Model::rotate( float angle, const Vector3& u )
 {
     #define EPS 0.0000001
     Affine4 R;
@@ -199,19 +200,19 @@ Affine4 Model::rotate( float angle, const Vector3f& u )
 
 void Model::calculateNormals( void )
 {
-    Point3f a,b,c;
-    Vector3f n;
+    Point3 a,b,c;
+    Vector3 n;
 
     std::vector<Triangle>::iterator it;
 
     // find per-Triangle Normal
     for ( it = m_Triangles.begin(); it != m_Triangles.end(); it++ )
     {
-        a = Point3f( it->getVertex0()->getCoordinates() );
-        b = Point3f( it->getVertex1()->getCoordinates() );
-        c = Point3f( it->getVertex2()->getCoordinates() );
+        a = Point3( it->getVertex0()->getCoordinates() );
+        b = Point3( it->getVertex1()->getCoordinates() );
+        c = Point3( it->getVertex2()->getCoordinates() );
 
-        n = Cross(Vector3f(a, b),Vector3f(a, c));
+        n = Cross(Vector3(a, b),Vector3(a, c));
 
         it->getVertex0()->setNormal( n );
         it->getVertex1()->setNormal( n );
@@ -224,7 +225,7 @@ void Model::calculateNormals( void )
 //    printf("total vertex: %i\n", m_Vertices.size());
     for ( iv = m_Vertices.begin(); iv != m_Vertices.end(); iv++ )
     {
-        n = Vector3f(0,0,0); // reset normal
+        n = Vector3(0,0,0); // reset normal
         for( it = m_Triangles.begin(); it != m_Triangles.end(); it++ )
         {
             // if the address of one of the triangle Vertices
@@ -317,7 +318,7 @@ long Model::EatChunk( char* buffer )
                 i += 12;
 
                 Vertex v;
-                v.setCoordinates( Point3f( x, y, z ) );
+                v.setCoordinates( Point3( x, y, z ) );
                 m_Vertices.push_back( v );
             }
             break;
@@ -446,7 +447,7 @@ void Model::loadPLY( std::string fname )
 
         // save data
         Vertex v;
-        v.setCoordinates( Point3f( x, y, z ) );
+        v.setCoordinates( Point3( x, y, z ) );
         m_Vertices.push_back( v );
 
         // calculate max and min point as we read them in from the file
@@ -689,8 +690,8 @@ void Model::loadOBJ(const std::string &fname)
     Objloader obj(fname);
     // add all the vertices
     float x,y,z;
-    std::deque<Vector3f>::const_iterator cfi; // const float iterator
-    std::deque<Vector3f>::const_iterator nfi; // const float iterator
+    std::deque<Vector3>::const_iterator cfi; // const float iterator
+    std::deque<Vector3>::const_iterator nfi; // const float iterator
     nfi = obj.getNormal().begin();
     
     Vertex tv;
@@ -698,7 +699,7 @@ void Model::loadOBJ(const std::string &fname)
     for(cfi = obj.getVertex().begin(); cfi != obj.getVertex().end(); cfi++)
     {
         x = (*cfi).X(); y = (*cfi)[1]; z = (*cfi)[2];
-        tv.setCoordinates(Point3f(x,y,z));
+        tv.setCoordinates(Point3(x,y,z));
         //*p++ = x; *p++ = y; *p++ = z;
         m_maxPoint[0] = max(m_maxPoint[0], x);
         m_maxPoint[1] = max(m_maxPoint[1], y);
@@ -716,13 +717,13 @@ void Model::loadOBJ(const std::string &fname)
     
     /******* texture are ignored ****************/
     /*
-    deque<Vector3f>::const_iterator cfi; // const float iterator
+    deque<Vector3>::const_iterator cfi; // const float iterator
     // texture coordinates
     if((m_bHasTexture = obj.hasTexCoord()) == true)
     {
         for(cfi = obj.getTexCoord().begin(); cfi != obj.getTexCoord().end(); cfi++)
         {
-            m_Texcoords.push_back(Vector3f((*cfi)[0],(*cfi)[1],(*cfi)[2]));
+            m_Texcoords.push_back(Vector3((*cfi)[0],(*cfi)[1],(*cfi)[2]));
             //*tex++ = (*cfi)[0]; *tex++ = (*cfi)[1]; *tex++ = (*cfi)[2];
         }
     }

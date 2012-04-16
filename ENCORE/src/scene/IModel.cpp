@@ -7,7 +7,7 @@
 #include <Windows.h>
 #include <GL/gl.h>
 #else
-#include <OpenGL/gl.h>
+#include <GL/gl.h>
 #endif
 
 std::list< Triangle* >* IModel::getNewTesselation ( void )
@@ -47,9 +47,9 @@ void IModel::DrawOpenGL()
     while(triIter != tris->end())
     {
         Triangle *tri = *triIter;
-        Point3f v0 = tri->getVertex0()->getCoordinates();
-        Point3f v1 = tri->getVertex1()->getCoordinates();
-        Point3f v2 = tri->getVertex2()->getCoordinates();
+        Point3 v0 = tri->getVertex0()->getCoordinates();
+        Point3 v1 = tri->getVertex1()->getCoordinates();
+        Point3 v2 = tri->getVertex2()->getCoordinates();
 
         glBegin(GL_TRIANGLES);
         glVertex3f(v0.X(), v0.Y(), v0.Z());

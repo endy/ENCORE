@@ -1,6 +1,8 @@
 #include "DynamicScene.h"
 #include "ObjModelloader.h"
 
+#include <cstdlib>
+
 #ifndef WIN32
 #define Sleep(x) 0
 #endif
@@ -77,10 +79,10 @@ void DynamicScene::load( std::string filename )
                 frames_count = (unsigned int)objFiles.size();
                 
                 // read in the model relocation information
-                Point3f c;
+                Point3 c;
                 float scale = -1;
                 float angle = -1;
-                Vector3f rAxis;
+                Vector3 rAxis;
                 int frames;
                 file >> frames;
                 file >> c[0] >> c[1] >> c[2] >> scale;

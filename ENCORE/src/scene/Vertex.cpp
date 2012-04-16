@@ -15,8 +15,8 @@ Vertex::Vertex( float l_xCoord, float l_yCoord, float l_zCoord, float l_xNormal,
 
 void Vertex::set( float l_xCoord, float l_yCoord, float l_zCoord, float l_xNormal = 0, float l_yNormal = 0, float l_zNormal = 0)
 {
-    m_Coordinates = Point3f( l_xCoord, l_yCoord, l_zCoord );
-    m_Normal = Vector3f( l_xNormal, l_yNormal, l_zNormal );
+    m_Coordinates = Point3( l_xCoord, l_yCoord, l_zCoord );
+    m_Normal = Vector3( l_xNormal, l_yNormal, l_zNormal );
 }
 
 //void Vertex::set(unsigned int l_nIndex, const float* l_pVertexValuesArray, const float* l_pNormalValuesArray)
