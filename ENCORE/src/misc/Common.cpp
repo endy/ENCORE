@@ -12,7 +12,7 @@ Common.cpp
 #include <cstdlib>
 #include <sstream>
 
-using encore::Point3f;
+using encore::Point3;
 
 float randNumber(float inmin, float inmax) 
 { 
@@ -26,7 +26,7 @@ float randNumberN(float inMin, float inMax)
 }
 
 
-Vector3f randDirection()
+Vector3 randDirection()
 {
     float x, y, z;
 
@@ -68,16 +68,16 @@ Vector3f randDirection()
 
 #endif
     
-	Vector3f dir(x, y, z);
+	Vector3 dir(x, y, z);
 	dir.Normalize();
     
 
 	return dir;
 }
 
-Vector3f randSurfaceReflection(Vector3f surfNormal)
+Vector3 randSurfaceReflection(Vector3 surfNormal)
 {
-	Vector3f dir;
+	Vector3 dir;
 
 	do 
 	{
@@ -89,9 +89,9 @@ Vector3f randSurfaceReflection(Vector3f surfNormal)
 	return dir;
 }
 
-Vector3f randDirectionN(Vector3f n)
+Vector3 randDirectionN(Vector3 n)
 {
-    Vector3f dir;
+    Vector3 dir;
 
 #if 1
     float e1 = randNumber(0.01, 1); // cutting off the very tip of the cosine-weighted distribution
@@ -116,7 +116,7 @@ Vector3f randDirectionN(Vector3f n)
 #endif
     
     // dir aligned with +z axis.  need to align with N
-    Vector3f zAxis(0, 0, 1);
+    Vector3 zAxis(0, 0, 1);
     n.Normalize();
 
     if(zAxis == n)
@@ -132,7 +132,7 @@ Vector3f randDirectionN(Vector3f n)
 
     float angle = acos(Dot(n, zAxis));
 
-    Vector3f rv = Cross(zAxis, n);
+    Vector3 rv = Cross(zAxis, n);
     TAffineMatrix<float> m = TAffineMatrix<float>::GetRotationMatrix(rv, angle);
     dir =  m * dir;
 
@@ -141,9 +141,9 @@ Vector3f randDirectionN(Vector3f n)
     return dir;
 }
 
-Vector3f randDirectionSuperN(Vector3f n)
+Vector3 randDirectionSuperN(Vector3 n)
 {
-    Vector3f dir;
+    Vector3 dir;
 
     float e1 = randNumber(0.001, 1);
     float e2 = randNumber(0, 1);
@@ -156,7 +156,7 @@ Vector3f randDirectionSuperN(Vector3f n)
     dir.Z() = cos(theta);
 
     // dir aligned with +z axis.  need to align with N
-    Vector3f zAxis(0, 0, 1);
+    Vector3 zAxis(0, 0, 1);
     n.Normalize();
 
     if(zAxis == n)
@@ -172,7 +172,7 @@ Vector3f randDirectionSuperN(Vector3f n)
 
     float angle = acos(Dot(n, zAxis));
 
-    Vector3f rv = Cross(zAxis, n);
+    Vector3 rv = Cross(zAxis, n);
     TAffineMatrix<float> m = TAffineMatrix<float>::GetRotationMatrix(rv, angle);
     dir =  m * dir;
 

@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+#include <cstring>
+
 CTexel::CTexel(float r, float g, float b, float a)
 {
     m_Data[0] = r;

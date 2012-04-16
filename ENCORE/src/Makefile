@@ -17,7 +17,7 @@ CPPINCS = -I renderers/ \
            renderers/Tonemap.cpp \
            renderers/OpenGLRenderer.cpp
 
-CPPFILES = math/Affine4.cpp \
+#CPPFILES = math/Affine4.cpp \
            math/Ray.cpp \
            accelerators/BasicAS.cpp \
            accelerators/BVH.cpp \
@@ -25,6 +25,18 @@ CPPFILES = math/Affine4.cpp \
            accelerators/Kdtree.cpp \
            accelerators/UniformGrid.cpp \
            accelerators/GPUAccelerationStructureData.cpp
+
+CPPFILES = misc/BatteryPowerWin32.cpp \
+           misc/Common.cpp \
+           misc/Logfile.cpp \
+           misc/Options.cpp \
+           misc/Pixel.cpp \
+           misc/SimpleProfiler.cpp \
+           misc/Texture.cpp \
+           misc/TextureMaker.cpp \
+           misc/TextureManager.cpp \
+           misc/Timer.cpp
+
 
 main:
 	g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)
