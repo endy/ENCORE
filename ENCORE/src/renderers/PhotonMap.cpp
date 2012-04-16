@@ -9,14 +9,14 @@ Note: Photon map based heavily on renderBitch photon map
 ****************************************************************************/
 
 #include "PhotonMap.h"
-#include "TVector3.h"
+#include "Vector3.h"
 
 #include "Common.h"
 
 #include <algorithm>
 #include <iostream>
 
-using encore::Vector3f;
+using encore::Vector3;
 
 static const float LARGE_NUMBER = 1.0e10;
 
@@ -73,7 +73,7 @@ PhotonMap* PhotonMap::PrecomputeIrradiance(int increment, const int N, const flo
     return precomputed;
 }
 
-vector<PhotonDistPair> PhotonMap::GetNearestNPhotons(const int N, const float maxDistance, Point3f location, Vector3f normal)
+vector<PhotonDistPair> PhotonMap::GetNearestNPhotons(const int N, const float maxDistance, Point3 location, Vector3 normal)
 {
     if(m_photons.empty())
     {
@@ -118,7 +118,7 @@ inline double smoothstep(const double& a, const double& b, const double& x)
 }
 
 
-Color PhotonMap::GetRadianceEstimate(const int N, const float maxDistance, Point3f location, Vector3f normal)
+Color PhotonMap::GetRadianceEstimate(const int N, const float maxDistance, Point3 location, Vector3 normal)
 {
     float R = 0; 
     float G = 0; 
@@ -141,7 +141,7 @@ Color PhotonMap::GetRadianceEstimate(const int N, const float maxDistance, Point
         
 
         Color power = p->Power();
-        Vector3f photonDir = p->Direction(); 
+        Vector3 photonDir = p->Direction(); 
 
         double radius = nearest[index].m_Distance;
         double weight = (m_CausticsMap) ? (r - radius)/radius : 1;//smoothstep(0,1,1-radius/r);
@@ -224,8 +224,8 @@ void PhotonMap::BalanceAndConstruct(int minIndex, int maxIndex, int level)
 void PhotonMap::GetNearestNPhotons(
     const int N, 
     float rSquared, 
-    const Point3f& location, 
-    const Vector3f& normal, 
+    const Point3& location, 
+    const Vector3& normal, 
     const int minIndex, 
     const int maxIndex,
     vector<PhotonDistPair>& nearest)

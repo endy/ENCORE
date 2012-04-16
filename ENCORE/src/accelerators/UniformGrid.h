@@ -10,6 +10,8 @@
 #include <windows.h>
 #endif
 
+#include <cstdlib>
+
 //#define NOTRIBOX
 #define NEW
 //forward declarations
@@ -42,16 +44,16 @@ private:
 //    int getNumCells( void ){ return m_gridDimension; }
     void addpadding(int);
     void getVoxel(Ray *aRay) const;
-    void stepgrid(Ray *l_pRay, Point3f l_step, Point3f *l_tMax) const;
-    bool rayBoxIntersect(Ray *aRay, Point3f bmin, Point3f bmax, float* timeIn) const;
-    Point3f sign(Point3f value) const;
-    Point3f clamp(Point3f value, Point3f minimum, Point3f maximum) const;
+    void stepgrid(Ray *l_pRay, Point3 l_step, Point3 *l_tMax) const;
+    bool rayBoxIntersect(Ray *aRay, Point3 bmin, Point3 bmax, float* timeIn) const;
+    Point3 sign(Point3 value) const;
+    Point3 clamp(Point3 value, Point3 minimum, Point3 maximum) const;
     void buildGrid(std::list<IModel*> &modelList);
 
     IPrimitive* m_tempPrim;
 
-    Point3f m_MinPt;     // smallest x,y,z within the grid
-    Point3f m_MaxPt;     // largest x,y,z within the grid
+    Point3 m_MinPt;     // smallest x,y,z within the grid
+    Point3 m_MaxPt;     // largest x,y,z within the grid
     int m_gridDimension;// number of cells along one dimension in the grid
     float m_cellSize;   // size of the square cells in the grid
 

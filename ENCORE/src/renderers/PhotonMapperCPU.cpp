@@ -26,6 +26,8 @@ PhotonMapperCPU.cpp
 
 #ifdef WIN32
 #include <GL/glut.h>
+#else
+#include <GL/freeglut.h>
 #endif
 
 #ifndef WIN32
@@ -179,8 +181,8 @@ void PhotonMapperCPU::init(Scene* scn, AccelerationStructure* accelStruct, Camer
         ShowIrrCache = false;
     }
 
-    m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3f(-75, -75, -75), 150, 150, 150);   
-    //m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3f(-100, -100, -100), 200, 200, 200);        
+    m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3(-75, -75, -75), 150, 150, 150);   
+    //m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3(-100, -100, -100), 200, 200, 200);        
 }
 
 
@@ -307,7 +309,7 @@ void PhotonMapperCPU::RenderPhotonTraces()
 
         for(int nodeIndex = 0; nodeIndex < (int) photonPaths[index].size(); nodeIndex++)
         {	
-            Point3f node = photonPaths[index][nodeIndex];
+            Point3 node = photonPaths[index][nodeIndex];
             glVertex3f(node.X(),node.Y(), node.Z());
         }
 
@@ -326,7 +328,7 @@ void PhotonMapperCPU::RenderIrrCache()
     // render photons
     std::list< TElement<IrrCacheNode> > values;
     int maxDepth = 0;
-    m_IrrCache->GetCache()->GetAllElementsNearPoint(Point3f(0, 0, 0), 50, values, maxDepth);
+    m_IrrCache->GetCache()->GetAllElementsNearPoint(Point3(0, 0, 0), 50, values, maxDepth);
 
     while(!values.empty())
     {
@@ -336,7 +338,7 @@ void PhotonMapperCPU::RenderIrrCache()
     float G = e.Data().m_Color.G();
     float B = e.Data().m_Color.B();
 
-    Vector3f power(R, G, B); 
+    Vector3 power(R, G, B); 
     power.Normalize();
 
     glColor3f(power.X(), power.Y(), power.Z());
@@ -365,16 +367,16 @@ void PhotonMapperCPU::RenderRays()
     // 
     //     Sampler s(m_pixelCols / m_BlockSize, m_pixelRows / m_BlockSize, 1);
     // 
-    //     Vector3f eyeToLook = Vector3f(m_pCamera->GetEye(), m_pCamera->GetLook());
+    //     Vector3 eyeToLook = Vector3(m_pCamera->GetEye(), m_pCamera->GetLook());
     //     eyeToLook.Normalize();
     // 
-    //     Point3f center = m_pCamera->GetEye() + (eyeToLook * m_pCamera->GetNearClipPlane()).ToPoint();
+    //     Point3 center = m_pCamera->GetEye() + (eyeToLook * m_pCamera->GetNearClipPlane()).ToPoint();
     // 
-    //     vector<Point3f> points = s.GetSamplePointsForRect(center, eyeToLook, W, H);
+    //     vector<Point3> points = s.GetSamplePointsForRect(center, eyeToLook, W, H);
     //
     //     for(int sampleIndex = 0; sampleIndex < (int) points.size(); ++sampleIndex)
     //     {
-    //         Point3f p = points[sampleIndex];
+    //         Point3 p = points[sampleIndex];
     //         glVertex3f(p.X(), p.Y(), p.Z());
     //         glVertex3f(p.X() + 0.1, p.Y() + 0.1, p.Z() + 0.1);
     //     }
@@ -383,23 +385,23 @@ void PhotonMapperCPU::RenderRays()
     Sampler t(10,20, 1);
 
     std::vector<Ray> emissionRays;
-    Vector3f n(0,1,0);
+    Vector3 n(0,1,0);
     n.Normalize();
-    emissionRays = t.GetSampleRaysForHemisphere(Point3f(0,0,0), n);
+    emissionRays = t.GetSampleRaysForHemisphere(Point3(0,0,0), n);
 
     for(int sample = 0; sample < (int) emissionRays.size(); ++sample)
     {
-        Point3f p1 = emissionRays[sample].Origin();
-        Point3f p2 = emissionRays[sample].Origin() + emissionRays[sample].Direction().ToPoint() * 25;
+        Point3 p1 = emissionRays[sample].Origin();
+        Point3 p2 = emissionRays[sample].Origin() + emissionRays[sample].Direction().ToPoint() * 25;
         glColor3f(0.0, 0.0, 1.0);
         glVertex3f(p1.X(), p1.Y(), p1.Z());
         glColor3f(1.0, 0.0, 0.0);
         glVertex3f(p2.X(), p2.Y(), p2.Z());
     }
-    //std::vector<Point3f> points = t.GetSamplePointsForRect(Point3f(0,50,0), Vector3f(0,-1,0), 50,50);
+    //std::vector<Point3> points = t.GetSamplePointsForRect(Point3(0,50,0), Vector3(0,-1,0), 50,50);
     //for(int sample = 0; sample < (int) points.size(); ++sample)
     //{
-    //    Point3f p1 = points[sample];
+    //    Point3 p1 = points[sample];
     //    glVertex3f(p1.X(), p1.Y(), p1.Z());
     //    glVertex3f(p1.X()+ 1, p1.Y()+ 1, p1.Z() + 1);
     //}
@@ -426,11 +428,11 @@ void PhotonMapperCPU::RenderPhotons()
     glColor3f(1.0, 1.0, 1.0);
     for(int i = 0; i < pointsGenerated; ++i)
     {
-        Vector3f normal(1, 0, 0);
+        Vector3 normal(1, 0, 0);
         normal.Normalize();
-        Vector3f v = randDirectionN(normal);
+        Vector3 v = randDirectionN(normal);
 
-        Point3f p = (v * 20).ToPoint();
+        Point3 p = (v * 20).ToPoint();
         glPointSize(1.0);
 
         glBegin(GL_POINTS);
@@ -481,10 +483,10 @@ void PhotonMapperCPU::RenderPhotons()
         glPopMatrix();
     }
 
-    Point3f loc = Point3f(0, 0, 0);
+    Point3 loc = Point3(0, 0, 0);
 
     // render photons
-    vector<PhotonDistPair> photons = m_causticsPhotonMap->GetNearestNPhotons(100000, 7000, loc, Vector3f(-1, 0, 0));
+    vector<PhotonDistPair> photons = m_causticsPhotonMap->GetNearestNPhotons(100000, 7000, loc, Vector3(-1, 0, 0));
     for(int index = 0; index < photons.size(); ++index)
     {
         const Photon* p = photons[index].m_pPhoton;
@@ -493,7 +495,7 @@ void PhotonMapperCPU::RenderPhotons()
         float G = p->Power().G();
         float B = p->Power().B();
 
-        Vector3f power(R, G, B); 
+        Vector3 power(R, G, B); 
         power.Normalize();
 
         if(p->IsShadowPhoton())
@@ -629,7 +631,7 @@ void PhotonMapperCPU::EmitPhotons()
     emissionTest.close();
 }
 
-void PhotonMapperCPU::TracePhoton(Photon p, Vector3f initialDir)
+void PhotonMapperCPU::TracePhoton(Photon p, Vector3 initialDir)
 {
     int bounces = 0;
 
@@ -708,7 +710,7 @@ void PhotonMapperCPU::ReflectPhotonSpecularly(Photon *p, int bounces, Ray &photo
     // find specular reflection path
     float normScale = 2 * Dot(photonPath.Direction(), surfaceInfo.hitNormal);
 
-    Vector3f rDir = photonPath.Direction() - (surfaceInfo.hitNormal * normScale);
+    Vector3 rDir = photonPath.Direction() - (surfaceInfo.hitNormal * normScale);
     rDir.Normalize();
 
     photonPath.Direction() = rDir;
@@ -845,7 +847,7 @@ bool PhotonMapperCPU::TransmitRay(Ray initial, HitInfo incidentHit, Ray &transmi
     }
 
     //// CALC T  /////
-    Vector3f N = incidentHit.hitNormal;
+    Vector3 N = incidentHit.hitNormal;
 
     float cRatio = (c1 == 0) ? (c2 / 0.0001) : (c2 / c1);
 
@@ -855,7 +857,7 @@ bool PhotonMapperCPU::TransmitRay(Ray initial, HitInfo incidentHit, Ray &transmi
 
 
     // calc T
-    Vector3f T = (initial.Direction() * cRatio) + (N * (cRatio*nDotDir - theta2));
+    Vector3 T = (initial.Direction() * cRatio) + (N * (cRatio*nDotDir - theta2));
     T.Normalize();
 
     //// SAVE TRANSMISSION RAY ////
@@ -961,7 +963,7 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
         {
             IEmissive* l = lights[index];
 
-            std::vector<Point3f> samplePoints;
+            std::vector<Point3> samplePoints;
             if(doShadowTest)
             {
                 samplePoints = l->GetSamplePoints(1,1,1);
@@ -977,14 +979,14 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
                 if(lit)
                 {
                     // Shade
-                    Vector3f dirToLight(hit.hitPoint, samplePoints[sampleIndex]);
+                    Vector3 dirToLight(hit.hitPoint, samplePoints[sampleIndex]);
                     dirToLight.Normalize();
 
                     // TODO: direct lighting fix until area lights are refactored a bit
 
                     // DIFFUSE //
-                    float lightContrib = Dot(-dirToLight, Vector3f(0,-1, 0));
-                    Vector3f normal = (hit.isEntering) ? hit.hitNormal :  Vector3f(0, 0, 0) - hit.hitNormal ; 
+                    float lightContrib = Dot(-dirToLight, Vector3(0,-1, 0));
+                    Vector3 normal = (hit.isEntering) ? hit.hitNormal :  Vector3(0, 0, 0) - hit.hitNormal ; 
                     normal.Normalize();
 
                     float contrib = max(Dot(normal, dirToLight), 0.0f);
@@ -993,10 +995,10 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
                     // SPECULAR //
                     if(objMaterial->GetAvgSpecularReflectance() > 0)
                     {
-                        Vector3f V(hit.hitPoint, eyeRay.Origin());
+                        Vector3 V(hit.hitPoint, eyeRay.Origin());
                         V.Normalize();
 
-                        Vector3f H(dirToLight + V);
+                        Vector3 H(dirToLight + V);
                         H.Normalize();
 
                         float NdotH = Dot(H, hit.hitNormal);
@@ -1022,7 +1024,7 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
 
         float normScale = 2 * Dot(eyeRay.Direction(), hit.hitNormal);
 
-        Vector3f rDir = eyeRay.Direction() - (hit.hitNormal * normScale);
+        Vector3 rDir = eyeRay.Direction() - (hit.hitNormal * normScale);
         rDir.Normalize();
 
         Ray reflectionRay;
@@ -1171,7 +1173,7 @@ Color PhotonMapperCPU::CalculateIndirectIllumination(Ray eyeRay, HitInfo hit)
             } 
 
 
-            Ri += 1 / (Vector3f(sampleHit.hitPoint, hit.hitPoint)).Magnitude();
+            Ri += 1 / (Vector3(sampleHit.hitPoint, hit.hitPoint)).Magnitude();
             illumination += irrValue; 
 
             sampleHits++;
@@ -1211,15 +1213,15 @@ Color PhotonMapperCPU::CalculateCausticRadiance(Ray eyeRay, HitInfo hit)
     return caustics;
 }
 
-bool PhotonMapperCPU::IsInShadow(Point3f surfacePoint, Point3f lightPoint)
+bool PhotonMapperCPU::IsInShadow(Point3 surfacePoint, Point3 lightPoint)
 {
-    Vector3f shadowRayDir = Vector3f(surfacePoint, lightPoint);
+    Vector3 shadowRayDir = Vector3(surfacePoint, lightPoint);
 
     float distToLight = shadowRayDir.Magnitude();
 
     shadowRayDir.Normalize();
 
-    Point3f shadowRayOrigin = surfacePoint + (shadowRayDir * 0.01).ToPoint();
+    Point3 shadowRayOrigin = surfacePoint + (shadowRayDir * 0.01).ToPoint();
     Ray shadowRay(shadowRayOrigin, shadowRayDir);
     HitInfo shadowHit = m_pAccelStruct->intersect(shadowRay);
 
@@ -1258,7 +1260,7 @@ void PhotonMapperCPU::TransmitTillTermination(Ray incoming, HitInfo incidentHit,
     }
 
     //// CALC T  /////
-    Vector3f N = incidentHit.hitNormal;
+    Vector3 N = incidentHit.hitNormal;
 
     float cRatio = (c1 == 0) ? (c2 / 0.0001) : (c2 / c1);
 
@@ -1268,7 +1270,7 @@ void PhotonMapperCPU::TransmitTillTermination(Ray incoming, HitInfo incidentHit,
 
 
     // calc T
-    Vector3f T = (incoming.Direction() * cRatio) + (N * (cRatio*nDotDir - theta2));
+    Vector3 T = (incoming.Direction() * cRatio) + (N * (cRatio*nDotDir - theta2));
     T.Normalize();
 
     //// TRANSMIT AGAIN ////

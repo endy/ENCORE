@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Color.h"
-#include "TPoint3.h"
+#include "Point3.h"
 #include "Ray.h"
 
 #include <vector>
@@ -35,9 +35,9 @@ namespace encore
         ///  Return a ray that corresponds to the direction of an emitted photon
         virtual Ray EmitPhoton() = 0;
         /// Get the point, or a point of a photon emission
-        virtual Point3f GetPointOfEmission() = 0;
+        virtual Point3 GetPointOfEmission() = 0;
         /// Get sample points for soft shadows
-        virtual std::vector<Point3f> GetSamplePoints(int xDivisions, int yDivisions, int samplesPerDivision){ return std::vector<Point3f>(); }
+        virtual std::vector<Point3> GetSamplePoints(int xDivisions, int yDivisions, int samplesPerDivision){ return std::vector<Point3>(); }
 
 		Color GetEmissiveColor() const { return m_EmissiveColor; }
 		void  SetEmissiveColor(Color emissive){ m_EmissiveColor = emissive; } 

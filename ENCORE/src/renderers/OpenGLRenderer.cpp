@@ -1,7 +1,9 @@
+
 #include "OpenGLRenderer.h"
 #include <assert.h>
 #include "Camera.h"
 #include "Triangle.h"
+
 
 OpenGLRenderer::OpenGLRenderer(void)
 : m_pVertexIndices(NULL), m_pVertexCoords(NULL), m_pVertexNormals(NULL), m_pVertexColors(NULL)
@@ -115,7 +117,7 @@ void OpenGLRenderer::render( void )
     {
         glEnable(lightNum);
         const Color c = (*light)->GetEmissiveColor();
-        const Point3f p = (*light)->GetPointOfEmission();
+        const Point3 p = (*light)->GetPointOfEmission();
         float lightIntensity[] = { c.R(), c.G(), c.B(), c.A() };
         float lightPosition[] = { p.X(), 
                                   p.Y(),

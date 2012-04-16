@@ -13,6 +13,8 @@ A lightweight 4x4 affine matrix for graphics
 #include <iostream>
 #include "Vector3.h"
 
+#include <cstdlib>
+
 using encore::Point3;
 using encore::Vector3;
 
@@ -48,8 +50,8 @@ public:
     TAffineMatrix<T> operator*(const TAffineMatrix<T> &rhs);
     TAffineMatrix<T>& operator*=(const TAffineMatrix<T> &rhs);
 
-    TPoint3<T> operator*(const TPoint3<T> &rhs);
-    Vector3 operator*(const TVector3<T> &rhs);
+    Point3 operator*(const Point3 &rhs);
+    Vector3 operator*(const Vector3 &rhs);
 
     // access operators
     T& operator()(unsigned int row, unsigned int col)
@@ -189,7 +191,7 @@ template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetRotationMatrix(Vector3 
 
     s.Normalize();
 
-    Vector3f t = Cross(r, s);
+    Vector3 t = Cross(r, s);
     t.Normalize();
 
     rMatrix(0,0) = r.X();
@@ -320,9 +322,9 @@ template <class T> TAffineMatrix<T>& TAffineMatrix<T>::operator*=(const TAffineM
     return *this;
 }
 
-template <class T> TPoint3<T> TAffineMatrix<T>::operator*(const TPoint3<T> &rhs)
+template <class T> Point3 TAffineMatrix<T>::operator*(const Point3 &rhs)
 {
-    TPoint3<T> p;
+    Point3 p;
 
     p.X() = (*this)(0,0) * rhs.X() + (*this)(0, 1) * rhs.Y() + (*this)(0, 2) * rhs.Z();
     p.Y() = (*this)(1,0) * rhs.X() + (*this)(1, 1) * rhs.Y() + (*this)(1, 2) * rhs.Z();
@@ -331,7 +333,7 @@ template <class T> TPoint3<T> TAffineMatrix<T>::operator*(const TPoint3<T> &rhs)
     return p;
 }
 
-template <class T> Vector3 TAffineMatrix<T>::operator *(const TVector3<T> &rhs)
+template <class T> Vector3 TAffineMatrix<T>::operator *(const Vector3 &rhs)
 {
     Vector3 v;
 

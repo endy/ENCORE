@@ -9,20 +9,20 @@
 #include "Ray.h"
 
 using encore::Ray;
-using encore::Point3f;
-using encore::Vector3f;
+using encore::Point3;
+using encore::Vector3;
 
 class Sampler
 {
 public:
     Sampler(int xDivisions, int zDivisions, int samplesPerCell);
 
-    std::vector<Point3f> GetSamplePoints(){ return m_SamplePoints; }
+    std::vector<Point3> GetSamplePoints(){ return m_SamplePoints; }
 
     // creates rays to sample a hemisphere above a point with the given normal
-    std::vector<Ray> GetSampleRaysForHemisphere(Point3f origin, Vector3f normal);
+    std::vector<Ray> GetSampleRaysForHemisphere(Point3 origin, Vector3 normal);
 
-    std::vector<Point3f> GetSamplePointsForRect(Point3f center, Vector3f normal, float length, float width);
+    std::vector<Point3> GetSamplePointsForRect(Point3 center, Vector3 normal, float length, float width);
 
     void SetJitterPercent(float percentJitter){ m_PercentJitter = percentJitter; }
 
@@ -38,19 +38,19 @@ private:
     void SphericalToCartesian();
 
     // move sample points in the direction of the given vector
-    void TranslatePoints(Vector3f translationVector);
+    void TranslatePoints(Vector3 translationVector);
 
     // maps the current width/length to the new width/length
     void ScalePoints(float length, float width);
 
     // rotates points to align with normal
-    void AlignPlaneWithNormal(Vector3f normal);
+    void AlignPlaneWithNormal(Vector3 normal);
 
     // get rays from rayOrigin to sample points
-    std::vector<Ray> GetSampleRays(Point3f rayOrigin);
+    std::vector<Ray> GetSampleRays(Point3 rayOrigin);
 
 private:
-    Vector3f m_Normal;
+    Vector3 m_Normal;
 
     int m_xDivisions;
     int m_zDivisions;
@@ -61,5 +61,5 @@ private:
     float m_CurrentWidth;
     float m_CurrentLength;
 
-    std::vector<Point3f> m_SamplePoints;
+    std::vector<Point3> m_SamplePoints;
 };

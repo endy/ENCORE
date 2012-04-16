@@ -5,10 +5,21 @@ CPPINCS = -I renderers/ \
           -I math/ \
           -I accelerators/
 
-CPPFLAGS = -Wall -fno-implicit-templates
+#CPPFLAGS = -Wall
+
+
+CPPFILES = main.cpp \
+           renderers/PhotonMapperCPU.cpp \
+           renderers/PhotonMap.cpp \
+           renderers/Photon.cpp \
+           renderers/Sampler.cpp \
+           renderers/Tonemap.cpp \
+           renderers/OpenGLRenderer.cpp
+
+
 
 main:
-	g++ -c main.cpp $(CPPFLAGS) $(CPPINCS)
+	g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)
 
 
 default: main

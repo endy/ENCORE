@@ -8,12 +8,12 @@ Common.h
 #pragma once
 
 #include <float.h>
-#include "TVector3.h"
+#include "Vector3.h"
 
 #include <string>
 #include <iostream>
 
-using encore::Vector3f;
+using encore::Vector3;
 
 ///// COMMON MACROS  ///////////////////////////////////////
 
@@ -46,19 +46,19 @@ float randNumberN(float inMin, float inMax);
 /*
 *  Returns a random direction vector 
 */
-Vector3f randDirection();
+Vector3 randDirection();
 
 /*
 *  Get random surface reflection vector
 */
-Vector3f randSurfaceReflection(Vector3f surfNormal);
+Vector3 randSurfaceReflection(Vector3 surfNormal);
 
 /*
 *  Return a cosine weighted random direction using the normal n
 */
-Vector3f randDirectionN(Vector3f n);
+Vector3 randDirectionN(Vector3 n);
 
-Vector3f randDirectionSuperN(Vector3f n);
+Vector3 randDirectionSuperN(Vector3 n);
 
 // generates a random number on a disc
 void randPointOnDisc(float &phi, float &r);

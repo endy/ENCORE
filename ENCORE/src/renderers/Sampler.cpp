@@ -7,7 +7,7 @@
 
 Sampler::Sampler(int xDivisions, int zDivisions, int samplesPerCell)
 {
-    m_Normal = Vector3f(0, 1, 0);
+    m_Normal = Vector3(0, 1, 0);
 
     m_xDivisions  = xDivisions;
     m_zDivisions = zDivisions;
@@ -20,7 +20,7 @@ Sampler::Sampler(int xDivisions, int zDivisions, int samplesPerCell)
     m_PercentJitter = 0.0f;
 }
 
-std::vector<Ray> Sampler::GetSampleRaysForHemisphere(Point3f origin, Vector3f normal)
+std::vector<Ray> Sampler::GetSampleRaysForHemisphere(Point3 origin, Vector3 normal)
 {
 #if 0
     std::vector<Ray> samples;
@@ -35,7 +35,7 @@ std::vector<Ray> Sampler::GetSampleRaysForHemisphere(Point3f origin, Vector3f no
     }
     return samples;
 #else
-    m_Normal = Vector3f(0, 0, 1);  // set to proper normal for this method
+    m_Normal = Vector3(0, 0, 1);  // set to proper normal for this method
 
     GenerateHemisphereSamplePoints();
     SphericalToCartesian();
@@ -46,19 +46,19 @@ std::vector<Ray> Sampler::GetSampleRaysForHemisphere(Point3f origin, Vector3f no
 #endif
 }
 
-std::vector<Point3f> Sampler::GetSamplePointsForRect(Point3f center, Vector3f normal, float length, float width)
+std::vector<Point3> Sampler::GetSamplePointsForRect(Point3 center, Vector3 normal, float length, float width)
 {
-    m_Normal = Vector3f(0, 1, 0);  // set to proper normal
+    m_Normal = Vector3(0, 1, 0);  // set to proper normal
     
     GenerateGridSamplePoints();
-    TranslatePoints(Vector3f(-0.5, 0.0, -0.5)); // center points at origin
+    TranslatePoints(Vector3(-0.5, 0.0, -0.5)); // center points at origin
     ScalePoints(length, width); // resize points to fit rect
         
     AlignPlaneWithNormal(normal); // rotate points so they are aligned with the plane
 
-    TranslatePoints(Vector3f(Point3f(), center)); // move the points to where the plane is
+    TranslatePoints(Vector3(Point3(), center)); // move the points to where the plane is
 
-    Vector3f diff = normal * 0.01f; 
+    Vector3 diff = normal * 0.01f; 
     TranslatePoints(diff);
 
     return m_SamplePoints;
@@ -88,11 +88,11 @@ void Sampler::GenerateGridSamplePoints()
                     float jitterValueX = randNumber(-halfCellLength, halfCellLength) * m_PercentJitter;
                     float jitterValueZ = randNumber(-halfCellWidth, halfCellWidth) * m_PercentJitter;
 
-                    m_SamplePoints.push_back(Point3f(cellCenterX + jitterValueX, 0, cellCenterZ + jitterValueZ));
+                    m_SamplePoints.push_back(Point3(cellCenterX + jitterValueX, 0, cellCenterZ + jitterValueZ));
                 }
                 else
                 {
-                    m_SamplePoints.push_back(Point3f(cellCenterX, 0, cellCenterZ));
+                    m_SamplePoints.push_back(Point3(cellCenterX, 0, cellCenterZ));
                 }                
             }
         }
@@ -124,11 +124,11 @@ void Sampler::GenerateHemisphereSamplePoints()
                     float jitteredThetaValue = randNumber(-halfThetaDiv, halfThetaDiv) * m_PercentJitter;
                     float jitteredPhiValue = randNumber(-halfPhiDiv, halfPhiDiv) * m_PercentJitter;
 
-                    m_SamplePoints.push_back(Point3f(theta + jitteredThetaValue, 0, phi + jitteredPhiValue));
+                    m_SamplePoints.push_back(Point3(theta + jitteredThetaValue, 0, phi + jitteredPhiValue));
                 }
                 else
                 {
-                    m_SamplePoints.push_back(Point3f(theta, 0, phi));
+                    m_SamplePoints.push_back(Point3(theta, 0, phi));
                 }                
             }
         }
@@ -143,15 +143,15 @@ void Sampler::SphericalToCartesian()
         float phi = m_SamplePoints[sampleIndex].Z();
 
         // absolute value at y (because we are sampling a hemisphere
-        Point3f p(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
-        Vector3f vP(Point3f(), p);
+        Point3 p(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta));
+        Vector3 vP(Point3(), p);
         vP.Normalize();
         m_SamplePoints[sampleIndex] = vP.ToPoint();  
     }
 }
 
 
-void Sampler::AlignPlaneWithNormal(Vector3f normal)
+void Sampler::AlignPlaneWithNormal(Vector3 normal)
 {
     normal.Normalize();
 
@@ -165,7 +165,7 @@ void Sampler::AlignPlaneWithNormal(Vector3f normal)
         // aligned with -Normal, simple flip is all that is needed
         for(int index = 0; index < (int) m_SamplePoints.size(); ++ index)
         {
-            Vector3f pVector(Point3f(), m_SamplePoints[index]);
+            Vector3 pVector(Point3(), m_SamplePoints[index]);
             pVector += pVector * -2;
             m_SamplePoints[index] = pVector.ToPoint();
         }
@@ -182,7 +182,7 @@ void Sampler::AlignPlaneWithNormal(Vector3f normal)
         return;
     }
 
-    Vector3f rv = Cross(m_Normal, normal);
+    Vector3 rv = Cross(m_Normal, normal);
     rv.Normalize();
 
     TAffineMatrix<float> m = TAffineMatrix<float>::GetRotationMatrix(rv, theta);
@@ -193,9 +193,9 @@ void Sampler::AlignPlaneWithNormal(Vector3f normal)
     }
 }
 
-void Sampler::TranslatePoints(Vector3f translationVector)
+void Sampler::TranslatePoints(Vector3 translationVector)
 {
-    Point3f transPoint = translationVector.ToPoint();
+    Point3 transPoint = translationVector.ToPoint();
     for(int sampleIndex = 0; sampleIndex < (int) m_SamplePoints.size(); ++sampleIndex)
     {
         m_SamplePoints[sampleIndex] = transPoint + m_SamplePoints[sampleIndex];
@@ -217,13 +217,13 @@ void Sampler::ScalePoints(float length, float width)
     m_CurrentWidth = width;
 }
 
-std::vector<Ray> Sampler::GetSampleRays(Point3f rayOrigin)
+std::vector<Ray> Sampler::GetSampleRays(Point3 rayOrigin)
 {
     std::vector<Ray> sampleRays(m_SamplePoints.size());
 
     for(int sampleIndex = 0; sampleIndex < (int) m_SamplePoints.size(); ++sampleIndex)
     {
-        Vector3f dir(Point3f(0.0f, 0.0f, 0.0f), m_SamplePoints[sampleIndex]);
+        Vector3 dir(Point3(0.0f, 0.0f, 0.0f), m_SamplePoints[sampleIndex]);
         dir.Normalize();
 
         Ray r(rayOrigin, dir);

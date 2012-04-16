@@ -83,7 +83,7 @@ private: // methods
 
     void EmitShadowPhoton(Photon p, Ray shadowPhotonPath);
 
-    bool IsInShadow(Point3f surfacePoint, Point3f lightPoint);
+    bool IsInShadow(Point3 surfacePoint, Point3 lightPoint);
 
     bool TransmitRay(Ray initial, HitInfo hit, Ray &transmitted);
 
@@ -127,7 +127,7 @@ private:  // member data
     IrrCache<Color> *m_NewIrrCache;
 
 	// misc rendering data
-	vector< vector<Point3f> > photonPaths;
+	vector< vector<Point3> > photonPaths;
 
     ////  SETTINGS  ////////////////////
 

@@ -6,3 +6,5 @@ ipch/
 *.vsp
 *.pdb
 *.ilk
+*.o
+*.swp
