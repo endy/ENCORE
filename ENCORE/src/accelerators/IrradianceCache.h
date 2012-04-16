@@ -9,12 +9,12 @@ class IrrCacheNode
 {
 public:
 
-    double GetWeight(Point3f p, Vector3f n);
+    double GetWeight(Point3 p, Vector3 n);
 
 public:
     Color       m_Color;
-    Point3f     m_Position;
-    Vector3f    m_Normal;
+    Point3     m_Position;
+    Vector3    m_Normal;
     float       m_R;
     double      m_Weight;
 };
@@ -22,14 +22,14 @@ public:
 class IrradianceCache
 {
 public:
-    IrradianceCache(Point3f minPoint, float xSize, float ySize, float zSize);
+    IrradianceCache(Point3 minPoint, float xSize, float ySize, float zSize);
     virtual ~IrradianceCache();
     
-    void AddIrradianceNode(IrrCacheNode value, Point3f location);
+    void AddIrradianceNode(IrrCacheNode value, Point3 location);
 
     // returns true whether the value radiance can be used at location
     // false if a new value needs to be calculated
-    bool GetIrradiance(Point3f location, Vector3f normal, Color &radiance);
+    bool GetIrradiance(Point3 location, Vector3 normal, Color &radiance);
 
     TOctree<IrrCacheNode>* GetCache(){ return m_Cache; }
 

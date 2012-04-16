@@ -1,11 +1,11 @@
 #pragma once
 
-#ifdef WIN32
-#include <GLEW/glew.h>
-#endif
+
+#include "GLEW/glew.h"
 
 #include <string>
-#include <math.h>
+#include <cmath>
+#include <cstring>
 
 static const int TEXTURE_SIZE_LIMIT = 4096;
 static const float INVERSE_TEXTURE_SIZE_LIMIT = 0.000244140625; // 1/4096

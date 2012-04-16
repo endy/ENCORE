@@ -12,8 +12,8 @@ namespace encore
 {
     Ray::Ray()
     {
-        m_Origin = Point3f();
-        m_Direction = Vector3f();
+        m_Origin = Point3();
+        m_Direction = Vector3();
 
         m_TracePosition = m_Origin;
         m_TraceTime = 0;
@@ -21,7 +21,7 @@ namespace encore
         m_cRecurseLevel = 0;
     }
 
-    Ray::Ray(Point3f origin, Vector3f direction)
+    Ray::Ray(Point3 origin, Vector3 direction)
     {
         m_Origin = origin;
         m_Direction = direction;
@@ -32,7 +32,7 @@ namespace encore
         m_cRecurseLevel = 0;
     }
 
-    Ray::Ray(Point3f origin, Vector3f direction, int dbgX, int dbgY)
+    Ray::Ray(Point3 origin, Vector3 direction, int dbgX, int dbgY)
     {
         m_Origin = origin;
         m_Direction = direction;
@@ -51,9 +51,9 @@ namespace encore
 
     }
 
-	Point3f Ray::GetPositionAtTime(float time)
+	Point3 Ray::GetPositionAtTime(float time)
 	{
-		Point3f point;
+		Point3 point;
 
 		point.X() = m_Origin.X() + m_Direction.X() * time;
 		point.Y() = m_Origin.Y() + m_Direction.Y() * time;
@@ -62,7 +62,7 @@ namespace encore
 		return point;
 	}
 
-    void Ray::SetTracePosition(Point3f position)
+    void Ray::SetTracePosition(Point3 position)
     {
         m_TracePosition = position;
     }

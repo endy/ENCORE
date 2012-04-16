@@ -55,8 +55,8 @@ void Bvh::update(std::list<IModel*> &modelList)
 
     primList.clear();
     
-    Point3f minPt(POS_INF, POS_INF,POS_INF);
-    Point3f maxPt(-POS_INF,-POS_INF,-POS_INF);
+    Point3 minPt(POS_INF, POS_INF,POS_INF);
+    Point3 maxPt(-POS_INF,-POS_INF,-POS_INF);
     myTriSize = 0;
 
     std::list<IModel*>::iterator model;
@@ -131,8 +131,8 @@ void Bvh::build(std::list<IModel*> &modelList)
     deleteTree();
     rightBOX.reserve(maxReserve);
     
-    Point3f minPt(POS_INF, POS_INF,POS_INF);
-    Point3f maxPt(-POS_INF,-POS_INF,-POS_INF);
+    Point3 minPt(POS_INF, POS_INF,POS_INF);
+    Point3 maxPt(-POS_INF,-POS_INF,-POS_INF);
     myTriSize = 0;
 
     std::list<IModel*>::iterator model;
@@ -596,13 +596,13 @@ void Bvh::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangle
             for ( t = pTris->begin(); t != pTris->end(); t++ )
             {
                 Triangle* tri = *t;
-                Point3f v0 = tri->getVertex0()->getCoordinates();
-                Point3f v1 = tri->getVertex1()->getCoordinates();
-                Point3f v2 = tri->getVertex2()->getCoordinates();
+                Point3 v0 = tri->getVertex0()->getCoordinates();
+                Point3 v1 = tri->getVertex1()->getCoordinates();
+                Point3 v2 = tri->getVertex2()->getCoordinates();
 
-                Vector3f n0 = tri->getVertex0()->getNormal();
-                Vector3f n1 = tri->getVertex1()->getNormal();
-                Vector3f n2 = tri->getVertex2()->getNormal();
+                Vector3 n0 = tri->getVertex0()->getNormal();
+                Vector3 n1 = tri->getVertex1()->getNormal();
+                Vector3 n2 = tri->getVertex2()->getNormal();
 
                 // vertices
                 *pV0 = v0.X(); ++pV0;
@@ -665,8 +665,8 @@ void Bvh::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangle
             todo.push_front( &bTree[right] );
             todo.push_front( &bTree[left] );
 
-            Point3f bMin = current->bound.getPos();
-            Point3f bMax = bMin + current->bound.getSize();
+            Point3 bMin = current->bound.getPos();
+            Point3 bMax = bMin + current->bound.getSize();
 
             *pV0 = bMin.X(); ++pV0;
             *pV0 = bMin.Y(); ++pV0;

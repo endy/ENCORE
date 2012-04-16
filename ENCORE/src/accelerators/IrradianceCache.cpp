@@ -3,12 +3,12 @@
 #include <iostream>
 
 
-double IrrCacheNode::GetWeight(Point3f p, Vector3f n)
+double IrrCacheNode::GetWeight(Point3 p, Vector3 n)
 {
     // Equation 11.5 from Pg 141 in Jensen's book
     // weight = 1.0 /( (||xi-x|| /Ri) + Sqrt(1.0-dot(Ni, N)));
 
-    double distance = Vector3f(p, m_Position).Magnitude();
+    double distance = Vector3(p, m_Position).Magnitude();
 
     double distCalc = (m_R == 0) ? 0 : distance / m_R;
 
@@ -27,7 +27,7 @@ double IrrCacheNode::GetWeight(Point3f p, Vector3f n)
     return m_Weight;
 }
 
-IrradianceCache::IrradianceCache(Point3f minPoint, float xSize, float ySize, float zSize)
+IrradianceCache::IrradianceCache(Point3 minPoint, float xSize, float ySize, float zSize)
 {
     m_Tolerance = 0.1;
 
@@ -44,7 +44,7 @@ IrradianceCache::~IrradianceCache()
     }
 }
 
-void IrradianceCache::AddIrradianceNode(IrrCacheNode value, Point3f location)
+void IrradianceCache::AddIrradianceNode(IrrCacheNode value, Point3 location)
 {
     if(value.m_Normal.MagnitudeSquared() == 0)
     {
@@ -54,7 +54,7 @@ void IrradianceCache::AddIrradianceNode(IrrCacheNode value, Point3f location)
 }
 
 
-bool IrradianceCache::GetIrradiance(Point3f position, Vector3f normal, Color &radiance)
+bool IrradianceCache::GetIrradiance(Point3 position, Vector3 normal, Color &radiance)
 {
     radiance = Color();
 

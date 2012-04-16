@@ -88,8 +88,8 @@ void Kdtree::build(std::list<IModel*> &modelList)
 //    if(built) // already built, return
 //        return;
 
-    Point3f minPt(INFINITY, INFINITY,INFINITY);
-    Point3f maxPt(-INFINITY,-INFINITY,-INFINITY);
+    Point3 minPt(INFINITY, INFINITY,INFINITY);
+    Point3 maxPt(-INFINITY,-INFINITY,-INFINITY);
 
     m_pModelList = &modelList;
     // compile all the primitives together
@@ -112,7 +112,7 @@ void Kdtree::build(std::list<IModel*> &modelList)
         }
     }
 
-    Point3f diff = Point3f(0.001f, 0.001f, 0.001f);
+    Point3 diff = Point3(0.001f, 0.001f, 0.001f);
     m_Bounds = AABB( minPt-diff, maxPt+diff );
     m_TotalPrimCount = (unsigned int)m_PrimList.size();
 
@@ -217,7 +217,7 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
     float invTotalSA = .5f/box.Area();
     
     int axis = 0; // default to Z axis
-    Point3f bsize = box.getSize();
+    Point3 bsize = box.getSize();
     /*
     if (( bsize.X() > bsize.Y()) && (bsize.X() > bsize.Z()) )
     {
@@ -231,7 +231,7 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
 
     bool found = false;
     int nleft = 0, nright = size;
-    Point3f d = bsize; // store diagonal
+    Point3 d = bsize; // store diagonal
 
     int otherAxis[3][2] = { {1,2},{0,2},{0,1} };
     
@@ -244,8 +244,8 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
             if(edge[axis][i].type == boundedge::end) 
                 --nright;
             float edget = edge[axis][i].splitpos;
-            Point3f minp = box.getPos();
-            Point3f maxp = minp + box.getSize();
+            Point3 minp = box.getPos();
+            Point3 maxp = minp + box.getSize();
             if(edget > minp[axis] && (edget-minp[axis]) > 0.0001 &&edget < maxp[axis])
             {
                 
@@ -371,8 +371,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
         {
             tbox = (*tit)->getAABB();
             AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
-            Point3f minp = mybox->getPos();
-            Point3f maxp = minp + mybox->getSize();
+            Point3 minp = mybox->getPos();
+            Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
 		    edge[0][i*2].set(minp.X(), (*tit), true); 
@@ -391,8 +391,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
         {
             tbox = leftBOX[i]->getAABB();
             AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
-            Point3f minp = mybox->getPos();
-            Point3f maxp = minp + mybox->getSize();
+            Point3 minp = mybox->getPos();
+            Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
 		    edge[0][i*2].set(minp.X(), 0, true); 
@@ -412,8 +412,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             unsigned int tIndex = rIndex + i;
             tbox = rightBOX[tIndex]->getAABB();
             AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
-            Point3f minp = mybox->getPos();
-            Point3f maxp = minp + mybox->getSize();
+            Point3 minp = mybox->getPos();
+            Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
 		    edge[0][i*2].set(minp.X(), 0, true); 
@@ -462,8 +462,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             }
             
             AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
-            Point3f minp = mybox->getPos();
-            Point3f maxp = minp + mybox->getSize();
+            Point3 minp = mybox->getPos();
+            Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
 		    edge[0][i*2] = boundedge(minp.X(), (*p), true); 
@@ -514,8 +514,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
 	}
 #else
     axis = depth % 3;
-    Point3f minp = box.getPos();
-    Point3f maxp = minp + box.getSize();
+    Point3 minp = box.getPos();
+    Point3 maxp = minp + box.getSize();
     splitpos = (minp[axis] + maxp[axis])/2;
 #endif
 
@@ -547,8 +547,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
     }
 
 	// figure out left voxel and right voxel
-    Point3f rminp = box.getPos();
-    Point3f lmaxp = box.getPos() + box.getSize();
+    Point3 rminp = box.getPos();
+    Point3 lmaxp = box.getPos() + box.getSize();
 
     rminp[axis] = splitpos;
     lmaxp[axis] = splitpos;
@@ -685,7 +685,7 @@ HitInfo Kdtree::intersect( Ray &r )
 {
     HitInfo hit;
     hit.hitTime = INFINITY;
-    Point3f invDir(1.f/r.Direction().X(), 1.f/r.Direction().Y(), 1.f/r.Direction().Z());
+    Point3 invDir(1.f/r.Direction().X(), 1.f/r.Direction().Y(), 1.f/r.Direction().Z());
     float tmin = 0;
     float tmax = 0;
 
@@ -1016,8 +1016,8 @@ void Kdtree::setGPUParameters( CShader& shader, GPUAccelerationStructureData& ac
 */
 
 
-    Point3f minPt = m_Bounds.getPos();
-    Point3f maxPt = minPt + m_Bounds.getSize();
+    Point3 minPt = m_Bounds.getPos();
+    Point3 maxPt = minPt + m_Bounds.getSize();
 
     CGparameter& minPoint = shader.GetNamedParameter("gmin");
     cgGLSetParameter3f( minPoint, minPt.X(), minPt.Y(), minPt.Z() );
