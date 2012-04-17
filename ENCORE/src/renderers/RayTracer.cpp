@@ -8,6 +8,8 @@
 #include <GL\glut.h>
 #elif __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
 #endif
 
 #ifndef WIN32
@@ -406,11 +408,11 @@ std::vector<Ray> RayTracer::CalcEyeRaySamples(int sampleCount, float percentJitt
 
         float N = m_pCamera->GetNearClipPlane();
 
-        Vector3f n = m_pCamera->N() * -N;
-        Vector3f u = m_pCamera->U() * Uc; 
-        Vector3f v = m_pCamera->V() * Vr; 
+        Vector3 n = m_pCamera->N() * -N;
+        Vector3 u = m_pCamera->U() * Uc; 
+        Vector3 v = m_pCamera->V() * Vr; 
 
-        Vector3f direction = n + u + v; 
+        Vector3 direction = n + u + v; 
 
         direction.Normalize();
 

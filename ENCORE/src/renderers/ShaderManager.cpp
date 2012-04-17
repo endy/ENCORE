@@ -2,6 +2,7 @@
 #include "ShaderManager.h"
 
 #include <cstdio>
+#include <cstdlib>
 
 void reportError(const char* error)
 {
@@ -21,6 +22,7 @@ namespace encore
 
     CShaderManager::~CShaderManager()
     {
+#ifndef STUB_SHADERMANAGER
 	    while(!m_Shaders.empty())
 	    {
 		    // remove shader from the list
@@ -31,10 +33,12 @@ namespace encore
 	    }
 
 	    cgDestroyContext(m_Context);
+#endif // STUB_SHADERMANAGER
     }
 
     void CShaderManager::Initialize()
     {
+#ifndef STUB_SHADERMANAGER
 	    // TODO: Should Cg errors cause an exit??  That seems very harsh.
 	    // figure out a way to do a graceful failure later on -Brandon
 
@@ -65,11 +69,12 @@ namespace encore
 		    exit(1);
 	    }
 	    cgGLSetOptimalOptions(m_FragmentProfile);	
-    	
+#endif // STUB_SHADERMANAGER
     }
 
     void CShaderManager::LoadVertexShader(int shaderID, string filename, string entryFunction /* = "" */)
     {
+#ifndef STUB_SHADERMANAGER
 	    CGprogram program;
     	
         if( filename.length() == 0 )
@@ -110,9 +115,11 @@ namespace encore
 	    // store this program as a CShader
 	    m_Shaders[shaderID] = new CShader(CShader::VERTEX, shaderID, m_VertexProfile);
 	    m_Shaders[shaderID]->SetProgram(program);
+#endif // STUB_SHADERMANAGER
     }
     void CShaderManager::LoadFragmentShader(int shaderID, string filename, string entryFunction /* = "" */)
     {
+#ifndef STUB_SHADERMANAGER
 	    CGprogram program;
         
         if( filename.length() == 0 )
@@ -153,6 +160,7 @@ namespace encore
 	    // store this program as a CShader
 	    m_Shaders[shaderID] = new CShader(CShader::FRAGMENT, shaderID, m_FragmentProfile);
 	    m_Shaders[shaderID]->SetProgram(program);
+#endif // STUB_SHADERMANAGER
     }
 
     CShader& CShaderManager::GetShader(int shaderID)
@@ -162,7 +170,9 @@ namespace encore
 
     void CShaderManager::UnloadShader(int shaderID)
     {
-	    cgDestroyProgram(m_Shaders[shaderID]->GetProgram());
+#ifndef STUB_SHADERMANAGER
+
+        cgDestroyProgram(m_Shaders[shaderID]->GetProgram());
     	
 	    // remove the shader from the shaders list
 	    CShader *shader = m_Shaders[shaderID];
@@ -171,5 +181,6 @@ namespace encore
 	    // delete the shader
 	    delete shader;
 	    shader = NULL;	
+#endif // STUB_SHADERMANAGER
     }
 }

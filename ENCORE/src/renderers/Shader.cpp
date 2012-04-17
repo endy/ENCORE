@@ -5,6 +5,8 @@
 #include "Windows.h"
 #endif
 
+#define STUB_CSHADER
+
 namespace encore
 {
     CShader::CShader(ShaderType type, int shaderID, CGprofile& profile):
@@ -33,24 +35,24 @@ namespace encore
 
     void CShader::Bind()
     {
-	    cgGLBindProgram(m_Program);
+// stub	    cgGLBindProgram(m_Program);
     }
 
     void CShader::Unbind()
     {
-	    cgGLUnbindProgram(m_Profile);
+// stub	    cgGLUnbindProgram(m_Profile);
     }
 
     void CShader::Enable()
     {
-	    cgGLEnableProfile(m_Profile);
+// stub	    cgGLEnableProfile(m_Profile);
     }
 
     void CShader::Disable()
     {
-	    cgGLDisableProfile(m_Profile);
+// stub	    cgGLDisableProfile(m_Profile);
     }
-
+#ifndef STUB_CSHADER
     CGparameter& CShader::GetNamedParameter(string name, bool isTextureParam /* = false */)
     {
 
@@ -101,4 +103,5 @@ namespace encore
 		    iter++;
 	    }
     }
+#endif // STUB_CSHADER
 }

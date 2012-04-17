@@ -9,24 +9,24 @@ CPPINCS = -I renderers/ \
 #CPPFLAGS = -Wall
 
 
-#CPPFILES = main.cpp \
+CPPFILES = main.cpp \
+           renderers/Renderer.cpp \
            renderers/PhotonMapperCPU.cpp \
+           renderers/PhotonMapperGPU.cpp \
            renderers/PhotonMap.cpp \
            renderers/Photon.cpp \
            renderers/Sampler.cpp \
            renderers/Tonemap.cpp \
-           renderers/OpenGLRenderer.cpp
-
-#CPPFILES = math/Affine4.cpp \
+           renderers/OpenGLRenderer.cpp \
+           math/Affine4.cpp \
            math/Ray.cpp \
            accelerators/BasicAS.cpp \
            accelerators/BVH.cpp \
            accelerators/IrradianceCache.cpp \
            accelerators/Kdtree.cpp \
            accelerators/UniformGrid.cpp \
-           accelerators/GPUAccelerationStructureData.cpp
-
-#CPPFILES = misc/BatteryPowerWin32.cpp \
+           accelerators/GPUAccelerationStructureData.cpp \
+           misc/BatteryPowerWin32.cpp \
            misc/Common.cpp \
            misc/Logfile.cpp \
            misc/Options.cpp \
@@ -35,9 +35,8 @@ CPPINCS = -I renderers/ \
            misc/Texture.cpp \
            misc/TextureMaker.cpp \
            misc/TextureManager.cpp \
-           misc/Timer.cpp
-
-CPPFILES = scene/AABB.cpp \
+           misc/Timer.cpp \
+           scene/AABB.cpp \
            scene/Camera.cpp \
            scene/Color.cpp \
            scene/DynamicModel.cpp \
@@ -57,9 +56,11 @@ CPPFILES = scene/AABB.cpp \
            scene/TrianglePrim.cpp \
            scene/Vertex.cpp
 
-main:
+compile:
 	g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)
 
+link: compile
+	g++ -o encore *.o
 
-default: main
-	g++ -o encore main.o
+default:
+	link

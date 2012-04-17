@@ -1,8 +1,12 @@
-#include "gpuraytracer.h"
-#include <assert.h>
+#include "GPURayTracer.h"
+#include <cassert>
 
-//#define GLH_EXT_SINGLE_FILE
-#include <glh/glh_extensions.h>
+#define STUB 1
+
+#ifndef STUB
+
+#define GLH_EXT_SINGLE_FILE
+#include "GLEW/glew.h"
 
 void GPURayTracer::printTextureValues(GLenum texture)
 {
@@ -507,3 +511,4 @@ void GPURayTracer::ShadeKernel()
 //  cout << "Shading Complete!!\n";
     
 }
+#endif // STUB

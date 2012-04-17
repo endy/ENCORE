@@ -9,7 +9,8 @@
 //      Peter Lohrman:   plohrmann@alum.WPI.EDU
 //////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef _VECTOR3_H_
+#define _VECTOR3_H_
 
 #include "Point3.h"
 #include <cmath>
@@ -287,4 +288,8 @@ namespace encore
 
 		return product;
 	}
+
 }
+
+#endif // _VECTOR3_H_
+

@@ -11,6 +11,8 @@
 #include <GL/glut.h>
 #elif __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
 #endif
 
 #include "Shader.h"

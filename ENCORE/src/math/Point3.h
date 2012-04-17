@@ -8,7 +8,8 @@ A 3-dimentional point template class
 
 ****************************************************************************/
 
-#pragma once
+#ifndef _POINT3_H_
+#define _POINT3_H_
 
 #include <cassert>
 #include <memory>
@@ -139,5 +140,6 @@ namespace encore
 	}
 }
 
+#endif // _POINT3_H_
 
 

@@ -1,5 +1,6 @@
 #include "CPURTRenderer.h"
-#include <stdio.h>
+#include <cstdio>
+#include <cstdlib>
 
 #include "Primitive.h"
 
@@ -7,6 +8,8 @@
 #include <GL/glut.h>
 #elif __APPLE__
 #include <GLUT/glut.h>
+#else
+#include <GL/freeglut.h>
 #endif
 
 /*********************
@@ -85,7 +88,7 @@ Color CPURTRenderer::phongShade(HitInfo bestHit, Ray* l_Ray)
 
 /*
         Ray feeler;
-        feeler.Origin() = Point3f( bestHit->hitPoint.X() + (l_Ray->Direction().X() - EPSILON),
+        feeler.Origin() = Point3( bestHit->hitPoint.X() + (l_Ray->Direction().X() - EPSILON),
                                    bestHit->hitPoint.Y() + (l_Ray->Direction().Y() - EPSILON),
                                    bestHit->hitPoint.Z() + (l_Ray->Direction().Z() - EPSILON) );
 //        feeler.m_nRecurseLevel = 1;
@@ -96,7 +99,7 @@ Color CPURTRenderer::phongShade(HitInfo bestHit, Ray* l_Ray)
         for (alight = lightList->begin(); alight != lightList->end(); alight++)
         {
             Color lightColor = (*alight)->GetEmissiveColor();
-            const Point3f lightPos = (*alight)->GetPointOfEmission();
+            const Point3 lightPos = (*alight)->GetPointOfEmission();
 
             Color contribution;
 /*
@@ -109,7 +112,7 @@ Color CPURTRenderer::phongShade(HitInfo bestHit, Ray* l_Ray)
 */
             // Compute the diffuse term
 
-            Vector3f L(bestHit.hitPoint, lightPos);
+            Vector3 L(bestHit.hitPoint, lightPos);
             L.Normalize();
 
             float NdotL = Dot(L ,bestHit.hitNormal);
@@ -121,10 +124,10 @@ Color CPURTRenderer::phongShade(HitInfo bestHit, Ray* l_Ray)
             }
 
             // Compute the specular term
-            Vector3f V(bestHit.hitPoint, l_Ray->Origin());
+            Vector3 V(bestHit.hitPoint, l_Ray->Origin());
             V.Normalize();
 
-            Vector3f H(L + V);
+            Vector3 H(L + V);
             H.Normalize();
 
             float NdotH = Dot(H, bestHit.hitNormal);
@@ -185,7 +188,7 @@ Color CPURTRenderer::shade( Ray* l_pRay )
         }
         else
         {
-            Point3f ret = hit.hitVoxel;
+            Point3 ret = hit.hitVoxel;
             c = Color( ret.X(), ret.Y(), ret.Z(), 0 );
         }
     }
@@ -219,11 +222,11 @@ void CPURTRenderer::render()
             float x = -m_pCamera->GetWorldWidth() + col*Wconst;
             float y = -m_pCamera->GetWorldHeight() + row*Hconst;
             Ray aRay;
-            aRay.Direction() = Vector3f(  -m_pCamera->GetNearClipPlane()*m_pCamera->N().X() + x*m_pCamera->U().X() + y*m_pCamera->V().X(),
+            aRay.Direction() = Vector3(  -m_pCamera->GetNearClipPlane()*m_pCamera->N().X() + x*m_pCamera->U().X() + y*m_pCamera->V().X(),
                                 -m_pCamera->GetNearClipPlane()*m_pCamera->N().Y() + x*m_pCamera->U().Y() + y*m_pCamera->V().Y(),
                                 -m_pCamera->GetNearClipPlane()*m_pCamera->N().Z() + x*m_pCamera->U().Z() + y*m_pCamera->V().Z());
             
-            aRay.Origin() = Point3f(m_pCamera->GetEye().X(), m_pCamera->GetEye().Y(), m_pCamera->GetEye().Z());
+            aRay.Origin() = Point3(m_pCamera->GetEye().X(), m_pCamera->GetEye().Y(), m_pCamera->GetEye().Z());
 
             aRay.Direction().Normalize();
 

@@ -10,9 +10,12 @@ Implementation of a class that manages the framebuffer attachments for FBOs
 
 #include "FrameBufferObject.h"
 
+#define STUB 1
+
+#ifndef STUB
 
 #define GLH_EXT_SINGLE_FILE
-#include <glh/glh_extensions.h>
+#include "GLEW/glew.h"
 
 /////////  MACROS  /////////////////////////////////////////////////////////
 
@@ -162,3 +165,6 @@ void CFrameBufferObject::CheckFramebufferStatus()
             assert(0);
     }
 }
+
+#endif // STUB
+

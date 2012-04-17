@@ -14,10 +14,10 @@ PhotonMapperGPU.cpp
 #include <fstream>
 
 #include "Common.h"
-
 #include "Material.h"
-
 #include "TextureManager.h"
+
+#define STUB_PHOTONMAPPERGPU 1
 
 using std::vector;
 
@@ -423,6 +423,7 @@ void PhotonMapperGPU::RaytraceFrame(Scene inScn)
 
 void PhotonMapperGPU::ShadowKernel()
 {
+#ifndef STUB_PHOTONMAPPERGPU
     CShader& shadowShader = m_ShaderManager->GetShader(SHADOW);
 
     CGparameter& hitinfo = shadowShader.GetNamedParameter("hitinfo", true);
@@ -442,10 +443,12 @@ void PhotonMapperGPU::ShadowKernel()
 
     shadowShader.Disable();
     shadowShader.DisableTextureParameters();   
+#endif // STUB_PHOTONMAPPERGPU
 }
 
 void PhotonMapperGPU::Sec_RayKernel(RAYTYPE type)
 {
+#ifndef STUB_PHOTONMAPPERGPU
     CShader &rayGenerator = m_ShaderManager->GetShader(RAY_GENERATOR);
 
     CGparameter& raydir = rayGenerator.GetNamedParameter("raydir", true);
@@ -474,12 +477,13 @@ void PhotonMapperGPU::Sec_RayKernel(RAYTYPE type)
 	
     rayGenerator.Disable();
     rayGenerator.DisableTextureParameters();
-    
+#endif // STUB_PHOTONMAPPERGPU   
 }
 
 
 void PhotonMapperGPU::DisplayKernel()
 {
+#ifndef STUB_PHOTONMAPPERGPU
     CShader &displayShader = m_ShaderManager->GetShader(DISPLAY);
     
     CGparameter& pictureout = displayShader.GetNamedParameter("data", true);
@@ -523,7 +527,7 @@ void PhotonMapperGPU::DisplayKernel()
 
     CTextureManager::WriteTextureToPNG("display.png", &image);
 
-
+#endif // STUB_PHOTONMAPPERGPU
 }
 
 
@@ -531,6 +535,7 @@ void PhotonMapperGPU::DisplayKernel()
 // kernal that produce ray direction texture
 void PhotonMapperGPU::EyeKernel()
 {
+#ifndef STUB_PHOTONMAPPERGPU
 	// figure out necessary eye vectors
 	Vector3f nn, vv, uu;
 //	nn.set(eyePos.x - look.x, eyePos.y - look.y, eyePos.z - look.z); // make n
@@ -580,6 +585,7 @@ void PhotonMapperGPU::EyeKernel()
 	Workspace();
 	
     ray.Disable();
+#endif // STUB_PHOTONMAPPERGPU
 }
 
 
@@ -634,7 +640,7 @@ void PhotonMapperGPU::TIKernel()
 
 void PhotonMapperGPU::ShadeKernel()
 {
-    
+#ifndef STUB_PHOTONMAPPERGPU
     CShader &phong = m_ShaderManager->GetShader(PHONG);
 
     CGparameter& raydir = phong.GetNamedParameter("raydir", true);
@@ -682,7 +688,7 @@ void PhotonMapperGPU::ShadeKernel()
     phong.DisableTextureParameters();
 
 //	cout << "Shading Complete!!\n";
-    
+#endif // STUB_PHOTONMAPPERGPU
 }
 
 void PhotonMapperGPU::Workspace()
