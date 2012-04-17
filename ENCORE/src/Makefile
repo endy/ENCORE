@@ -10,9 +10,9 @@ CPPINCS = -I renderers/ \
 
 
 CPPFILES = main.cpp \
+           renderers/RayTracer.cpp \
            renderers/Renderer.cpp \
            renderers/PhotonMapperCPU.cpp \
-           renderers/PhotonMapperGPU.cpp \
            renderers/PhotonMap.cpp \
            renderers/Photon.cpp \
            renderers/Sampler.cpp \
@@ -25,8 +25,6 @@ CPPFILES = main.cpp \
            accelerators/IrradianceCache.cpp \
            accelerators/Kdtree.cpp \
            accelerators/UniformGrid.cpp \
-           accelerators/GPUAccelerationStructureData.cpp \
-           misc/BatteryPowerWin32.cpp \
            misc/Common.cpp \
            misc/Logfile.cpp \
            misc/Options.cpp \
@@ -51,6 +49,7 @@ CPPFILES = main.cpp \
            scene/PointLightPrim.cpp \
            scene/RectangleLight.cpp \
            scene/Scene.cpp \
+           scene/SpherePrim.cpp \
            scene/Triangle.cpp \
            scene/TriangleLight.cpp \
            scene/TrianglePrim.cpp \
@@ -59,8 +58,8 @@ CPPFILES = main.cpp \
 compile:
 	g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)
 
-link: compile
-	g++ -o encore *.o
+link: 
+	g++ -o encore *.o -zmuldefs -l glut -l GLU 
 
 default:
 	link

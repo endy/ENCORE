@@ -380,7 +380,7 @@ void deinitRenderer( void )
 void myInit( void )
 {
     ogl = new OpenGLRenderer();
-    crt = new CPURTRenderer();
+    //crt = new CPURTRenderer();
 #ifdef WIN32
     //    gpurt = new GPURayTracer();
 #else
