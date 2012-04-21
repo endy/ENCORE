@@ -8,3 +8,5 @@ ipch/
 *.ilk
 *.o
 *.swp
+*.exe
+*.pdb

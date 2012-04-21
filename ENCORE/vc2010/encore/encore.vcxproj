@@ -101,7 +101,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\math\Affine4.cpp" />
+    <ClCompile Include="..\..\src\math\Point3.cpp" />
     <ClCompile Include="..\..\src\math\Ray.cpp" />
+    <ClCompile Include="..\..\src\math\Vector3.cpp" />
     <ClCompile Include="..\..\src\misc\Common.cpp" />
     <ClCompile Include="..\..\src\misc\Logfile.cpp" />
     <ClCompile Include="..\..\src\misc\Options.cpp" />
@@ -154,10 +156,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\math\Affine4.h" />
+    <ClInclude Include="..\..\src\math\Point3.h" />
     <ClInclude Include="..\..\src\math\Ray.h" />
     <ClInclude Include="..\..\src\math\TAffineMatrix.h" />
-    <ClInclude Include="..\..\src\math\TPoint3.h" />
-    <ClInclude Include="..\..\src\math\TVector3.h" />
+    <ClInclude Include="..\..\src\math\Vector3.h" />
     <ClInclude Include="..\..\src\misc\Common.h" />
     <ClInclude Include="..\..\src\misc\Logfile.h" />
     <ClInclude Include="..\..\src\misc\Options.h" />

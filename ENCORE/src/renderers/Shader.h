@@ -26,8 +26,9 @@ Wrapper class for a Cg shader.  Supports vertex and fragment shaders alike
 
 using std::string;
 
+#ifndef WIN32
 #define STUB_SHADER 1
-
+#endif
 
 namespace encore 
 {

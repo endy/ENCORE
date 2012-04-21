@@ -187,6 +187,12 @@
     <ClCompile Include="..\..\src\scene\Vertex.cpp">
       <Filter>scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\math\Point3.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\math\Vector3.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\accelerators\AccelerationStructure.h">
@@ -223,12 +229,6 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\math\TAffineMatrix.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\math\TPoint3.h">
-      <Filter>math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\math\TVector3.h">
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\misc\BatteryPowerWin32.h">
@@ -365,6 +365,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\scene\Vertex.h">
       <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\Point3.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\math\Vector3.h">
+      <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

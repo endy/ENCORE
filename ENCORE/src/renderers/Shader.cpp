@@ -5,7 +5,9 @@
 #include "Windows.h"
 #endif
 
+#ifndef WIN32
 #define STUB_CSHADER
+#endif
 
 namespace encore
 {
