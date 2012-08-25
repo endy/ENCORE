@@ -10,3 +10,7 @@ ipch/
 *.swp
 *.exe
 *.pdb
+*.sdf
+*.log
+*.opensdf
+CodeAnalyst/
