@@ -81,9 +81,8 @@ void Kdtree::deleteTree()
 
 void Kdtree::build(std::list<IModel*> &modelList)
 {
-#ifdef WIN32
-    DWORD dwBuildTime = timeGetTime();
-#endif
+    DWORD dwBuildTime = EncoreGetTime();
+
     m_PrimList.clear();
 //    if(built) // already built, return
 //        return;
@@ -194,11 +193,8 @@ void Kdtree::build(std::list<IModel*> &modelList)
     
 	//construct(0, m_Bounds, m_PrimList, 0, 0);
     //printf("KdTree: total leaf node %i\n", totalLeaf);
-		
-#ifdef WIN32
-    dwBuildTime = timeGetTime() - dwBuildTime;
-    //printf("KdTree: construction: %.3f\n", dwBuildTime/1000.0f);
-#endif
+
+    dwBuildTime = EncoreGetTime() - dwBuildTime;
 }
 
 

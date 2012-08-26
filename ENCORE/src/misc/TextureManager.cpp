@@ -25,11 +25,14 @@ CTexture* CTextureManager::ReadTextureFromPNG(string filename)
         return (ERROR);
     }
     fread(header, 1, number, fp);
+    /*
+    // libpng is only used to check the header...
     bool is_png = !png_sig_cmp(header, 0, number);
     if (!is_png)
     {
         return false;
     }
+    */
     
     
     
@@ -101,13 +104,13 @@ void CTextureManager::WriteTextureToPNG(string filename, TextureGL<GLfloat> *tex
             GLfloat a = *texData; texData++;
 
             // red
-            (*p++) = max(min(r * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)r * 255, 255), 0);
             // green
-            (*p++) = max(min(g * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)g * 255, 255), 0);
             // blue
-            (*p++) = max(min(b * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)b * 255, 255), 0);
             // alpha 
-            (*p++) = max(min(a * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)a * 255, 255), 0);
         }
     }
    
@@ -134,13 +137,13 @@ void CTextureManager::WriteTextureToPNG(string filename, CTexture *tex)
             CTexel t = tex->GetPixel(col, row);
 
             // red
-            (*p++) = max(min(t.R() * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)t.R() * 255, 255), 0);
             // green
-            (*p++) = max(min(t.G() * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)t.G() * 255, 255), 0);
             // blue
-            (*p++) = max(min(t.B() * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)t.B() * 255, 255), 0);
             // alpha 
-            (*p++) = max(min(t.A() * 255, 255), 0);
+            (*p++) = std::max(std::min((byte)t.A() * 255, 255), 0);
         }
     }
    

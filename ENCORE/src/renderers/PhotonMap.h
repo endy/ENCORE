@@ -14,12 +14,10 @@
 #include "Photon.h"
 
 #include <vector>
-#include <queue>
 #include <utility>
 
 using std::vector;
-using std::priority_queue;
-using std::pair;
+
 
 
 /// PhotonMap class

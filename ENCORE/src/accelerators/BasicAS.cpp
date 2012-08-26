@@ -4,6 +4,7 @@
 #include "IModel.h"
 #include "Primitive.h"
 #include "TrianglePrim.h"
+#include "Common.h"
 
 BasicAS::BasicAS(void)
 {
@@ -21,9 +22,7 @@ BasicAS::~BasicAS(void)
 *******************/
 void BasicAS::build( std::list<IModel*> &modelList )
 {
-#ifdef WIN32
-    DWORD dwBuildTime = timeGetTime();
-#endif
+    DWORD dwBuildTime = EncoreGetTime();
     m_lpAllPrimitives.clear();
 
     std::list< IModel* >::iterator aModel;
@@ -38,11 +37,9 @@ void BasicAS::build( std::list<IModel*> &modelList )
             m_lpAllPrimitives.push_back( *aPrim );
         }
     }
-#ifdef WIN32
-    dwBuildTime = timeGetTime() - dwBuildTime;
+
+    dwBuildTime = EncoreGetTime() - dwBuildTime;
     printf("BasicAS: construction: %.3f\n", dwBuildTime/1000.0f);
-#endif
-	
 }
 
 #ifdef WIN32

@@ -51,3 +51,4 @@ void Options::LogOption(std::string optionName, std::fstream *logfile)
         *logfile << optionName << "\t\t" << m_Options[ optionName ] << std::endl;
     }
 }
+

@@ -4,8 +4,8 @@
 #pragma comment( lib, "cg.lib" )		// Search For Cg.lib While Linking
 #pragma comment( lib, "cggl.lib" )		// Search For CgGL.lib While Linking
 
-#include <Cg/cg.h>
-#include <Cg/cgGL.h>
+#include "Cg/cg.h"
+#include "Cg/cgGL.h"
 
 #ifdef WIN32
 #include <GL/glut.h>

@@ -13,6 +13,10 @@ Common.h
 #include <string>
 #include <iostream>
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 using encore::Vector3;
 
 ///// COMMON MACROS  ///////////////////////////////////////
@@ -73,4 +77,15 @@ inline void PTestPrint(std::string s)
 #ifdef POWER_TEST_PRINT
     std::cout << s;
 #endif
+}
+
+inline DWORD EncoreGetTime()
+{
+    DWORD dwTime = 0;
+#ifdef WIN32
+#ifndef __GNUG__
+    dwTime = timeGetTime();
+#endif // __GNUG__
+#endif // WIN32
+    return dwTime;
 }

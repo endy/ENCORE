@@ -7,12 +7,13 @@
 #endif
 
 #include "TrianglePrim.h"
+#include <vector>
 #include <list>
 #include <fstream>
 #include <deque>
 #include "Common.h"
 #include <iostream>
-#include <vector>
+
 //forward declarations
 class Model;
 class IPrimitive;

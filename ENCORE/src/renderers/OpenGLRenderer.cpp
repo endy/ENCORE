@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "Camera.h"
 #include "Triangle.h"
+#include "Common.h"
 
 
 OpenGLRenderer::OpenGLRenderer(void)
@@ -94,9 +95,8 @@ void OpenGLRenderer::init(Scene* scn, AccelerationStructure* accelStruct, Camera
 
 void OpenGLRenderer::render( void )
 {
-#ifdef WIN32
-    DWORD dwRenderTime = timeGetTime();
-#endif
+    DWORD dwRenderTime = EncoreGetTime();
+
     glViewport(0, 0, m_pCamera->GetViewportWidth(), m_pCamera->GetViewportHeight());
     glEnable(GL_DEPTH_TEST);
     m_pCamera->setProjectionMatrix();
@@ -158,10 +158,8 @@ void OpenGLRenderer::render( void )
     }
     glFlush();
     
-#ifdef WIN32
-    dwRenderTime = timeGetTime() - dwRenderTime;
-//    printf("OpenGL Image. %.3f\n", (float)dwRenderTime/1000.0f );
-#endif
+
+    dwRenderTime = EncoreGetTime() - dwRenderTime;
 
     glutSwapBuffers();
 }

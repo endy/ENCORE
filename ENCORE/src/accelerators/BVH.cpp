@@ -121,10 +121,8 @@ void Bvh::trace(unsigned int node, unsigned int *path, unsigned int depth)
 
 void Bvh::build(std::list<IModel*> &modelList)
 {
-#ifdef WIN32
-    DWORD dwBuildTime = timeGetTime();
-#endif
-		
+    DWORD dwBuildTime = EncoreGetTime();
+
     primList.clear();
    
     // destory the old information regardless
@@ -175,9 +173,6 @@ void Bvh::build(std::list<IModel*> &modelList)
         
     m_NodeUsed = 1;
     
-    //dwBuildTime = timeGetTime() - dwBuildTime;
-    //printf("first: %i\n" , dwBuildTime);
-    //dwBuildTime = timeGetTime();
     construct(0, 1, myTriSize, myBound, 0, 0);
     
     // clear junk
@@ -187,12 +182,7 @@ void Bvh::build(std::list<IModel*> &modelList)
     //rightBOX.clear();
     maxReserve = rightBOX.size();
 
-#ifdef WIN32
-    dwBuildTime = timeGetTime() - dwBuildTime;
-
-    //printf("BVH: Total nodes %i\n", m_NodeUsed );
-    //printf("BVH: construction : %.3f\n", dwBuildTime/1000.0f);
-#endif
+    dwBuildTime = EncoreGetTime() - dwBuildTime;
 }
 
 void Bvh::construct(unsigned int node, bool isLeft, unsigned int size, const AABB& pAABB,
@@ -271,7 +261,6 @@ void Bvh::construct(unsigned int node, bool isLeft, unsigned int size, const AAB
     else
         mode = isLeft;
 
-    //DWORD btime = timeGetTime();
     for(int i = 0; i < 3; i++)
     {
         split(mode, median, axis, lAABB, rAABB, a, b, size, rIndex);
@@ -295,21 +284,14 @@ void Bvh::construct(unsigned int node, bool isLeft, unsigned int size, const AAB
     }
 
     if(valid)
+    {
         splitinsert(mode, median, axis, size, rIndex);
+    }
     else
+    {
         halfsplitinsert(mode, lAABB, rAABB, a, b, size, rIndex, rcIndex);
-    //btime = timeGetTime() - btime;
-    //if(btime > 5)
-    //    printf("d %i - left/right %i, time %i\n", depth, isLeft, btime); 
-/*
-#ifdef _DEBUG
-    printf("left %i, right %i -- ", a, b);
-    if(valid)
-        printf("axis %i, median %f\n", axis, median);
-    else
-        printf("perform foce half split\n");
-#endif
-*/
+    }
+
     // allocate 2 more space
     m_NodeUsed += 2;
     if(m_NodeUsed >= maxSize)

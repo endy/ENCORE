@@ -1,4 +1,21 @@
 
+#Detect Platform
+ifeq ($(OS), Windows_NT)
+	OS_DEF = "WIN"
+else
+	OS_DEF = "LINUX"
+endif
+
+ifeq ($(OS_DEF), "WIN")
+	#define win build vars
+	CPPDEFS = -DWIN32 -DNOMINMAX
+endif
+
+ifeq ($(OS_DEF), "LINUX")
+	#define linux build vars
+endif
+
+
 SRCPATH = ../src
 
 CPPINCS = -I $(SRCPATH)/renderers/ \
@@ -6,7 +23,7 @@ CPPINCS = -I $(SRCPATH)/renderers/ \
           -I $(SRCPATH)/scene/ \
           -I $(SRCPATH)/math/ \
           -I $(SRCPATH)/accelerators/ \
-          -I lib/include
+          -I ../lib/include
 
 #CPPFLAGS = -Wall
 
@@ -65,14 +82,27 @@ SCENESRC =  $(SRCPATH)/scene/AABB.cpp \
 CPPFILES = $(SRCPATH)/main.cpp \
            $(RENDERSRC) $(ACCELSRC) $(MATHSRC) $(MISCSRC) $(SCENESRC)
 
+ifeq ($(OS_DEF), "WIN")
+	CPPFILES += $(SRCPATH)/renderers/Shader.cpp
+endif
+
+ifeq ($(OS_DEF), "LINUX")
+	LIBS = -l glut -l GLU
+endif
+
+ifeq ($(OS_DEF), "WIN")
+	LIBPATH = -L lib/lib
+	LIBS = -l cg -l cgGL -l glut32 -l OpenGL32 -l GLU32 -l corona
+endif
+
 default: link
 
 compile:
 	mkdir -p build
-	cd ./build; g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS)
+	cd ./build; g++ -c $(CPPFILES) $(CPPFLAGS) $(CPPINCS) $(CPPDEFS)
 
 link: compile 
-	g++ -o encore build/*.o -l glut -l GLU 
+	g++ -o encore build/*.o $(LIBPATH) $(LIBS)
 
 clean:
 	rm -vf build/*.o ./encore   

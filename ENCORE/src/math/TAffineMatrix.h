@@ -163,9 +163,9 @@ template <class T> TAffineMatrix<T> TAffineMatrix<T>::GetRotationMatrix(Vector3 
     Vector3 r = axis;
     Vector3 s;
 
-    T x = abs(axis.X());
-    T y = abs(axis.Y());
-    T z = abs(axis.Z());
+    T x = fabs(axis.X());
+    T y = fabs(axis.Y());
+    T z = fabs(axis.Z());
 
     if(x <= y && x <= z)
     {

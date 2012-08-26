@@ -10,10 +10,10 @@ Wrapper class for a Cg shader.  Supports vertex and fragment shaders alike
 #pragma once
 
 #ifdef WIN32
-#pragma comment( lib, "cg.lib" )							
-#pragma comment( lib, "cggl.lib" )	
-#include <Cg/cg.h>
-#include <Cg/cgGL.h>
+#pragma comment( lib, "cg.lib" )
+#pragma comment( lib, "cggl.lib" )
+#include "Cg/cg.h"
+#include "Cg/cgGL.h"
 #elif __APPLE__
 #include <GLUT/glut.h>
 #include <CG/cg.h>

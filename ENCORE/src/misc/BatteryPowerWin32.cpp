@@ -1,4 +1,5 @@
 #include "BatteryPowerWin32.h"
+#include "Common.h"
 
 #ifdef WIN32
 
@@ -28,7 +29,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParameter)
 bool BatteryPowerWin32::start(unsigned int rate)
 {
     sample_rate = rate;
-    m_totalTime = timeGetTime();
+    m_totalTime = EncoreGetTime();
     powerdata = new myData[MAXPD];
     mysize = 0;
 
@@ -47,7 +48,7 @@ void BatteryPowerWin32::stop(std::string filename)
     CloseHandle(myhandle);
     myhandle = NULL;
 
-    m_totalTime = timeGetTime() - m_totalTime;
+    m_totalTime = EncoreGetTime() - m_totalTime;
     printfile(filename);
 }
 

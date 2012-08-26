@@ -10,12 +10,15 @@
 //////////////////////////////////////////////////////////////////////////
 
 
+
+
 #ifdef WIN32
+#ifndef __GNUG__
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+#endif // __GCC__
 #endif
-
 
 // renderers
 #include "CPURTRenderer.h"
@@ -26,6 +29,8 @@
 #include "GPURayTracer.h"
 #endif
 
+
+
 // acceleration structures
 #include "BasicAS.h"
 #include "UniformGrid.h"
@@ -33,6 +38,8 @@
 #include "BVH.h"
 
 #include "SimpleProfiler.h"
+
+
 
 #ifdef WIN32
 #include <windows.h>
@@ -47,7 +54,7 @@
 #include "DynamicScene.h"
 
 #ifdef WIN32
-#include <GL/glut.h>
+#include "GL/glut.h"
 #elif __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -60,11 +67,12 @@ typedef unsigned int DWORD;
 #define Sleep(x)
 #endif
 
-#include <vector>
+using namespace std;
+
+
 #include <iostream>
 #include <fstream>
-
-using namespace std;
+#include <vector>
 
 #include "Common.h"
 
@@ -604,7 +612,9 @@ int main(int argc, char** argv)
     std::cout << "Developed by: Chen-Hao Chang, Brandon Light, and Peter Lohrman" << std::endl;
 
 #ifdef WIN32
+#ifndef __GNUG__
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
 #endif
     parseArguments(argc, argv);
 

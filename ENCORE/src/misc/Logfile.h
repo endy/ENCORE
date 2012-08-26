@@ -29,3 +29,4 @@ private:
     std::fstream m_LogStream;
 
 };
+

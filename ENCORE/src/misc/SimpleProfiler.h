@@ -31,3 +31,4 @@ private:
     float m_RunningAverage;
     int m_TimeSamples;   
 };
+

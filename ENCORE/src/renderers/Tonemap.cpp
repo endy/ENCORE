@@ -91,3 +91,4 @@ void TonemapReinhard::Map(int cPixels)
         m_Lum[pixelIndex] = m_MaxDisplay / SCALE_683 * (1.0f + ys * invY2) / (1.0f + ys);
     }
 }
+

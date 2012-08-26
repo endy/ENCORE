@@ -109,17 +109,13 @@ void UniformGrid::setOptimalGridDimension( void )
 
 void UniformGrid::build(std::list<IModel*> &modelList)
 {
-#ifdef WIN32
-    DWORD dwBuildTime = timeGetTime();
-#endif
+    DWORD dwBuildTime = EncoreGetTime();
+
     setModels(modelList);
     setOptimalGridDimension();
     buildGrid(modelList);
 
-#ifdef WIN32
-    dwBuildTime = timeGetTime() - dwBuildTime;
-    //printf("Uniform Grid constructed with %d dimension in: %.3f\n", m_gridDimension, dwBuildTime/1000.0f);
-#endif
+    dwBuildTime = EncoreGetTime() - dwBuildTime;
 }
 
 #ifdef WIN32
