@@ -7,6 +7,8 @@
 
 #include "Model.h"
 
+#define STUB 1
+
 float sqr(float a){ return a*a;}
 
 UniformGrid::UniformGrid(void): 
@@ -118,7 +120,6 @@ void UniformGrid::build(std::list<IModel*> &modelList)
     dwBuildTime = EncoreGetTime() - dwBuildTime;
 }
 
-#ifdef WIN32
 /************************
 * void buildGPU( Scene& l_pScene, GPUAccelerationStructureData& l_pASD )
 *
@@ -126,6 +127,7 @@ void UniformGrid::build(std::list<IModel*> &modelList)
 *************************/
 void UniformGrid::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD )
 {
+#ifndef STUB 1
     build(modelList);
     //setModels(modelList);
     //setOptimalGridDimension();
@@ -259,6 +261,7 @@ void UniformGrid::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &
             } // X
         } // Y
     } // Z
+#endif
 }
 
 /************************
@@ -268,6 +271,7 @@ void UniformGrid::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &
 *************************/
 void UniformGrid::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD )
 {
+#ifndef STUB
     CGparameter& cell_info = l_Shader.GetNamedParameter("cellData0", true);
     cgGLSetTextureParameter(cell_info, l_ASD.m_CellTexture[0]);
 
@@ -294,9 +298,9 @@ void UniformGrid::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureD
 
     CGparameter& maxloop = l_Shader.GetNamedParameter("maxloop");
     cgGLSetParameter1f( maxloop, 1000 );
+#endif
 }
 
-#endif
 
 /*******
  UniformGrid::SetModels

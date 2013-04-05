@@ -8,6 +8,7 @@
 
 #include <deque>
 
+#define STUB 1
 
 Bvh::Bvh(void)
 : myTriSize(0), m_NodeUsed(0), bTree(NULL), leftBOX(NULL), rSize(0), maxDepth(0)
@@ -529,9 +530,9 @@ void Bvh::split(int mode, float median, int axis, AABB &lAABB, AABB &rAABB,
     // end of split
 }
 
-#ifdef WIN32
 void Bvh::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD )
 {
+#ifndef STUB
     l_pASD.setTraversalShaderFilename( "shaders\\BVH.cg" );
 #ifdef USEUPDATE
     if(bTree)
@@ -692,10 +693,12 @@ void Bvh::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangle
         }
     }
     m_NodeUsed = nProcessedNodes;
+#endif
 }
 
 void Bvh::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD )
 {
+#ifndef STUB
     CGparameter& v0 = l_Shader.GetNamedParameter("v0t", true);
     cgGLSetTextureParameter(v0, l_ASD.m_VertexTexture[0]);
 
@@ -714,8 +717,9 @@ void Bvh::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_A
 
     CGparameter& maxloop = l_Shader.GetNamedParameter("looplimit");
     cgGLSetParameter1f( maxloop, 2500.0f );
-}
 #endif
+}
+
 
 /*
 void Bvh::draw()

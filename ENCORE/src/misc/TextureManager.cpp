@@ -1,20 +1,22 @@
 
 #include "TextureManager.h"
 
-#ifdef WIN32
-#include "Corona\corona.h"
-#include "png\png.h"
-#endif
 
 #include <stdio.h>
 #include <fstream>
 
+#include "stb_image_write.h"
+
+#define ENCR_MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define ENCR_MAX(a,b) (((a) > (b)) ? (a) : (b))
+
 typedef unsigned char byte;
+
+#define STUB 1
 
 CTexture* CTextureManager::ReadTextureFromPNG(string filename)
 {
-#ifdef WIN32
-
+#ifndef STUB
 
     png_bytep header = new png_byte[1024];
     png_size_t number = 8;
@@ -25,17 +27,7 @@ CTexture* CTextureManager::ReadTextureFromPNG(string filename)
         return (ERROR);
     }
     fread(header, 1, number, fp);
-    /*
-    // libpng is only used to check the header...
-    bool is_png = !png_sig_cmp(header, 0, number);
-    if (!is_png)
-    {
-        return false;
-    }
-    */
-    
-    
-    
+
     corona::Image *image = corona::OpenImage(filename.c_str(), corona::PF_R8G8B8A8, corona::FF_PNG);
 
     if(!image)
@@ -81,76 +73,37 @@ CTexture* CTextureManager::ReadTextureFromPNG(string filename)
 
 void CTextureManager::WriteTextureToPNG(string filename, TextureGL<GLfloat> *tex)
 {
-#ifdef WIN32
     int width  = tex->Width();
     int height = tex->Height();
+    int comp = 4; // rgba
 
-    corona::Image *image = corona::CreateImage(width, height, corona::PF_R8G8B8A8);
-
-    byte* p = (byte*) image->getPixels();
-   
     GLfloat *texData = tex->Data();
 
-    int rowWidth = width * 4;
+    byte* pImgData = new byte[width*comp*height];
 
-    for(int row = height-1; row >= 0; --row)
+    for(int row = 0; row < height; row++)
     {
-        texData = tex->Data() + (row * rowWidth);
+        byte* p = pImgData+(((height-1)-row) * (width*comp));
         for (int col = 0; col < width; ++col) 
         {
-            GLfloat r = *texData; texData++;
-            GLfloat g = *texData; texData++;
-            GLfloat b = *texData; texData++;
-            GLfloat a = *texData; texData++;
-
             // red
-            (*p++) = std::max(std::min((byte)r * 255, 255), 0);
+            GLfloat v = *texData++;
+            (*p++) = (byte)ENCR_MAX(ENCR_MIN(v * 255, 255), 0);
             // green
-            (*p++) = std::max(std::min((byte)g * 255, 255), 0);
+            v = *texData++;
+            (*p++) = (byte)ENCR_MAX(ENCR_MIN(v * 255, 255), 0);
             // blue
-            (*p++) = std::max(std::min((byte)b * 255, 255), 0);
+            v = *texData++;
+            (*p++) = (byte)ENCR_MAX(ENCR_MIN(v * 255, 255), 0);
             // alpha 
-            (*p++) = std::max(std::min((byte)a * 255, 255), 0);
+            v = *texData++;
+            (*p++) = (byte)ENCR_MAX(ENCR_MIN(v* 255, 255), 0);
         }
     }
-   
-    corona::SaveImage(filename.c_str(), corona::FF_PNG, image);
-#endif
+
+    stbi_write_png(filename.c_str(), width, height, comp, pImgData, width * comp);
+
 }
-
-void CTextureManager::WriteTextureToPNG(string filename, CTexture *tex)
-{
-#ifdef WIN32
-    int width  = tex->GetWidth();
-    int height = tex->GetHeight();
-
-    corona::Image *image = corona::CreateImage(width, height, corona::PF_R8G8B8A8);
-
-    byte* p = (byte*) image->getPixels();
-   
-
-    for(int row = height-1; row >= 0; --row)
-    {
-        for (int col = 0; col < width; ++col) 
-        {
-
-            CTexel t = tex->GetPixel(col, row);
-
-            // red
-            (*p++) = std::max(std::min((byte)t.R() * 255, 255), 0);
-            // green
-            (*p++) = std::max(std::min((byte)t.G() * 255, 255), 0);
-            // blue
-            (*p++) = std::max(std::min((byte)t.B() * 255, 255), 0);
-            // alpha 
-            (*p++) = std::max(std::min((byte)t.A() * 255, 255), 0);
-        }
-    }
-   
-    corona::SaveImage(filename.c_str(), corona::FF_PNG, image);
-#endif
-}
-
 
 CTexture* CTextureManager::ReadTextureFromENI(string filename)
 {

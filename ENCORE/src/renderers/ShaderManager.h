@@ -1,12 +1,6 @@
 
 #pragma once
 
-#pragma comment( lib, "cg.lib" )		// Search For Cg.lib While Linking
-#pragma comment( lib, "cggl.lib" )		// Search For CgGL.lib While Linking
-
-#include "Cg/cg.h"
-#include "Cg/cgGL.h"
-
 #ifdef WIN32
 #include <GL/glut.h>
 #elif __APPLE__
@@ -48,13 +42,14 @@ namespace encore
 	    void Initialize();
     	
     private:
+#if STUB
 	    // Cg context
 	    CGcontext m_Context;
 	    // Cg Vertex Profile -- specific to this manager
 	    CGprofile m_VertexProfile;
 	    // Cg Fragment Profile -- specific to this manager
 	    CGprofile m_FragmentProfile;
-
+#endif
 	    std::map<int, CShader*> m_Shaders;
 
     };

@@ -14,6 +14,9 @@
 
 using encore::Color;
 
+#define ENCR_MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define ENCR_MAX(a,b) (((a) > (b)) ? (a) : (b))
+
 Model::Model(Point3 center, float size, float angle, Vector3 axis, Material material)
 {
     m_CenterPoint       = center;
@@ -129,8 +132,8 @@ void Model::centerModel(const Point3& center, float size, float angle, const Vec
   
         for(int i = 0; i < 3; i++)
         {
-            m_maxPoint[i] = std::max(m_maxPoint[i], newCoord[i]);
-            m_minPoint[i] = std::min(m_minPoint[i], newCoord[i]);
+            m_maxPoint[i] = ENCR_MAX(m_maxPoint[i], newCoord[i]);
+            m_minPoint[i] = ENCR_MIN(m_minPoint[i], newCoord[i]);
         }
 
         iv->setCoordinates( newCoord );
@@ -141,8 +144,8 @@ Affine4 Model::getCenterMatrix( Point3 c, float s, float angle, const Vector3& a
 {
     Vector3 modelLength( m_minPoint, m_maxPoint );
 
-    float scale = s/max(modelLength.X(),
-                        max(modelLength.Y(),
+    float scale = s/ENCR_MAX(modelLength.X(),
+                        ENCR_MAX(modelLength.Y(),
                             modelLength.Z()));
 
     Point3 center = (m_maxPoint+m_minPoint)*.5;

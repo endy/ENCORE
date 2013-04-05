@@ -15,7 +15,6 @@ public:
     
     // PNG texture functions
     static CTexture* ReadTextureFromPNG(string filename);
-    static void WriteTextureToPNG(string filename, CTexture *tex);
     static void WriteTextureToPNG(string filename, TextureGLf *tex);
     
     // ENI texture functions

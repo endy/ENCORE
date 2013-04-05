@@ -10,14 +10,10 @@ Wrapper class for a Cg shader.  Supports vertex and fragment shaders alike
 #pragma once
 
 #ifdef WIN32
-#pragma comment( lib, "cg.lib" )
-#pragma comment( lib, "cggl.lib" )
-#include "Cg/cg.h"
-#include "Cg/cgGL.h"
+//#pragma comment( lib, "cg.lib" )
+//#pragma comment( lib, "cggl.lib" )
 #elif __APPLE__
 #include <GLUT/glut.h>
-#include <CG/cg.h>
-#include <CG/cgGL.h>
 #endif
 
 #include <string>
@@ -26,9 +22,8 @@ Wrapper class for a Cg shader.  Supports vertex and fragment shaders alike
 
 using std::string;
 
-#ifndef WIN32
 #define STUB_SHADER 1
-#endif
+
 
 namespace encore 
 {
@@ -66,8 +61,6 @@ namespace encore
 #ifndef STUB_SHADER
 	    CShader(ShaderType type, int shaderID, CGprofile& profile);
 	    CShader(const CShader& s);
-
-	    CShader& operator=(const CShader& rhs);
 
 	    CGprogram GetProgram(){ return m_Program; }
 	    void SetProgram(CGprogram program){ m_Program = program; }

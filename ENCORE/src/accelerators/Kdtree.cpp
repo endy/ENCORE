@@ -8,6 +8,8 @@
 
 using namespace std;
 
+#define STUB 1
+
 #ifndef INFINITY
 #define INFINITY     FLT_MAX
 #endif
@@ -866,11 +868,11 @@ bool Kdtree::intersectb(const ray &r) const
 }
 */
 
-#ifdef WIN32
 void Kdtree::buildGPU( std::list<IModel*> &modelList, 
                        std::list<Triangle*> &triangleList, 
                        GPUAccelerationStructureData& accelStructData )
 {
+#ifndef STUB
     // first build for CPU
     build( modelList );
 
@@ -988,10 +990,13 @@ void Kdtree::buildGPU( std::list<IModel*> &modelList,
             } // prims
         }// end leaf node
     } // end node loop
+
+#endif
 }
 
 void Kdtree::setGPUParameters( CShader& shader, GPUAccelerationStructureData& accelStructData ) 
 {
+#ifndef STUB
     CGparameter& cell_info = shader.GetNamedParameter("cellData0", true);
     cgGLSetTextureParameter(cell_info, accelStructData.m_CellTexture[0]);
 
@@ -1023,6 +1028,7 @@ void Kdtree::setGPUParameters( CShader& shader, GPUAccelerationStructureData& ac
 
     CGparameter& maxloop = shader.GetNamedParameter("maxloop");
     cgGLSetParameter1f( maxloop, 1000 );
-}
 
 #endif
+}
+

@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#define STUB_SHADERMANAGER 1
+
 void reportError(const char* error)
 {
 #ifdef WIN32

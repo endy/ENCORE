@@ -19,20 +19,14 @@
     <Filter Include="renderers">
       <UniqueIdentifier>{d6653bed-9fe8-450c-97e8-84a3b6f51081}</UniqueIdentifier>
     </Filter>
-    <Filter Include="renderers\lib">
-      <UniqueIdentifier>{d31a2d12-f875-45dd-b424-6af183de2fee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="scene">
       <UniqueIdentifier>{6ac92bf8-d9c0-4315-b016-fc0259b85c08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="scene\models">
-      <UniqueIdentifier>{a8d7f01d-8cc0-445a-9ee5-65e099850f91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="scene\primitives">
-      <UniqueIdentifier>{0b15828d-f2d3-45c3-99c2-7f14147aa080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{2fb67ea7-db7c-44d9-8da6-d619caefd6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdparty">
+      <UniqueIdentifier>{a7ea9c07-5990-4b3b-897f-a46ffcae45a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,9 +54,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\math\Ray.cpp">
       <Filter>math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\misc\BatteryPowerWin32.cpp">
-      <Filter>profiling</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\misc\Common.cpp">
       <Filter>misc</Filter>
@@ -94,20 +85,11 @@
     <ClCompile Include="..\..\src\renderers\CPURTRenderer.cpp">
       <Filter>renderers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\renderers\FrameBufferObject.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\renderers\GPURayTracer.cpp">
       <Filter>renderers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\renderers\OpenGLRenderer.cpp">
       <Filter>renderers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\renderers\Photon.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\renderers\PhotonMap.cpp">
-      <Filter>renderers\lib</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\renderers\PhotonMapperCPU.cpp">
       <Filter>renderers</Filter>
@@ -118,29 +100,11 @@
     <ClCompile Include="..\..\src\renderers\Renderer.cpp">
       <Filter>renderers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\renderers\Sampler.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\renderers\Shader.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\renderers\ShaderManager.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\renderers\Tonemap.cpp">
-      <Filter>renderers\lib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\AABB.cpp">
-      <Filter>scene</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene\Camera.cpp">
       <Filter>scene</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene\Color.cpp">
       <Filter>scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\DynamicModel.cpp">
-      <Filter>scene\models</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene\DynamicScene.cpp">
       <Filter>scene</Filter>
@@ -148,41 +112,14 @@
     <ClCompile Include="..\..\src\scene\HitInfo.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\scene\IModel.cpp">
-      <Filter>scene\models</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene\Material.cpp">
       <Filter>scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\Model.cpp">
-      <Filter>scene\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\Objloader.cpp">
-      <Filter>scene\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\ObjModelloader.cpp">
-      <Filter>scene\models</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\PointLightPrim.cpp">
-      <Filter>scene\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\RectangleLight.cpp">
-      <Filter>scene\primitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene\Scene.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\scene\SpherePrim.cpp">
-      <Filter>scene\primitives</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\scene\Triangle.cpp">
       <Filter>scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\TriangleLight.cpp">
-      <Filter>scene\primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\scene\TrianglePrim.cpp">
-      <Filter>scene\primitives</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\scene\Vertex.cpp">
       <Filter>scene</Filter>
@@ -192,6 +129,66 @@
     </ClCompile>
     <ClCompile Include="..\..\src\math\Vector3.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\FrameBufferObject.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Photon.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\PhotonMap.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Sampler.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Shader.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\ShaderManager.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\Tonemap.cpp">
+      <Filter>renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\PointLightPrim.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\RectangleLight.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\SpherePrim.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\TriangleLight.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\TrianglePrim.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\DynamicModel.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\IModel.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Model.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\Objloader.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\ObjModelloader.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\scene\AABB.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\stb_image\stb_image.c">
+      <Filter>thirdparty</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\stb_image\stb_image_write.c">
+      <Filter>thirdparty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -231,9 +228,6 @@
     <ClInclude Include="..\..\src\math\TAffineMatrix.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\misc\BatteryPowerWin32.h">
-      <Filter>profiling</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\misc\Common.h">
       <Filter>misc</Filter>
     </ClInclude>
@@ -267,20 +261,11 @@
     <ClInclude Include="..\..\src\renderers\CPURTRenderer.h">
       <Filter>renderers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\renderers\FrameBufferObject.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\renderers\GPURayTracer.h">
       <Filter>renderers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\renderers\OpenGLRenderer.h">
       <Filter>renderers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\Photon.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\PhotonMap.h">
-      <Filter>renderers\lib</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\renderers\PhotonMapperCPU.h">
       <Filter>renderers</Filter>
@@ -291,29 +276,11 @@
     <ClInclude Include="..\..\src\renderers\Renderer.h">
       <Filter>renderers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\renderers\Sampler.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\Shader.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\ShaderManager.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\Tonemap.h">
-      <Filter>renderers\lib</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\AABB.h">
-      <Filter>scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene\Camera.h">
       <Filter>scene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene\Color.h">
       <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\DynamicModel.h">
-      <Filter>scene\models</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene\DynamicScene.h">
       <Filter>scene</Filter>
@@ -324,44 +291,14 @@
     <ClInclude Include="..\..\src\scene\HitInfo.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\scene\IModel.h">
-      <Filter>scene\models</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene\Material.h">
       <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\Model.h">
-      <Filter>scene\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\Objloader.h">
-      <Filter>scene\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\ObjModelloader.h">
-      <Filter>scene\models</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\PointLightPrim.h">
-      <Filter>scene\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\Primitive.h">
-      <Filter>scene\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\RectangleLight.h">
-      <Filter>scene\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene\Scene.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\scene\SpherePrim.h">
-      <Filter>scene\primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\scene\Triangle.h">
       <Filter>scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\TriangleLight.h">
-      <Filter>scene\primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\scene\TrianglePrim.h">
-      <Filter>scene\primitives</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\scene\Vertex.h">
       <Filter>scene</Filter>
@@ -371,6 +308,69 @@
     </ClInclude>
     <ClInclude Include="..\..\src\math\Vector3.h">
       <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\FrameBufferObject.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Photon.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\PhotonMap.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Sampler.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Shader.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\ShaderManager.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\renderers\Tonemap.h">
+      <Filter>renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\PointLightPrim.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Primitive.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\RectangleLight.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\SpherePrim.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\TriangleLight.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\TrianglePrim.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\DynamicModel.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\IModel.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Model.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\Objloader.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\ObjModelloader.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\scene\AABB.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\stb_image\stb_image.h">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\stb_image\stb_image_write.h">
+      <Filter>thirdparty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

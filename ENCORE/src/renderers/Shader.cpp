@@ -5,34 +5,24 @@
 #include "Windows.h"
 #endif
 
-#ifndef WIN32
+
 #define STUB_CSHADER
-#endif
+
 
 namespace encore
 {
+#ifndef STUB_CSHADER
     CShader::CShader(ShaderType type, int shaderID, CGprofile& profile):
 	    m_Profile(profile)
     {
 	    m_Type = type;
 	    m_ShaderID = shaderID;
     }
+#endif
 
     CShader::~CShader()
     {
 
-    }
-
-    CShader& CShader::operator=(const CShader& rhs)
-    {
-	    m_Type       = rhs.m_Type;
-	    m_ShaderID   = rhs.m_ShaderID;
-	    m_Profile    = rhs.m_Profile;
-	    m_Program    = rhs.m_Program;
-
-	    m_Parameters.insert(rhs.m_Parameters.begin(), rhs.m_Parameters.end());
-
-	    return *this;
     }
 
     void CShader::Bind()

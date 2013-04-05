@@ -11,7 +11,7 @@ A class that manages the framebuffer attachments for FBOs
 
 #pragma once
 
-#include "GLEW/glew.h"
+#include "GL/glew.h"
 
 ///////   MACROS  /////////////////////////////////////////////////////////
 

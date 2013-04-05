@@ -8,6 +8,9 @@
 #include "Sampler.h"
 #include "Common.h"
 
+#define ENCR_MIN(a,b) (((a) < (b)) ? (a) : (b))
+#define ENCR_MAX(a,b) (((a) > (b)) ? (a) : (b))
+
 RectangleLight::RectangleLight()
 {
     float yCoord = 49.99999f;
@@ -143,13 +146,13 @@ AABB RectangleLight::getAABB() const
     {
         Point3 p = m_Vertices[index].getCoordinates();
 
-        minPoint.X() = std::min(p.X(), minPoint.X());
-        minPoint.Y() = std::min(p.Y(), minPoint.Y());
-        minPoint.Z() = std::min(p.Z(), minPoint.Z());
+        minPoint.X() = ENCR_MIN(p.X(), minPoint.X());
+        minPoint.Y() = ENCR_MIN(p.Y(), minPoint.Y());
+        minPoint.Z() = ENCR_MIN(p.Z(), minPoint.Z());
 
-        maxPoint.X() = std::max(p.X(), maxPoint.X());
-        maxPoint.Y() = std::max(p.Y(), maxPoint.Y());
-        maxPoint.Z() = std::max(p.Z(), maxPoint.Z());
+        maxPoint.X() = ENCR_MAX(p.X(), maxPoint.X());
+        maxPoint.Y() = ENCR_MAX(p.Y(), maxPoint.Y());
+        maxPoint.Z() = ENCR_MAX(p.Z(), maxPoint.Z());
     }
 
     return AABB(minPoint, maxPoint);

@@ -6,6 +6,8 @@
 #include "TrianglePrim.h"
 #include "Common.h"
 
+#define STUB 1
+
 BasicAS::BasicAS(void)
 {
 }
@@ -42,7 +44,7 @@ void BasicAS::build( std::list<IModel*> &modelList )
     printf("BasicAS: construction: %.3f\n", dwBuildTime/1000.0f);
 }
 
-#ifdef WIN32
+
 /***********************
 * HitInfo BasicAS::buildGPU( Scene& l_pScene, GPUAccelerationStructureData& l_pASD )
 *
@@ -50,6 +52,7 @@ void BasicAS::build( std::list<IModel*> &modelList )
 ***********************/
 void BasicAS::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD )
 {
+#ifndef STUB
     // set GPUdata Sizes
     if ( triangleList.size() == 0 )
     {
@@ -129,6 +132,7 @@ void BasicAS::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &tria
         *pn2 = v.getNormal().Z();     pn2++;
         *pn2 = 1.0f;                  pn2++;
     }
+#endif
 }
 
 /**********************
@@ -138,6 +142,7 @@ void BasicAS::buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &tria
 ***********************/
 void BasicAS::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD )
 {
+#ifndef STUB
     CGparameter& cell_info = l_Shader.GetNamedParameter("cellData0", true);
     cgGLSetTextureParameter(cell_info, l_ASD.m_CellTexture[0]);
 
@@ -149,9 +154,10 @@ void BasicAS::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData&
 
     CGparameter& v2 = l_Shader.GetNamedParameter("v2t", true);
     cgGLSetTextureParameter(v2, l_ASD.m_VertexTexture[2]);
+#endif
 }
 
-#endif
+
 
 /***********************
 * HitInfo BasicAS::intersect( Ray* l_pRay )
