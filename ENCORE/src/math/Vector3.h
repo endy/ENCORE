@@ -38,7 +38,7 @@ namespace encore
             m_Components[2] = z;
         }
 
-		Vector3(Point3 start, Point3 end);
+		Vector3(const Point3& start, const Point3& end);
 
 		Vector3(const Vector3& orig){ *this = orig; }
 
@@ -132,6 +132,34 @@ namespace encore
         float m_Components[3];
 
   	};
+
+        ///////////  Friend Function //////////////////////////////	 
+    inline float Dot(const Vector3& v1, const Vector3& v2)
+    {
+        float product = v1[0] * v2[0] +
+                        v1[1] * v2[1] +
+                        v1[2] * v2[2];
+
+        return product;
+    }
+
+
+
+    inline Vector3 Cross(const Vector3& v1, const Vector3& v2)
+    {
+        Vector3 product;
+
+        // (u.y * v.z - u.z * v.y)i
+        product.X() = v1.Y() * v2.Z() - v1.Z() * v2.Y();
+        // -(u.x * v.z - u.z * v.x)j
+        product.Y() = -1 * (v1.X() * v2.Z() - v1.Z() * v2.X());
+        // (u.x * v.y - u.y * v.x)k
+        product.Z() = v1.X() * v2.Y() - v1.Y() * v2.X();
+
+        product.ClampfloatoZero();
+
+        return product;
+    }
 }
 
 #endif // _VECTOR3_H_

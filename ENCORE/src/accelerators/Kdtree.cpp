@@ -679,7 +679,7 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
     construct(left+1, rvoxel, b, depth+1, 0, rcIndex, size, dsize, tries);
 }
 
-HitInfo Kdtree::intersect( Ray &r )
+HitInfo Kdtree::intersect(Ray &r )
 {
     HitInfo hit;
     hit.hitTime = INFINITY;

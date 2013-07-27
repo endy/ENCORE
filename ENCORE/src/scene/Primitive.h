@@ -27,7 +27,7 @@ public:
 
     // intersect:
     // returns the HitInfo of the Ray intersection with the IPrimitive
-    virtual HitInfo intersect(Ray l_Ray ) = 0;
+    virtual HitInfo intersect(Ray& l_Ray ) = 0;
 
     // intersectAABB:
     // returns boolean whether or not the IPrimitive intersects with an AABB

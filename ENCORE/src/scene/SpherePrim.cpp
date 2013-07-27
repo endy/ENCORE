@@ -21,7 +21,7 @@ SpherePrim::~SpherePrim()
 
 }
 
-HitInfo SpherePrim::intersect(Ray r)
+HitInfo SpherePrim::intersect(Ray& r)
 {
     HitInfo info;
 

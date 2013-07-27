@@ -25,7 +25,7 @@ public:
     virtual void setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD );
 #endif
 
-		virtual HitInfo intersect( Ray& l_pRay );
+		virtual HitInfo intersect(Ray& l_pRay );
 
 private:
     std::list< IPrimitive* > m_lpAllPrimitives;

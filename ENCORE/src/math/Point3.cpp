@@ -19,12 +19,15 @@ namespace encore
             return *this;
         }
 
-        memcpy(m_Components, rhs.m_Components, 3*sizeof(float));
+        m_Components[0] = rhs.m_Components[0];
+        m_Components[1] = rhs.m_Components[1];
+        m_Components[2] = rhs.m_Components[2];
+        //memcpy(m_Components, rhs.m_Components, 3*sizeof(float));
 
         return *this;
     }
 
-    Point3 Point3::operator+(const Point3& rhs)
+    Point3 Point3::operator+(const Point3& rhs) const
     {
         Point3 sum;
         sum.X() = this->X() + rhs.X();
@@ -34,7 +37,7 @@ namespace encore
         return sum;
     }
 
-    Point3 Point3::operator-(const Point3& rhs)
+    Point3 Point3::operator-(const Point3& rhs) const
     {
         Point3 difference;
         difference.X() = this->X() - rhs.X();
@@ -51,7 +54,7 @@ namespace encore
             this->Z() == rhs.Z();
     }
 
-    Point3 Point3::operator*(const float& rhs)
+    Point3 Point3::operator*(const float& rhs) const
     {
         Point3 product = *this;
         product *= rhs;
@@ -66,7 +69,7 @@ namespace encore
         return *this;
     }
 
-    Point3 Point3::operator/(const float& rhs)
+    Point3 Point3::operator/(const float& rhs) const
     {
         Point3 quotient = *this;
         quotient /= rhs;

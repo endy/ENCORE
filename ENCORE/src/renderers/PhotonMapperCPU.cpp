@@ -1069,7 +1069,7 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
     return diffuse + specular + emissive + ambient;
 }
 
-Color PhotonMapperCPU::CalculateIndirectIllumination(Ray eyeRay, HitInfo hit)
+Color PhotonMapperCPU::CalculateIndirectIllumination(const Ray& eyeRay, const HitInfo& hit)
 {
     if(!(hit.hitObject->getMaterial()->GetAvgDiffuseReflectance() > 0))
     {

@@ -164,7 +164,7 @@ void BasicAS::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData&
 *
 * finds the first hit of the ray within the BasicAS
 ***********************/
-HitInfo BasicAS::intersect( Ray& l_pRay)
+HitInfo BasicAS::intersect(Ray& l_pRay)
 {
     HitInfo bestHit;
 

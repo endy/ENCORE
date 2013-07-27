@@ -94,7 +94,7 @@ private: // methods
     Color CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int recurseLevel);
 
 	///  Uses the photon map (and final gather?) to calculate the indirect illumination in the scene
-    Color CalculateIndirectIllumination(Ray eyeRay, HitInfo hit);
+    Color CalculateIndirectIllumination(const Ray& eyeRay, const HitInfo& hit);
 
 	/// Calculate radiance due to photons forming caustics
     Color CalculateCausticRadiance(Ray eyeRay, HitInfo hit);

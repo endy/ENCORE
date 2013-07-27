@@ -13,7 +13,7 @@ namespace encore
 {
     // construct a floatVector3 from two 3-dimensional points
     //   vector = end - start
-    Vector3::Vector3(Point3 start, Point3 end)
+    Vector3::Vector3(const Point3& start, const Point3& end)
     {
         this->X() = end.X() - start.X();
         this->Y() = end.Y() - start.Y();
@@ -137,33 +137,5 @@ namespace encore
         {
             this->Z() = 0;
         }
-    }
-
-    ///////////  Friend Function //////////////////////////////	 
-    float Dot(const Vector3& v1, const Vector3& v2)
-    {
-        float product = v1.X() * v2.X() +
-            v1.Y() * v2.Y() +
-            v1.Z() * v2.Z();
-
-        return product;
-    }
-
-
-
-    Vector3 Cross(const Vector3& v1, const Vector3& v2)
-    {
-        Vector3 product;
-
-        // (u.y * v.z - u.z * v.y)i
-        product.X() = v1.Y() * v2.Z() - v1.Z() * v2.Y();
-        // -(u.x * v.z - u.z * v.x)j
-        product.Y() = -1 * (v1.X() * v2.Z() - v1.Z() * v2.X());
-        // (u.x * v.y - u.y * v.x)k
-        product.Z() = v1.X() * v2.Y() - v1.Y() * v2.X();
-
-        product.ClampfloatoZero();
-
-        return product;
     }
 }

@@ -30,7 +30,7 @@ Ray PointLightPrim::EmitPhoton()
     return Ray(m_Position, randDirection());
 }
 
-HitInfo PointLightPrim::intersect(Ray l_Ray )
+HitInfo PointLightPrim::intersect(Ray& l_Ray )
 {
     // can't actually intersect with a PointLightPrim
     HitInfo hit;

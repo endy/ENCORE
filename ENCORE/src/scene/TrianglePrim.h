@@ -13,7 +13,7 @@ public:
     virtual ~TrianglePrim(void);
 
     //// IPrimitive Interface ////
-    virtual HitInfo intersect(Ray l_Ray);
+    virtual HitInfo intersect(Ray& l_Ray);
     virtual bool intersectAABB(AABB l_Box );
     virtual AABB getAABB( void ) const;
     virtual std::list<Triangle*>* getNewTesselation ( void );

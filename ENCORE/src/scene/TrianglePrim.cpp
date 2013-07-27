@@ -201,14 +201,14 @@ AABB TrianglePrim::getAABB( void ) const
     return boundingBox;
 }
 
-HitInfo TrianglePrim::intersect(Ray l_Ray)
+HitInfo TrianglePrim::intersect(Ray& l_Ray)
 {
-    Point3 v0( m_pTriangle->getVertex0()->getCoordinates() );
-    Point3 v1( m_pTriangle->getVertex1()->getCoordinates() );
-    Point3 v2( m_pTriangle->getVertex2()->getCoordinates() );
+    const Point3& v0 = m_pTriangle->getVertex0()->getCoordinates();
+    const Point3& v1 = m_pTriangle->getVertex1()->getCoordinates();
+    const Point3& v2 = m_pTriangle->getVertex2()->getCoordinates();
 
-    Vector3 edge1(v0, v1);
-    Vector3 edge2(v0, v2);
+    const Vector3 edge1(v0, v1);
+    const Vector3 edge2(v0, v2);
 
     Vector3 pvec = Cross(l_Ray.Direction(), edge2);
 
@@ -241,6 +241,8 @@ HitInfo TrianglePrim::intersect(Ray l_Ray)
 #endif
         info.hitNormal.Normalize();
         info.hitPoint = v0 + (v1-v0)*alpha + (v2-v0)*beta;
+        //Vector3 temp = (edge1)*alpha + (edge2)*beta;
+        //info.hitPoint = Point3(v0.X() + temp.X(), v0.Y() + temp.Y(), v0.Z() + temp.Z());
         info.isEntering = (Dot(l_Ray.Direction(),(info.hitNormal)) < 0);
         info.hitObject = this;
         info.bHasInfo = true;

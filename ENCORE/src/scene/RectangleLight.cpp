@@ -91,7 +91,7 @@ RectangleLight::~RectangleLight()
     }
 }
 
-HitInfo RectangleLight::intersect(Ray r)
+HitInfo RectangleLight::intersect(Ray& r)
 {
     HitInfo info = m_Prim1->intersect(r);
 
