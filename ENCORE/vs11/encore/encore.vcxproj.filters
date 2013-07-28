@@ -82,9 +82,6 @@
     <ClCompile Include="..\..\src\misc\Timer.cpp">
       <Filter>profiling</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\renderers\CPURTRenderer.cpp">
-      <Filter>renderers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\renderers\GPURayTracer.cpp">
       <Filter>renderers</Filter>
     </ClCompile>
@@ -257,9 +254,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\misc\Timer.h">
       <Filter>profiling</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\renderers\CPURTRenderer.h">
-      <Filter>renderers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\renderers\GPURayTracer.h">
       <Filter>renderers</Filter>

@@ -123,7 +123,6 @@
     <ClCompile Include="..\..\src\misc\Texture.cpp" />
     <ClCompile Include="..\..\src\misc\TextureMaker.cpp" />
     <ClCompile Include="..\..\src\misc\TextureManager.cpp" />
-    <ClCompile Include="..\..\src\renderers\CPURTRenderer.cpp" />
     <ClCompile Include="..\..\src\renderers\GPURayTracer.cpp" />
     <ClCompile Include="..\..\src\renderers\OpenGLRenderer.cpp" />
     <ClCompile Include="..\..\src\renderers\PhotonMapperCPU.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="..\..\src\misc\Texture.h" />
     <ClInclude Include="..\..\src\misc\TextureMaker.h" />
     <ClInclude Include="..\..\src\misc\TextureManager.h" />
-    <ClInclude Include="..\..\src\renderers\CPURTRenderer.h" />
     <ClInclude Include="..\..\src\renderers\GPURayTracer.h" />
     <ClInclude Include="..\..\src\renderers\OpenGLRenderer.h" />
     <ClInclude Include="..\..\src\renderers\PhotonMapperCPU.h" />

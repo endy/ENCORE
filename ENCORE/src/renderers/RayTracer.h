@@ -45,6 +45,8 @@ public: // Renderer Interface
 
     void SetImageFilename(std::string imageFilename){ m_ImageFilename = imageFilename; }
 
+    ///@todo Refactor to different shading models
+    Color phongShade(HitInfo bestHit, Ray* l_Ray);
 
 protected: // Ray Tracer methods
     
@@ -56,6 +58,10 @@ protected: // Ray Tracer methods
     void RenderSceneImage();
 
 protected: // data
+
+    ///@todo refactor out
+    enum ViewState { PHONG, NORMAL, VOXEL };
+    ViewState m_view;
 
     // profile data
     unsigned long int m_RenderTime;

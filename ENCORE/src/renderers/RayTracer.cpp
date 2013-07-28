@@ -13,6 +13,7 @@
 #endif
 
 #include "TextureManager.h"
+#include "Primitive.h"
 
 #ifndef WIN32
 #define GetTickCount() 0
@@ -43,6 +44,9 @@ RayTracer::RayTracer(int pixelRows, int pixelCols)
     m_Image = NULL;
 
     m_RenderTime = 0;
+
+    
+    m_view = PHONG; ///@todo remove
 }
 
 RayTracer::~RayTracer()
@@ -208,7 +212,7 @@ void RayTracer::Refine()
             }
             else
             {
-                m_BlockSize >>= 1;
+                m_BlockSize >>= 2;
                 m_CurrentBucketCol = m_StartBucketCol;
                 m_CurrentBucketRow = m_EndBucketRow - 1;
             }
@@ -370,9 +374,93 @@ void RayTracer::RenderScene()
 }
 
 
+Color RayTracer::phongShade(HitInfo bestHit, Ray* l_Ray)
+{
+    Color backgroundColor = m_pScene->getBackgroundColor();
+    Color color;
+
+    if (bestHit.bHasInfo == false)
+    {
+        color = Color( backgroundColor );
+    }
+    else
+    {
+        Material* newMat = bestHit.hitObject->getMaterial();
+
+        color = Color( newMat->GetAmbient() );
+
+/*
+        Ray feeler;
+        feeler.Origin() = Point3( bestHit->hitPoint.X() + (l_Ray->Direction().X() - EPSILON),
+                                   bestHit->hitPoint.Y() + (l_Ray->Direction().Y() - EPSILON),
+                                   bestHit->hitPoint.Z() + (l_Ray->Direction().Z() - EPSILON) );
+//        feeler.m_nRecurseLevel = 1;
+*/
+        std::list< IEmissive* >::iterator alight;
+        std::list< IEmissive* >* lightList = m_pScene->getLightList();
+
+        for (alight = lightList->begin(); alight != lightList->end(); alight++)
+        {
+            Color lightColor = (*alight)->GetEmissiveColor();
+            const Point3 lightPos = (*alight)->GetPointOfEmission();
+
+            Color contribution;
+/*
+            feeler.Direction() = lightPos - feeler.Origin();
+            if ( IsInShadow( feeler ) )
+            {
+                // don't calculate light contribution for this light
+                continue;
+            }
+*/
+            // Compute the diffuse term
+
+            Vector3 L(bestHit.hitPoint, lightPos);
+            L.Normalize();
+
+            float NdotL = Dot(L ,bestHit.hitNormal);
+
+            if (NdotL > 0.0) // is normal within 90 degrees of light?
+            {
+                Color diffuse( lightColor * newMat->GetDiffuse() * NdotL );
+                contribution += diffuse;
+            }
+
+            // Compute the specular term
+            Vector3 V(bestHit.hitPoint, l_Ray->Origin());
+            V.Normalize();
+
+            Vector3 H(L + V);
+            H.Normalize();
+
+            float NdotH = Dot(H, bestHit.hitNormal);
+            if ( NdotH > 0 )
+            {
+                float phong = pow( NdotH, newMat->GetSpecularExponent() );
+                Color specular( lightColor * newMat->GetSpecular() * phong );
+                contribution += specular;
+            }
+
+            color += contribution; // this should probably be multiply
+        }
+    }
+
+    return color;
+}
+
 Color RayTracer::CalculateRadiance(Ray eyeRay, HitInfo hit, int recurseLevel)
 {
-    return Color((rand() % 255) / 255.0, (rand() % 255) / 255.0, 1, 1);
+    Color c;
+    if ( m_view == PHONG )
+    {
+        c = phongShade( hit, &eyeRay );
+    }
+    else if ( m_view == NORMAL )
+    {
+        c = Color( hit.hitNormal.X(), hit.hitNormal.Y(), hit.hitNormal.Z(), 0 );
+    }
+
+    return c;
 }
 
 
