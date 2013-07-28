@@ -53,9 +53,6 @@ public:  // Rendering Properties
 	size_t	MaxBlockIndex;
 	bool	RussianRoulette;
 
-public:
-    void SetImageFilename(std::string imageFilename){ m_ImageFilename = imageFilename; }
-
 private: // methods
 		
 	// Shoots photons from light sources in the scene
@@ -140,7 +137,6 @@ private:  // member data
  
     // misc
     bool m_bCaptureScreenshot;
-    std::string m_ImageFilename;
 
     // Emission
     bool m_EmitPhotons;

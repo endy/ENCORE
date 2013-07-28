@@ -43,13 +43,15 @@ public: // Renderer Interface
 
     virtual void Refine();
 
+    void SetImageFilename(std::string imageFilename){ m_ImageFilename = imageFilename; }
+
 
 protected: // Ray Tracer methods
     
     /// Render the scene onto a texture, displays intermediate results
     void RenderScene();
     /// Calculates the light traveling in the reverse direction of the eye ray from where the eyeRay hits
-    virtual Color CalculateRadiance(Ray eyeRay, HitInfo hit, int recurseLevel = 1){ return m_backgroundColor; };
+    virtual Color CalculateRadiance(Ray eyeRay, HitInfo hit, int recurseLevel = 1);
     /// Renders the scene as a texture on a quad
     void RenderSceneImage();
 

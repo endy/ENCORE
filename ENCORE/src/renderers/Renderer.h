@@ -65,6 +65,7 @@ protected:
 
     bool m_bRefineInProgress;
     bool m_bImageComplete;
+    std::string m_ImageFilename;
 };
 
 

@@ -8,6 +8,7 @@ Renderer::Renderer():
 {
     m_bImageComplete = false;
     m_bRefineInProgress = false;
+    m_ImageFilename = "output.png";
 }
 
 Renderer::~Renderer()

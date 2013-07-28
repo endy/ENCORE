@@ -85,8 +85,6 @@ RayTracer(pixelRows, pixelCols)
     m_bIndirectOn = false;
     m_bCausticsOn = false;
 
-    m_ImageFilename = "output.png";
-
     m_DirectTime = 0;
     m_IndirectTime = 0;
     m_CausticsTime = 0;
@@ -155,9 +153,6 @@ void PhotonMapperCPU::init(Scene* scn, AccelerationStructure* accelStruct, Camer
 {
     inherited::init(scn, accelStruct, cam);
 
-    std::list<IModel*> models = m_pScene->getModelList();
-    m_pAccelStruct->build(models);
-
     if(m_DirectPhotonMap)
     {
         delete m_DirectPhotonMap;
@@ -181,8 +176,7 @@ void PhotonMapperCPU::init(Scene* scn, AccelerationStructure* accelStruct, Camer
         ShowIrrCache = false;
     }
 
-    m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3(-75, -75, -75), 150, 150, 150);   
-    //m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3(-100, -100, -100), 200, 200, 200);        
+    m_NewIrrCache = new IrrCache<Color>(m_FGTolerance, Point3(-75, -75, -75), 150, 150, 150);
 }
 
 
@@ -287,8 +281,6 @@ void PhotonMapperCPU::Refine()
         Singleton<Logfile>::Get().Stream() << "Final Gather Count: " << m_FinalGatherCount << std::endl;
 
         std::cout << "Final Gather Count: " << m_FinalGatherCount << std::endl;
-
-        CTextureManager::WriteTextureToPNG(m_ImageFilename, m_Image);
     }
 }
 

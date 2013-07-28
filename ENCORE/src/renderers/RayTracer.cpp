@@ -12,6 +12,8 @@
 #include <GL/freeglut.h>
 #endif
 
+#include "TextureManager.h"
+
 #ifndef WIN32
 #define GetTickCount() 0
 #define DWORD unsigned int
@@ -128,12 +130,20 @@ void RayTracer::init(Scene* scn, AccelerationStructure* accelStruct, Camera* cam
     m_pCamera = cam;
     m_pAccelStruct = accelStruct;
 
+    std::list<IModel*> models = m_pScene->getModelList();
+    m_pAccelStruct->build(models);
+
+
     m_bImageComplete = false;
     m_bRefineInProgress = false;
 }
 
 void RayTracer::render()
 {
+    ///@todo Refactor in or out of codebase
+
+    assert(0); // expected that this path is not exercised
+
     glDisable(GL_LIGHTING);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -145,6 +155,8 @@ void RayTracer::render()
     glLoadIdentity(); 
 
     RenderScene();
+
+    CTextureManager::WriteTextureToPNG(m_ImageFilename, m_Image);
 }
 
 void RayTracer::deinit()
@@ -172,8 +184,8 @@ void RayTracer::Refine()
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity(); 
 
-        m_CurrentBucketRow = m_EndBucketRow - 1;
         m_CurrentBucketCol = m_StartBucketCol;
+        m_CurrentBucketRow = m_StartBucketRow;
 
         m_bRefineInProgress = true;
     }
@@ -186,14 +198,17 @@ void RayTracer::Refine()
         if(m_CurrentBucketRow < 0)
         {
             if(m_BlockSize == 1)
-            {       
+            {
                 m_bImageComplete = true;
                 m_bRefineInProgress = false;
+
+                CTextureManager::WriteTextureToPNG(m_ImageFilename, m_Image);
+
                 return;
             }
             else
             {
-                m_BlockSize /= 4;
+                m_BlockSize >>= 1;
                 m_CurrentBucketCol = m_StartBucketCol;
                 m_CurrentBucketRow = m_EndBucketRow - 1;
             }
@@ -270,7 +285,6 @@ void RayTracer::Refine()
     }  
     m_Image = m_ImageMaker->MakeTexture();
     RenderSceneImage();
-
 }
 
 
@@ -353,6 +367,12 @@ void RayTracer::RenderScene()
     //tmR.ApplyToneMap(&texMaker);
     m_Image = m_ImageMaker->MakeTexture();
     RenderSceneImage();
+}
+
+
+Color RayTracer::CalculateRadiance(Ray eyeRay, HitInfo hit, int recurseLevel)
+{
+    return Color((rand() % 255) / 255.0, (rand() % 255) / 255.0, 1, 1);
 }
 
 

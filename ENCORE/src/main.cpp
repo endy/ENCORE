@@ -90,6 +90,7 @@ using namespace std;
 enum RENDERER {OPENGL, CPURT, GPURT, PMCPU };
 OpenGLRenderer *ogl = NULL;
 CPURTRenderer *crt = NULL;
+RayTracer* rt = NULL;
 #ifdef WIN32
 GPURayTracer *gpurt = NULL;
 #else
@@ -363,11 +364,11 @@ void initRenderer( void )
         break;
     case CPURT:
         printf("RENDERER: CPU Ray Tracer\n");
-        m_pRenderer = crt;
+        m_pRenderer = rt;
         break;
     case GPURT:
         printf("RENDERER: GPU Ray Tracer\n");
-        m_pRenderer = gpurt;
+        m_pRenderer = crt; //gpurt;
         break;
     case PMCPU:
         printf("RENDERER: Photon Mapper\n");
@@ -388,7 +389,9 @@ void deinitRenderer( void )
 void myInit( void )
 {
     ogl = new OpenGLRenderer();
-    //crt = new CPURTRenderer();
+    crt = new CPURTRenderer();
+    rt = new RayTracer(IMAGE_WIDTH, IMAGE_HEIGHT);
+    rt->SetImageFilename(g_outputImageFilename);
 #ifdef WIN32
     //    gpurt = new GPURayTracer();
 #else
