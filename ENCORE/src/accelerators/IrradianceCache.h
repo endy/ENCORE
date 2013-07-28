@@ -9,14 +9,14 @@ class IrrCacheNode
 {
 public:
 
-    double GetWeight(Point3 p, Vector3 n);
+    float GetWeight(const Point3& p, const Vector3& n);
 
 public:
     Color       m_Color;
     Point3     m_Position;
     Vector3    m_Normal;
     float       m_R;
-    double      m_Weight;
+    float      m_Weight;
 };
 
 class IrradianceCache

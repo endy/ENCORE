@@ -36,7 +36,7 @@ public:
     Vector3& Normal(){ return m_Normal; }    
     float& Ri(){ return m_Ri; }
 
-    double GetWeight(Point3 p, Vector3 n);
+    float GetWeight(const Point3& p, const Vector3& n);
     
     double GetD(Point3 p, Vector3 n);
 
@@ -48,20 +48,20 @@ private:
     float m_Ri;
 };
 
-template <class T> double TCacheElement<T>::GetWeight(Point3 p, Vector3 n)
+template <class T> float TCacheElement<T>::GetWeight(const Point3& p, const Vector3& n)
 {
     // Equation 11.5 from Pg 141 in Jensen's book
     // weight = 1.0 /( (||xi-x|| /Ri) + Sqrt(1.0-dot(Ni, N)));
 
-    double distance = Vector3(p, m_Location).Magnitude();
+    float distance = Vector3(p, m_Location).Magnitude();
 
-    double distCalc = (m_Ri == 0) ? 0 : distance / m_Ri;
+    float distCalc = (m_Ri == 0) ? 0 : distance / m_Ri;
 
-    double sqrtCalc = (n == m_Normal) ? 0 : sqrt(1.0 - Dot(n, m_Normal));
+    float sqrtCalc = (n == m_Normal) ? 0 : sqrt(1.0 - Dot(n, m_Normal));
     
-    double denom = sqrtCalc + distCalc;
+    float denom = sqrtCalc + distCalc;
 
-    double weight;
+    float weight;
 
     if(denom == 0)
     {

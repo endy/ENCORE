@@ -3,18 +3,18 @@
 #include <iostream>
 
 
-double IrrCacheNode::GetWeight(Point3 p, Vector3 n)
+float IrrCacheNode::GetWeight(const Point3& p, const Vector3& n)
 {
     // Equation 11.5 from Pg 141 in Jensen's book
     // weight = 1.0 /( (||xi-x|| /Ri) + Sqrt(1.0-dot(Ni, N)));
 
-    double distance = Vector3(p, m_Position).Magnitude();
+    float distance = Vector3(p, m_Position).Magnitude();
 
-    double distCalc = (m_R == 0) ? 0 : distance / m_R;
+    float distCalc = (m_R == 0) ? 0 : distance / m_R;
 
-    double sqrtCalc = (n == m_Normal) ? 0 : sqrt(1.0 - Dot(n, m_Normal));
+    float sqrtCalc = (n == m_Normal) ? 0 : sqrt(1.0 - Dot(n, m_Normal));
     
-    double denom = sqrtCalc;// + ;
+    float denom = sqrtCalc;// + ;
 
     if(denom == 0)
     {
@@ -65,14 +65,14 @@ bool IrradianceCache::GetIrradiance(Point3 position, Vector3 normal, Color &radi
     int maxDepth = 0;
     m_Cache->GetAllElementsNearPoint(position, maxDistance, precalced, maxDepth);
     
-    double weightSum = 0;
+    float weightSum = 0;
 
     std::list< TElement<IrrCacheNode> >::iterator nodeIter = precalced.begin();
 
     std::cout << 1/m_Tolerance << std::endl;
     while(nodeIter != precalced.end())
     {
-        double w = nodeIter->Data().GetWeight(position, normal);
+        float w = nodeIter->Data().GetWeight(position, normal);
         if(w > 1/m_Tolerance)
         {
             weightSum += w;
@@ -84,7 +84,7 @@ bool IrradianceCache::GetIrradiance(Point3 position, Vector3 normal, Color &radi
 
     while(nodeIter != precalced.end())
     {
-        double w = nodeIter->Data().GetWeight(position, normal);
+        float w = nodeIter->Data().GetWeight(position, normal);
         if(w > 1/m_Tolerance)
         {
             radiance += nodeIter->Data().m_Color * (w / weightSum);
