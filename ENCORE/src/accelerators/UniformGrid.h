@@ -36,7 +36,7 @@ public:
     void setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD );
 #endif
 
-    HitInfo intersect( Ray& l_pRay );
+    bool intersect( Ray& l_pRay, HitInfo* pHitInfo);
     virtual void update(std::list<IModel*> &modelList) { build(modelList); }
 
 private:

@@ -21,10 +21,8 @@ SpherePrim::~SpherePrim()
 
 }
 
-HitInfo SpherePrim::intersect(Ray& r)
+bool SpherePrim::intersect(Ray& r, HitInfo* pHitInfo)
 {
-    HitInfo info;
-
     /////////   NOTE   //////////////////////////////////////////
     //       
     //  This algorithm is taken from Real-Time Rendering, 2nd Ed.
@@ -40,8 +38,7 @@ HitInfo SpherePrim::intersect(Ray& r)
     if(s < 0 && rTCSquared > radiusSquared)
     {
         // sphere is behind the ray's origin
-        info.bHasInfo = false;
-        return info;
+        return false;
     }
 
     float mSquared = rTCSquared - (s * s);
@@ -49,8 +46,7 @@ HitInfo SpherePrim::intersect(Ray& r)
     if(mSquared > radiusSquared)
     {
         // ray is to the side of the sphere, but won't intersect
-        info.bHasInfo = false;
-        return info;
+        return false;
     }
 
     //// RAY INTERSECTS THE SPHERE! ////
@@ -61,27 +57,27 @@ HitInfo SpherePrim::intersect(Ray& r)
     if(rTCSquared > radiusSquared)
     {
         // ray's origin is outside sphere, calc first intersection
-        info.hitTime = s - q;	
-        info.isEntering = true;
+        pHitInfo->hitTime = s - q;	
+        pHitInfo->isEntering = true;
     }
     else
     {
         // ray's origin is inside sphere, first AND ONLY intersection is at 
         //   t = s + q
-        info.hitTime = s + q;
-        info.isEntering = false;
+        pHitInfo->hitTime = s + q;
+        pHitInfo->isEntering = false;
     }
 
     // calc hit location using hit time and ray
-    info.hitPoint  = Point3( r.GetPositionAtTime((float) info.hitTime));
+    pHitInfo->hitPoint  = Point3( r.GetPositionAtTime((float) pHitInfo->hitTime));
 
-    info.hitNormal = Vector3(m_Center, info.hitPoint);
-    info.hitNormal.Normalize();
+    pHitInfo->hitNormal = Vector3(m_Center, pHitInfo->hitPoint);
+    pHitInfo->hitNormal.Normalize();
 
-    info.hitObject = this;
-    info.bHasInfo  = true;
+    pHitInfo->hitObject = this;
+    pHitInfo->bHasInfo  = true;
 
-    return info;
+    return true;
 }
 
 bool SpherePrim::intersectAABB(AABB box)

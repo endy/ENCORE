@@ -164,23 +164,31 @@ void BasicAS::setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData&
 *
 * finds the first hit of the ray within the BasicAS
 ***********************/
-HitInfo BasicAS::intersect(Ray& l_pRay)
+bool BasicAS::intersect( Ray& l_pRay, HitInfo* pHitInfo )
 {
-    HitInfo bestHit;
+
+#ifndef INFINITY
+#define INFINITY     FLT_MAX
+#endif
+
+    pHitInfo->bHasInfo = false;
+    pHitInfo->hitTime = INFINITY;
 
     // check all the primitives for a hit
     std::list< IPrimitive* >::iterator ilpPrim;
     for( ilpPrim = m_lpAllPrimitives.begin(); ilpPrim != m_lpAllPrimitives.end(); ilpPrim++)
     {
-        HitInfo newHit = (*ilpPrim)->intersect( l_pRay );
+        HitInfo newHit;
+        (*ilpPrim)->intersect( l_pRay, &newHit);
 
         if ( 0 < newHit.hitTime &&
-            newHit.hitTime < bestHit.hitTime )
+            newHit.hitTime < pHitInfo->hitTime )
         {
-            bestHit = newHit;
+            *pHitInfo = newHit;
+            pHitInfo->bHasInfo = true;
         }
     }
 
     // return the best hit
-    return bestHit;
+    return pHitInfo->bHasInfo;
 }

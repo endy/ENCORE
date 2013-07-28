@@ -126,7 +126,7 @@ public:
     void setGPUParameters( CShader& shader, GPUAccelerationStructureData& accelStructData );
 #endif
 		
-		HitInfo intersect(Ray& aRay );
+		bool intersect(Ray& aRay, HitInfo* pHitInfo);
 
     void setCost(float ic, float it, float eb) { m_IntersectCost = ic, m_TraversalCost = it; m_EmptyBonus = eb; }
     void useSAH(bool s) { if(s) m_SplitMode = SPLIT_SAH; else m_SplitMode = SPLIT_NAIVE; }

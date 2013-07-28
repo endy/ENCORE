@@ -21,7 +21,7 @@ public:
     virtual Point3 GetPointOfEmission( void ) { return m_Position; }
 
     // IPrimitive Interface
-    HitInfo intersect(Ray& l_Ray);
+    bool intersect(Ray& l_Ray, HitInfo* pHitInfo);
     bool intersectAABB(AABB l_Box) { return l_Box.Contains( m_Position ); }
     AABB getAABB( void ) const { return AABB( m_Position, m_Position ); }
     std::list<Triangle*>* getNewTesselation ( void ) { return new std::list<Triangle*>(); } // returns no triangles

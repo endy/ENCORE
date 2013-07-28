@@ -201,7 +201,7 @@ AABB TrianglePrim::getAABB( void ) const
     return boundingBox;
 }
 
-HitInfo TrianglePrim::intersect(Ray& l_Ray)
+bool TrianglePrim::intersect(Ray& l_Ray, HitInfo* pHitInfo)
 {
     const Point3& v0 = m_pTriangle->getVertex0()->getCoordinates();
     const Point3& v1 = m_pTriangle->getVertex1()->getCoordinates();
@@ -211,23 +211,19 @@ HitInfo TrianglePrim::intersect(Ray& l_Ray)
     const Vector3 edge2(v0, v2);
 
     Vector3 pvec = Cross(l_Ray.Direction(), edge2);
-
-    float det = Dot(edge1, pvec);
-    float invdet = 1.0f/det;
+    float invdet = 1.0f/ Dot(edge1, pvec);
 
     Vector3 svec(v0, l_Ray.Origin());
-    float alpha = Dot(svec, pvec) * invdet;
-
     Vector3 qvec = Cross(svec, edge1);
-    float beta = Dot(l_Ray.Direction(), qvec) * invdet;
 
-    float time = Dot(edge2, qvec) * invdet;
+    float alpha = Dot(svec, pvec) * invdet;
+    float beta  = Dot(l_Ray.Direction(), qvec) * invdet;
+    float time  = Dot(edge2, qvec) * invdet;
 
-    HitInfo info;
     if ( (alpha >= 0.0) && (beta >= 0.0) && (alpha + beta <= 1)
           && ( time > 0.0 ) )
     {
-        info.hitTime = time;
+        pHitInfo->hitTime = time;
 #ifdef SMOOTH_EDGES
         // calculate interpolated normal
         Vector3 n0( m_pTriangle->getVertex0()->getNormal() );
@@ -237,17 +233,17 @@ HitInfo TrianglePrim::intersect(Ray& l_Ray)
         Vector3 tempNormal = n0 + (n1-n0)*alpha + (n2-n0)*beta;
         info.hitNormal = tempNormal;   
 #else
-       info.hitNormal = Cross(edge1, edge2);
+       pHitInfo->hitNormal = Cross(edge1, edge2);
 #endif
-        info.hitNormal.Normalize();
-        info.hitPoint = v0 + (v1-v0)*alpha + (v2-v0)*beta;
+        pHitInfo->hitNormal.Normalize();
+        pHitInfo->hitPoint = v0 + (v1-v0)*alpha + (v2-v0)*beta;
         //Vector3 temp = (edge1)*alpha + (edge2)*beta;
         //info.hitPoint = Point3(v0.X() + temp.X(), v0.Y() + temp.Y(), v0.Z() + temp.Z());
-        info.isEntering = (Dot(l_Ray.Direction(),(info.hitNormal)) < 0);
-        info.hitObject = this;
-        info.bHasInfo = true;
+        pHitInfo->isEntering = (Dot(l_Ray.Direction(),(pHitInfo->hitNormal)) < 0);
+        pHitInfo->hitObject = this;
+        pHitInfo->bHasInfo = true;
     }
 
-    return info;
+    return pHitInfo->bHasInfo;
 
 }

@@ -632,9 +632,8 @@ void PhotonMapperCPU::TracePhoton(Photon p, Vector3 initialDir)
     {
         // trace the photon along the current direction
 
-        HitInfo hit =  m_pAccelStruct->intersect(photonPath);
-
-        if(hit.bHasInfo)
+        HitInfo hit;
+        if (m_pAccelStruct->intersect(photonPath, &hit))
         {
             Material *mat = hit.hitObject->getMaterial();
 
@@ -765,9 +764,8 @@ void PhotonMapperCPU::TransmitPhoton(Photon *p, int bounces, Ray &photonPath, Hi
         return;
     }
 
-    HitInfo transmittedHit = m_pAccelStruct->intersect(transmittedPath);;
-
-    if(transmittedHit.bHasInfo)
+    HitInfo transmittedHit;
+    if (m_pAccelStruct->intersect(transmittedPath, &transmittedHit))
     {
         if(transmittedHit.isEntering == false)
         {
@@ -785,21 +783,20 @@ void PhotonMapperCPU::TransmitPhoton(Photon *p, int bounces, Ray &photonPath, Hi
     p->LastReflection(SPECULAR);
 }
 
-void PhotonMapperCPU::EmitShadowPhoton(Photon p, Ray shadowPhotonPath)
+void PhotonMapperCPU::EmitShadowPhoton(
+    Photon p, 
+    Ray shadowPhotonPath)
 {
     static int shadows = 0;
 
-    HitInfo firstHit = m_pAccelStruct->intersect(shadowPhotonPath);
-
-    while(firstHit.bHasInfo && !firstHit.isEntering)
+    HitInfo firstHit;
+    while (m_pAccelStruct->intersect(shadowPhotonPath, &firstHit) && !firstHit.isEntering)
     {
         shadowPhotonPath.Origin() = firstHit.hitPoint + (shadowPhotonPath.Direction() * 0.01).ToPoint();
         p.Position() = firstHit.hitPoint;
-
-        firstHit = m_pAccelStruct->intersect(shadowPhotonPath);
     }
 
-    if(firstHit.bHasInfo)
+    if (firstHit.bHasInfo)
     {
         Photon shadowPhoton(firstHit.hitPoint, -p.Power(), shadowPhotonPath.Direction());
         shadowPhoton.SetShadowPhoton(true);
@@ -807,7 +804,6 @@ void PhotonMapperCPU::EmitShadowPhoton(Photon p, Ray shadowPhotonPath)
         m_DirectPhotonMap->AddPhoton(shadowPhoton);
 
         shadows++;
-        //std::cout << "\b\b\b\b\b\b\b\b\b\b\b\b\b" <<  shadows / (float)m_DirectPhotonMap->GetMaxPhotons(); 
     }
 }
 
@@ -1023,9 +1019,8 @@ Color PhotonMapperCPU::CalculateDirectIllumination(Ray eyeRay, HitInfo hit, int 
         reflectionRay.Direction() = rDir;
         reflectionRay.Origin() = hit.hitPoint + (rDir * 0.001).ToPoint();
 
-        HitInfo reflectionInfo = m_pAccelStruct->intersect(reflectionRay);
-
-        if(reflectionInfo.bHasInfo)
+        HitInfo reflectionInfo;
+        if (m_pAccelStruct->intersect(reflectionRay, &reflectionInfo))
         {
             DWORD deltaStart = GetTickCount();
             specular += CalculateRadiance(reflectionRay, reflectionInfo, recurseLevel - 1);// * objMaterial.GetReflectivity();
@@ -1131,15 +1126,14 @@ Color PhotonMapperCPU::CalculateIndirectIllumination(const Ray& eyeRay, const Hi
     m_FinalGatherCount++;
     
     float Ri = 0; // harmonic mean
+    HitInfo sampleHit;
     for(int sampleIndex = 0; sampleIndex < (int)sampleRays.size(); ++sampleIndex)
     {   
         // generate ray
         sampleRays[sampleIndex].Origin() = hit.hitPoint;// + (sampleRays[sampleIndex].Direction() * 0.0000001f).ToPoint();
 
         // intersect
-        HitInfo sampleHit = m_pAccelStruct->intersect(sampleRays[sampleIndex]);
-
-        if(sampleHit.bHasInfo)
+        if(m_pAccelStruct->intersect(sampleRays[sampleIndex], &sampleHit))
         {
             Color irrValue;
             if(m_bPrecomputeIrr)
@@ -1215,9 +1209,9 @@ bool PhotonMapperCPU::IsInShadow(Point3 surfacePoint, Point3 lightPoint)
 
     Point3 shadowRayOrigin = surfacePoint + (shadowRayDir * 0.01).ToPoint();
     Ray shadowRay(shadowRayOrigin, shadowRayDir);
-    HitInfo shadowHit = m_pAccelStruct->intersect(shadowRay);
+    HitInfo shadowHit;
 
-    bool inShadow = (shadowHit.bHasInfo && shadowHit.hitTime < distToLight);
+    bool inShadow = (m_pAccelStruct->intersect(shadowRay, &shadowHit) && shadowHit.hitTime < distToLight);
 
     return inShadow;
 }
@@ -1270,9 +1264,8 @@ void PhotonMapperCPU::TransmitTillTermination(Ray incoming, HitInfo incidentHit,
     transRay.Direction() = T;
     transRay.Origin() = incidentHit.hitPoint + (T * 0.01).ToPoint();
 
-    HitInfo transHit = m_pAccelStruct->intersect(transRay);
-
-    if(transHit.bHasInfo)
+    HitInfo transHit;
+    if(m_pAccelStruct->intersect(transRay, &transHit))
     {
         TransmitTillTermination(transRay, transHit, finalRay, finalHit);
     }

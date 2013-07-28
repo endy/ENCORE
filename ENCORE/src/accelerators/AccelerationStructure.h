@@ -60,7 +60,7 @@ public:
     
     /// returns the HitInfo of the first successful intersection 
     /// of the ray with the Primitives in the AccelerationStructure
-    virtual HitInfo intersect( Ray& l_Ray ) = 0;
+    virtual bool intersect( Ray& l_Ray, HitInfo* pHitInfo ) = 0;
 
     /// defines how the AcceleratioStructure should react to keyboard input
     virtual void keyboard( unsigned char key ) = 0;

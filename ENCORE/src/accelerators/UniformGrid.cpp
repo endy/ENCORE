@@ -749,10 +749,8 @@ void UniformGrid::getVoxel(Ray *aRay) const
     aRay->SetTracePosition( voxel );
 }
 
-HitInfo UniformGrid::intersect(Ray& l_Ray)
+bool UniformGrid::intersect(Ray& l_Ray, HitInfo* pHitInfo)
 {
-    HitInfo bestHit;
-
     Point3 tMax( POS_INF, POS_INF, POS_INF );
     Pixel cell_info;
     bool bStopTraversing = false;
@@ -762,11 +760,10 @@ HitInfo UniformGrid::intersect(Ray& l_Ray)
     // if this is the first time we've seen this ray
     if ( l_Ray.GetTraceTime() == 0 )
     {
-        if ( !rayBoxIntersect( &l_Ray, m_MinPt, m_MaxPt, &timeIn) )
+        if (!rayBoxIntersect( &l_Ray, m_MinPt, m_MaxPt, &timeIn))
         {
             // ray misses the box, so there can't be a hit
-            HitInfo noHit;
-            return noHit;
+            return false;
         }
         else
         {
@@ -806,7 +803,7 @@ HitInfo UniformGrid::intersect(Ray& l_Ray)
     //0) if ray doesn't hit grid (checked above)
     //1) if PrimList is empty, then this ray is done (below)
     //2) if PrimList has triangles, then the renderer should intersect with them (below)
-    while( bStopTraversing == false )
+    while (bStopTraversing == false)
     {
         Point3 rayVoxelPosition = l_Ray.GetTracePosition();
 
@@ -835,7 +832,8 @@ HitInfo UniformGrid::intersect(Ray& l_Ray)
             {
                 for( unsigned int i = 0; i < mysize; i++ )
                 {
-                    HitInfo newHit = gdata[mybase+i]->intersect( l_Ray );
+                    HitInfo newHit; 
+                    gdata[mybase+i]->intersect( l_Ray, &newHit);
 #else
             // get Primitives at this cell
             std::list< IPrimitive* >* lpPrims = m_Grid[(int)rayVoxelPosition.X()][(int)rayVoxelPosition.Y()][(int)rayVoxelPosition.Z()];
@@ -849,10 +847,10 @@ HitInfo UniformGrid::intersect(Ray& l_Ray)
                     HitInfo newHit = (*ilpPrims)->intersect( l_Ray );
 #endif
                     if ( 0 < newHit.hitTime && 
-                         newHit.hitTime < bestHit.hitTime )
+                         newHit.hitTime < pHitInfo->hitTime )
                     {
-                        bestHit = newHit;
-                        bestHit.hitVoxel = rayVoxelPosition / (float)m_gridDimension;
+                        *pHitInfo = newHit;
+                        pHitInfo->hitVoxel = rayVoxelPosition / (float)m_gridDimension;
                         bStopTraversing = true;
                     }
                 }
@@ -867,5 +865,5 @@ HitInfo UniformGrid::intersect(Ray& l_Ray)
         }
     }
 
-    return bestHit;
+    return pHitInfo->bHasInfo;
 }

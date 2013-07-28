@@ -14,9 +14,9 @@ using namespace std;
 #define INFINITY     FLT_MAX
 #endif
 Kdtree::Kdtree() 
-: m_MaxDepth(0), m_MaxItemPerNode(10), m_TotalNode(0), m_MaxNode(32),
-  m_bBuilt(false), m_SplitMode(SPLIT_NAIVE), m_NodeUsed(0), m_IntersectCost(80), m_TraversalCost(1),
-  m_EmptyBonus(0.15f), m_pTree(NULL), m_AbsMax(65536), totalLeaf(0) 
+    : m_MaxDepth(0), m_MaxItemPerNode(10), m_TotalNode(0), m_MaxNode(32),
+    m_bBuilt(false), m_SplitMode(SPLIT_NAIVE), m_NodeUsed(0), m_IntersectCost(80), m_TraversalCost(1),
+    m_EmptyBonus(0.15f), m_pTree(NULL), m_AbsMax(65536), totalLeaf(0) 
 {
     maxReserve = 0;
     edge[0] = edge[1] = edge[2] = 0;
@@ -39,9 +39,9 @@ void Kdtree::setMaxDepth(unsigned int d, unsigned int item)
 
 void Kdtree::initTree()
 {
-//    if ( m_pTree )
-//        delete [] m_pTree;
-//    m_pTree = NULL;
+    //    if ( m_pTree )
+    //        delete [] m_pTree;
+    //    m_pTree = NULL;
     //m_pTree = new BSPNode[m_MaxNode];
 }
 
@@ -86,8 +86,8 @@ void Kdtree::build(std::list<IModel*> &modelList)
     DWORD dwBuildTime = EncoreGetTime();
 
     m_PrimList.clear();
-//    if(built) // already built, return
-//        return;
+    //    if(built) // already built, return
+    //        return;
 
     Point3 minPt(INFINITY, INFINITY,INFINITY);
     Point3 maxPt(-INFINITY,-INFINITY,-INFINITY);
@@ -129,7 +129,7 @@ void Kdtree::build(std::list<IModel*> &modelList)
 
     // depth base on formula recommanded
     m_MaxDepth = 11+(unsigned int)(1.3*log((float)m_TotalPrimCount));
-    
+
     //printf("KdTree: building kd tree with max depth : %i\n", m_MaxDepth);
 
     m_MaxNode = m_TotalPrimCount*2-1;
@@ -140,7 +140,7 @@ void Kdtree::build(std::list<IModel*> &modelList)
         maxReserve = m_MaxNode;
     // malloc enought space right at the start
     rightBOX.reserve(maxReserve);
-    
+
     m_NodeUsed = 1;
 
     // allocation edges for sah
@@ -180,20 +180,20 @@ void Kdtree::build(std::list<IModel*> &modelList)
     /*
     if(leftBOX)
     {
-        free(leftBOX);
-        leftBOX = 0;
+    free(leftBOX);
+    leftBOX = 0;
     }
     rightBOX.clear();
-#ifdef SAH
+    #ifdef SAH
     for(int i = 0; i < 3; i++)
     {
-        delete [] edge[i];
-        edge[i] = 0;
+    delete [] edge[i];
+    edge[i] = 0;
     }
-#endif
+    #endif
     */
-    
-	//construct(0, m_Bounds, m_PrimList, 0, 0);
+
+    //construct(0, m_Bounds, m_PrimList, 0, 0);
     //printf("KdTree: total leaf node %i\n", totalLeaf);
 
     dwBuildTime = EncoreGetTime() - dwBuildTime;
@@ -213,17 +213,17 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
     float bestcost = INFINITY;
     float oldCost = m_IntersectCost * (float)size;
     float invTotalSA = .5f/box.Area();
-    
+
     int axis = 0; // default to Z axis
     Point3 bsize = box.getSize();
     /*
     if (( bsize.X() > bsize.Y()) && (bsize.X() > bsize.Z()) )
     {
-        axis = 0; // X is longest
+    axis = 0; // X is longest
     }
     else if (( bsize.Y() > bsize.X() ) && ( bsize.Y() > bsize.Z() ) )
     {
-        axis = 1; // Y is longest
+    axis = 1; // Y is longest
     }
     */
 
@@ -232,7 +232,7 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
     Point3 d = bsize; // store diagonal
 
     int otherAxis[3][2] = { {1,2},{0,2},{0,1} };
-    
+
     for(int j = 0; j < 3; j++)
     {
         sort(&edge[axis][0], &edge[axis][2*size]); // sort the axis before perform SAH
@@ -246,16 +246,16 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
             Point3 maxp = minp + box.getSize();
             if(edget > minp[axis] && (edget-minp[axis]) > 0.0001 &&edget < maxp[axis])
             {
-                
+
                 int otherAxis0 = otherAxis[axis][0];
                 int otherAxis1 = otherAxis[axis][1];
-                
+
                 float belowSA = 2 * ( d[otherAxis0] * d[otherAxis1] + 
-                                      (edget - minp[axis]) *
-                                      (d[otherAxis0] + d[otherAxis1]));
+                    (edget - minp[axis]) *
+                    (d[otherAxis0] + d[otherAxis1]));
                 float aboveSA = 2 * ( d[otherAxis0] * d[otherAxis1] + 
-                                      (maxp[axis] - edget) *
-                                      (d[otherAxis0] + d[otherAxis1]));
+                    (maxp[axis] - edget) *
+                    (d[otherAxis0] + d[otherAxis1]));
 
                 float lcost = belowSA * invTotalSA;
                 float rcost = aboveSA * invTotalSA;
@@ -273,7 +273,7 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
             if(edge[axis][i].type == boundedge::start) ++nleft;
         }
 
-        
+
         if(bestcost < oldCost) // better split found
         {
             found = true;
@@ -281,8 +281,8 @@ void Kdtree::sahSplit(int &splitaxis, float& splitpoint, float& splitcost, unsig
         }
         // go back and retry other axis if best axis is not found
         axis = ++axis;// % 3;
-		nleft = 0; 
-		nright = size;
+        nleft = 0; 
+        nright = size;
     }
 
     if(!found && bestcost >= oldCost)
@@ -300,7 +300,7 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
                        unsigned int depth, bool isLeft, unsigned int rIndex, 
                        unsigned int pre_size, bool dsize, int tries)
 {
-	//BSPNode *node = &m_pTree[fn];
+    //BSPNode *node = &m_pTree[fn];
     //printf("max num: %i\n", m_pTree.max_size());
     //m_pTree.assign(BSPNode(), fn);
     BSPNode *node = &m_pTree[fn];
@@ -309,7 +309,7 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
     //std::list<IPrimitive*>::iterator p;
 
     //printf(".");
-	// if end condition met
+    // if end condition met
     // if(abs(previous size - size) <= 3 ...
     if((int)abs((int)(pre_size-size)) <= 3)
     {
@@ -321,8 +321,8 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
         dsize = false;
         tries = 0;
     }
-	if(size <= m_MaxItemPerNode || depth >= m_MaxDepth || (dsize && tries == 3))
-	{
+    if(size <= m_MaxItemPerNode || depth >= m_MaxDepth || (dsize && tries == 3))
+    {
         IPrimitive** myList = 0;
         if(size > 0)
             myList = new IPrimitive*[size];
@@ -345,13 +345,13 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
                 myList[i] = rightBOX[rIndex+i];
         }
         node->initLeaf(size, myList);
-        
+
         // increment counts
         m_TotalTreeTri += size;
         totalLeaf++;
-		return; // leaf with triangle
-	}
-    
+        return; // leaf with triangle
+    }
+
     // each node must have a split axis and split position
     int axis = 0;
     float splitpos = 0;
@@ -373,14 +373,14 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
-		    edge[0][i*2].set(minp.X(), (*tit), true); 
-		    edge[0][i*2+1].set(maxp.X(), (*tit), false); 			
-		    // add y
-		    edge[1][i*2].set(minp.Y(), (*tit), true); 
-		    edge[1][i*2+1].set(maxp.Y(), (*tit), false);
-		    // add z
-		    edge[2][i*2].set(minp.Z(), (*tit), true); 
-		    edge[2][i*2+1].set(maxp.Z(), (*tit), false);
+            edge[0][i*2].set(minp.X(), (*tit), true); 
+            edge[0][i*2+1].set(maxp.X(), (*tit), false); 			
+            // add y
+            edge[1][i*2].set(minp.Y(), (*tit), true); 
+            edge[1][i*2+1].set(maxp.Y(), (*tit), false);
+            // add z
+            edge[2][i*2].set(minp.Z(), (*tit), true); 
+            edge[2][i*2+1].set(maxp.Z(), (*tit), false);
         }
     }
     else if(isLeft)
@@ -393,14 +393,14 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
-		    edge[0][i*2].set(minp.X(), 0, true); 
-		    edge[0][i*2+1].set(maxp.X(), 0, false); 			
-		    // add y
-		    edge[1][i*2].set(minp.Y(), 0, true); 
-		    edge[1][i*2+1].set(maxp.Y(), 0, false);
-		    // add z
-		    edge[2][i*2].set(minp.Z(), 0, true); 
-		    edge[2][i*2+1].set(maxp.Z(), 0, false);
+            edge[0][i*2].set(minp.X(), 0, true); 
+            edge[0][i*2+1].set(maxp.X(), 0, false); 			
+            // add y
+            edge[1][i*2].set(minp.Y(), 0, true); 
+            edge[1][i*2+1].set(maxp.Y(), 0, false);
+            // add z
+            edge[2][i*2].set(minp.Z(), 0, true); 
+            edge[2][i*2+1].set(maxp.Z(), 0, false);
         }
     }
     else
@@ -414,74 +414,74 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             Point3 maxp = minp + mybox->getSize();
 
             // add x position to the list
-		    edge[0][i*2].set(minp.X(), 0, true); 
-		    edge[0][i*2+1].set(maxp.X(), 0, false); 			
-		    // add y
-		    edge[1][i*2].set(minp.Y(), 0, true); 
-		    edge[1][i*2+1].set(maxp.Y(), 0, false);
-		    // add z
-		    edge[2][i*2].set(minp.Z(), 0, true); 
-		    edge[2][i*2+1].set(maxp.Z(), 0, false);
+            edge[0][i*2].set(minp.X(), 0, true); 
+            edge[0][i*2+1].set(maxp.X(), 0, false); 			
+            // add y
+            edge[1][i*2].set(minp.Y(), 0, true); 
+            edge[1][i*2+1].set(maxp.Y(), 0, false);
+            // add z
+            edge[2][i*2].set(minp.Z(), 0, true); 
+            edge[2][i*2+1].set(maxp.Z(), 0, false);
         }
     }
-    
+
     // calculate SAH and split position
     float cost = INFINITY;
     sahSplit(axis, splitpos, cost, size, box, edge); // figure out best split
     /*
     // old stuff
-        if(!bounds)
-            bounds = new AABB[size];  // create a container for all triangle bbox
-    
-        for( i = 0; i < 3; i++ )
-        {
-            edge[i] = new boundedge[2*size];
-        }
-        AABB tbox;
-        // build up information of bounding box and edges
-        for(p = primList.begin(), i = 0; p != primList.end(); p++, i++)
-        {
-            //AABB* tbox = &(*p)->getAABB();
-            if(depth == 0)
-            {
-                //unsigned int index = (*uit);
-                //unsigned int model = getTrueIndex(index);
-                //Triangle tt = myScene->getModel(model)->getTriangle(index);
+    if(!bounds)
+    bounds = new AABB[size];  // create a container for all triangle bbox
+
+    for( i = 0; i < 3; i++ )
+    {
+    edge[i] = new boundedge[2*size];
+    }
+    AABB tbox;
+    // build up information of bounding box and edges
+    for(p = primList.begin(), i = 0; p != primList.end(); p++, i++)
+    {
+    //AABB* tbox = &(*p)->getAABB();
+    if(depth == 0)
+    {
+    //unsigned int index = (*uit);
+    //unsigned int model = getTrueIndex(index);
+    //Triangle tt = myScene->getModel(model)->getTriangle(index);
     //            tbox = new AABB(tt);
     //            bounds[i] = (*tbox);
 
-                //IPrimitive p;
-                tbox = (*p)->getAABB();
-                bounds[i] = tbox;
-            }
-            else
-            {
-                tbox = bounds[i];
-            }
-            
-            AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
-            Point3 minp = mybox->getPos();
-            Point3 maxp = minp + mybox->getSize();
+    //IPrimitive p;
+    tbox = (*p)->getAABB();
+    bounds[i] = tbox;
+    }
+    else
+    {
+    tbox = bounds[i];
+    }
 
-            // add x position to the list
-		    edge[0][i*2] = boundedge(minp.X(), (*p), true); 
-		    edge[0][i*2+1] = boundedge(maxp.X(), (*p), false); 			
-		    // add y
-		    edge[1][i*2] = boundedge(minp.Y(), (*p), true); 
-		    edge[1][i*2+1] = boundedge(maxp.Y(), (*p), false);
-		    // add z
-		    edge[2][i*2] = boundedge(minp.Z(), (*p), true); 
-		    edge[2][i*2+1] = boundedge(maxp.Z(), (*p), false);
-        
-        }
+    AABB* mybox = &(box.Intersection(tbox)); // get intersection of triangle box + bounding box of this node
+    Point3 minp = mybox->getPos();
+    Point3 maxp = minp + mybox->getSize();
 
-        // calculate SAH and split position
-        float cost = INFINITY;
-        sahSplit(axis, splitpos, cost, size, box, edge); // figure out best split
-*/
+    // add x position to the list
+    edge[0][i*2] = boundedge(minp.X(), (*p), true); 
+    edge[0][i*2+1] = boundedge(maxp.X(), (*p), false); 			
+    // add y
+    edge[1][i*2] = boundedge(minp.Y(), (*p), true); 
+    edge[1][i*2+1] = boundedge(maxp.Y(), (*p), false);
+    // add z
+    edge[2][i*2] = boundedge(minp.Z(), (*p), true); 
+    edge[2][i*2+1] = boundedge(maxp.Z(), (*p), false);
+
+    }
+
+    // calculate SAH and split position
+    float cost = INFINITY;
+    sahSplit(axis, splitpos, cost, size, box, edge); // figure out best split
+    */
     // no good(better) split position can be found
     if(cost == INFINITY)
-	{
+    {
         IPrimitive** myList = 0;
         if(size > 0)
             myList = new IPrimitive*[size];
@@ -504,12 +504,12 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
                 myList[i] = rightBOX[rIndex+i];
         }
         node->initLeaf(size, myList);
-        
+
         // increment counts
         m_TotalTreeTri += size;
         totalLeaf++;
-		return; // leaf with triangle
-	}
+        return; // leaf with triangle
+    }
 #else
     axis = depth % 3;
     Point3 minp = box.getPos();
@@ -519,7 +519,7 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
 
     // a split position was calculated,
     // so create left and right nodes
-	m_NodeUsed += 2;
+    m_NodeUsed += 2;
     //if(m_NodeUsed == 21)
     //    printf("what");
     //m_pTree.push_back(BSPNode());
@@ -532,7 +532,7 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
             BSPNode *tt = new BSPNode[m_MaxNode*2]; 
             memcpy(tt, m_pTree, m_MaxNode*sizeof(BSPNode));
             free(m_pTree);
-            
+
             m_pTree = tt;
             node = &m_pTree[fn];
             m_MaxNode *= 2;
@@ -544,14 +544,14 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
         }
     }
 
-	// figure out left voxel and right voxel
+    // figure out left voxel and right voxel
     Point3 rminp = box.getPos();
     Point3 lmaxp = box.getPos() + box.getSize();
 
     rminp[axis] = splitpos;
     lmaxp[axis] = splitpos;
 
-	AABB lvoxel( box.getPos(), lmaxp );
+    AABB lvoxel( box.getPos(), lmaxp );
     AABB rvoxel( rminp, box.getPos() + box.getSize() );
 
     int a,b;
@@ -651,76 +651,80 @@ void Kdtree::construct(unsigned int fn, AABB& box, unsigned int size,
 
     // old stuff
     /*
-	// distribute primitives
+    // distribute primitives
     std::list<IPrimitive*> leftList;
     std::list<IPrimitive*> rightList;
-    
+
     for(p = primList.begin(); p != primList.end(); p++)
     {
-        //i/f(fn == 20)
-        //    printf("why\n");
-        if( lvoxel.Intersect( (*p)->getAABB() ) )
-        {
-            leftList.push_back(*p);
-        }
-        if( rvoxel.Intersect( (*p)->getAABB() ) )
-        {
-            rightList.push_back(*p);
-        }
+    //i/f(fn == 20)
+    //    printf("why\n");
+    if( lvoxel.Intersect( (*p)->getAABB() ) )
+    {
+    leftList.push_back(*p);
+    }
+    if( rvoxel.Intersect( (*p)->getAABB() ) )
+    {
+    rightList.push_back(*p);
+    }
     }
     */
 
-	// produce branch
+    // produce branch
     node->initNode(axis, splitpos);
-	node->leftChild = m_NodeUsed-2;
-	unsigned int left = node->leftChild;
+    node->leftChild = m_NodeUsed-2;
+    unsigned int left = node->leftChild;
 
     construct(left, lvoxel, a, depth+1, 1, 0, size, dsize, tries);    
     construct(left+1, rvoxel, b, depth+1, 0, rcIndex, size, dsize, tries);
 }
 
-HitInfo Kdtree::intersect(Ray &r )
+bool Kdtree::intersect(Ray &r, HitInfo* pHitInfo )
 {
-    HitInfo hit;
-    hit.hitTime = INFINITY;
+    pHitInfo->bHasInfo = false;
+    pHitInfo->hitTime = INFINITY;
     Point3 invDir(1.f/r.Direction().X(), 1.f/r.Direction().Y(), 1.f/r.Direction().Z());
     float tmin = 0;
     float tmax = 0;
 
     // intersect bounding box
-	if(!m_Bounds.Intersect(r, tmin, tmax))
+    if(!m_Bounds.Intersect(r, tmin, tmax))
     {
-        return hit;
+        return false;
     }
 
-    bool done = false;	
-	list<TODO> todo;
-	BSPNode *current = &m_pTree[0];	
+    bool done = false;
+    list<TODO> todo;
+    BSPNode *current = &m_pTree[0];
 
-	while(!done)
-	{
-		if(hit.hitTime < tmin) break;
-		if(!current->isLeaf())
-		{
-			int axis = current->splitAxis();
+    while(!done)
+    {
+        if(pHitInfo->hitTime < tmin)
+        {
+            break;
+        }
+
+        if(!current->isLeaf())
+        {
+            int axis = current->splitAxis();
             float split = current->SplitPos();
             split = (split > -EPSILON && split < EPSILON) ? 0 : split;
-			float tplane = (split - r.Origin()[axis]) * invDir[axis];
+            float tplane = (split - r.Origin()[axis]) * invDir[axis];
 
             BSPNode *first, *second;
-			// decide which child to check first
-			int below = r.Origin()[axis] <= split;
-			if(below)
-			{
-				first = &m_pTree[current->leftChild];
-				second = &m_pTree[current->leftChild+1];
-			}
-			else
-			{
-				second = &m_pTree[current->leftChild];
-				first = &m_pTree[current->leftChild+1];
-			}
-			
+            // decide which child to check first
+            int below = r.Origin()[axis] <= split;
+            if(below)
+            {
+                first = &m_pTree[current->leftChild];
+                second = &m_pTree[current->leftChild+1];
+            }
+            else
+            {
+                second = &m_pTree[current->leftChild];
+                first = &m_pTree[current->leftChild+1];
+            }
+
             if(tplane == 0)//(tplane > -EPS && tplane < EPS)
             {
                 if(invDir[axis] > 0)
@@ -729,53 +733,54 @@ HitInfo Kdtree::intersect(Ray &r )
                     current = first;
             }
             else if(tplane >= tmax || tplane < 0)
-				current = first;
-			else if(tplane <= tmin)
-				current = second;
-			else
-			{
-				TODO temp;
-				temp.node = second;
-				temp.tmax = tmax;
-				temp.tmin = tplane;
-				todo.push_front(temp);
-				current = first;
-				tmax = tplane;
-			}
-		}
-		else
-		{
-			// check all intersect in this leaf
+                current = first;
+            else if(tplane <= tmin)
+                current = second;
+            else
+            {
+                TODO temp;
+                temp.node = second;
+                temp.tmax = tmax;
+                temp.tmin = tplane;
+                todo.push_front(temp);
+                current = first;
+                tmax = tplane;
+            }
+        }
+        else
+        {
+            // check all intersect in this leaf
             std::list<IPrimitive*>::const_iterator it;
-	
+
             if(current->m_pPrimList)
             {
                 for(int i = 0; i < current->nTriangle(); i++)
-			    {
-                    HitInfo thishit = current->m_pPrimList[i]->intersect( r );
-                    if( thishit.hitTime < hit.hitTime )
+                {
+                    HitInfo thisHit;
+                    current->m_pPrimList[i]->intersect( r, &thisHit);
+                    if( thisHit.hitTime < pHitInfo->hitTime )
                     {
-                        hit = thishit;
+                        *pHitInfo = thisHit;
                     }
-			    } // end checking all Primitives in this leaf
+                } // end checking all Primitives in this leaf
             }
-			if(!todo.empty())
-			{
-				TODO temp = (*todo.begin());
-				current = temp.node;
-				tmin = temp.tmin;
-				tmax = temp.tmax;
-				todo.pop_front();
-			}
-			else
+            if(!todo.empty())
             {
-				done = true;
+                TODO temp = (*todo.begin());
+                current = temp.node;
+                tmin = temp.tmin;
+                tmax = temp.tmax;
+                todo.pop_front();
+            }
+            else
+            {
+                done = true;
             }
 
-		} // end check leaf
-	} // end while loop
+        } // end check leaf
+    } // end while loop
 
-	return hit;
+    return pHitInfo->bHasInfo;
 }
 
 
@@ -784,93 +789,93 @@ HitInfo Kdtree::intersect(Ray &r )
 // determining shadows
 bool Kdtree::intersectb(const ray &r) const
 {
-    float3 invDir(1.f/r.dir.X(), 1.f/r.dir.Y(), 1.f/r.dir.Z());
-    float tmin = 0;
-    float tmax = 0;
-    bool found = false;
- 
-    // intersect bounding box
-	if(!myBound.intersect(r, tmin, tmax))
-        return found;
-    
-    bool done = false;	
-	list<TODO> todo;
-	BSPNode *current = &tree[0];	
+float3 invDir(1.f/r.dir.X(), 1.f/r.dir.Y(), 1.f/r.dir.Z());
+float tmin = 0;
+float tmax = 0;
+bool found = false;
 
-	while(!done)
-	{
-		if(found) break;
-		if(!current->isLeaf())
-		{
-			int axis = current->splitAxis();
-			float tplane = (current->SplitPos() - r.orig[axis]) * invDir[axis];
-			
-            BSPNode *first, *second;
-			// decide which child to check first
-			int below = r.orig[axis] <= current->SplitPos();
-			if(below)
-			{
-				first = &tree[current->leftChild];
-				second = &tree[current->leftChild+1];
-			}
-			else
-			{
-				second = &tree[current->leftChild];
-				first = &tree[current->leftChild+1];
-			}
-			if(tplane > tmax || tplane < 0)
-				current = first;
-			else if(tplane < tmin)
-				current = second;
-			else
-			{
-				TODO temp;
-				temp.node = second;
-				temp.tmax = tmax;
-				temp.tmin = tplane;
-				todo.push_front(temp);
-				current = first;
-				tmax = tplane;
-			}
-		}
-		else
-		{
-			// check all intersect in this leaf
-			list<unsigned int>::const_iterator it;
-	
-			for(it = current->index->begin(); it != current->index->end(); it++)
-			{
-                unsigned int indexID = (*it);
-                unsigned int mid = getTrueIndex(indexID);
-                Triangle tt = myScene->getModel(mid)->getTriangle(indexID);
-                if(tt.intersect(r))
-                {
-                    //model = mid; index = indexID;
-                    found = true;
-                    break;                    
-                }
-			} // end checking all triangles in ths leaf
-			if(!todo.empty() && !found)
-			{
-				TODO temp = (*todo.begin());
-				current = temp.node;
-				tmin = temp.tmin;
-				tmax = temp.tmax;
-				todo.pop_front();
-			}
-			else
-				done = true;
+// intersect bounding box
+if(!myBound.intersect(r, tmin, tmax))
+return found;
 
-		} // end check leaf
-	} // end while loop
+bool done = false;	
+list<TODO> todo;
+BSPNode *current = &tree[0];	
 
-	return found;
+while(!done)
+{
+if(found) break;
+if(!current->isLeaf())
+{
+int axis = current->splitAxis();
+float tplane = (current->SplitPos() - r.orig[axis]) * invDir[axis];
+
+BSPNode *first, *second;
+// decide which child to check first
+int below = r.orig[axis] <= current->SplitPos();
+if(below)
+{
+first = &tree[current->leftChild];
+second = &tree[current->leftChild+1];
+}
+else
+{
+second = &tree[current->leftChild];
+first = &tree[current->leftChild+1];
+}
+if(tplane > tmax || tplane < 0)
+current = first;
+else if(tplane < tmin)
+current = second;
+else
+{
+TODO temp;
+temp.node = second;
+temp.tmax = tmax;
+temp.tmin = tplane;
+todo.push_front(temp);
+current = first;
+tmax = tplane;
+}
+}
+else
+{
+// check all intersect in this leaf
+list<unsigned int>::const_iterator it;
+
+for(it = current->index->begin(); it != current->index->end(); it++)
+{
+unsigned int indexID = (*it);
+unsigned int mid = getTrueIndex(indexID);
+Triangle tt = myScene->getModel(mid)->getTriangle(indexID);
+if(tt.intersect(r))
+{
+//model = mid; index = indexID;
+found = true;
+break;                    
+}
+} // end checking all triangles in ths leaf
+if(!todo.empty() && !found)
+{
+TODO temp = (*todo.begin());
+current = temp.node;
+tmin = temp.tmin;
+tmax = temp.tmax;
+todo.pop_front();
+}
+else
+done = true;
+
+} // end check leaf
+} // end while loop
+
+return found;
 }
 */
 
 void Kdtree::buildGPU( std::list<IModel*> &modelList, 
-                       std::list<Triangle*> &triangleList, 
-                       GPUAccelerationStructureData& accelStructData )
+                      std::list<Triangle*> &triangleList, 
+                      GPUAccelerationStructureData& accelStructData )
 {
 #ifndef STUB
     // first build for CPU
@@ -893,7 +898,7 @@ void Kdtree::buildGPU( std::list<IModel*> &modelList,
     float* pn2 = accelStructData.m_pNormal2Array;
     float* pm0 = accelStructData.m_pMaterial0Array;
     float* pg0 = accelStructData.m_pCellData0;
-    
+
     Vertex v;
     Material m;
 
@@ -952,7 +957,7 @@ void Kdtree::buildGPU( std::list<IModel*> &modelList,
                     *pn0 = v.getNormal().Y();     pn0++;
                     *pn0 = v.getNormal().Z();     pn0++;
                     *pn0 = 0.0f;                  pn0++;
-                    
+
                     // vertex 1
                     v = *((*itp)->getVertex1());
 
@@ -1011,10 +1016,10 @@ void Kdtree::setGPUParameters( CShader& shader, GPUAccelerationStructureData& ac
     CGparameter& v2 = shader.GetNamedParameter("v2t", true);
     cgGLSetTextureParameter(v2, accelStructData.m_VertexTexture[2]);
 
-/*
+    /*
     CGparameter& maxDepth = shader.GetNamedParameter("maxDepth");
     cgGLSetParameter1f( maxDepth, (float) m_MaxDepth );
-*/
+    */
 
 
     Point3 minPt = m_Bounds.getPos();

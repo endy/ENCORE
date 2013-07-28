@@ -241,13 +241,13 @@ void RayTracer::Refine()
             std::vector<Ray> sampleEyeRays = CalcEyeRaySamples(m_RaysPerPixel, jitter, row, col);
 
             unsigned int samples = 0;
+            HitInfo hit;
             while(samples < m_RaysPerPixel)
             {
                 Ray r = sampleEyeRays[samples];
-                HitInfo hit = m_pAccelStruct->intersect(r);
 
                 // find first object hit if it exists
-                if(hit.bHasInfo) 
+                if (m_pAccelStruct->intersect(r, &hit))
                 {
                     pixelColor += CalculateRadiance(r, hit, m_RecurseLevel);
                 }
@@ -329,10 +329,10 @@ void RayTracer::RenderScene()
                     while(samples < m_RaysPerPixel)
                     {
                         Ray r = sampleEyeRays[samples];
-                        HitInfo hit = m_pAccelStruct->intersect(r);
+                        HitInfo hit;
 
                         // find first object hit if it exists
-                        if(hit.bHasInfo) 
+                        if(m_pAccelStruct->intersect(r, &hit))
                         {
                             pixelColor += CalculateRadiance(r, hit, m_RecurseLevel);
                         }

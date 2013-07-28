@@ -22,7 +22,7 @@ public:
     virtual ~RectangleLight();
 
     //// IPrimitive Interface ////
-    virtual HitInfo intersect(Ray& r);
+    virtual bool intersect(Ray& l_Ray, HitInfo* pHitInfo);
     virtual bool intersectAABB(AABB box);
     virtual AABB getAABB() const;
     virtual std::list<Triangle*>* getNewTesselation(void);

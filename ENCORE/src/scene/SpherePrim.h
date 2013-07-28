@@ -11,7 +11,7 @@ public:
     virtual ~SpherePrim();
 
     //// IPrimitive Interface ////
-    virtual HitInfo intersect(Ray& r);
+    virtual bool intersect(Ray& r, HitInfo* pHitInfo);
     virtual bool intersectAABB(AABB box);
     virtual AABB getAABB() const;
     virtual std::list<Triangle*>* getNewTesselation(void);

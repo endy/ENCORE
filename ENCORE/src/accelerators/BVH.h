@@ -24,17 +24,17 @@ struct bvhNode
     unsigned int escapeOffset; // 4
 
     void initLeaf(const AABB& box, IPrimitive* t)
-	{
+    {
         bound = box;
-		pTris = t;
+        pTris = t;
         extra = 1;
-	}
-	void initNode(const AABB& box, unsigned int s)
-	{
-		bound = box;
-		leftChild = s;
+    }
+    void initNode(const AABB& box, unsigned int s)
+    {
+        bound = box;
+        leftChild = s;
         extra = 0;
-	}
+    }
 
 };
 
@@ -62,13 +62,13 @@ public:
     void keyboard( unsigned char key ) {}
 
     virtual void build(std::list<IModel*> &modelList);
-    
+
 #ifdef WIN32
-		virtual void buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD );
-		virtual void setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD );
+    virtual void buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD );
+    virtual void setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD );
 #endif
-		
-		HitInfo intersect( Ray& l_pRay );
+
+    bool intersect( Ray& l_pRay, HitInfo* pHitInfo );
 
     //virtual void update(const list<Primitive*>& primList, list<Triangle>* triangleList);
 
@@ -94,18 +94,18 @@ private:
     //unsigned int cIndex;
     //unsigned int* childLinkSize;
 
-    
+
     bvhNode* bTree; // size is always 2n-1 each leaf only have 1 object
     void deleteTree();
     // mode = 0 , depth == 0 , mode = 1, left , mode = 2..else, right
     void trace(unsigned int node, unsigned int* path, unsigned int depth);
     void split(int mode, float median, int axis, AABB &lAABB, AABB &rAABB, 
-           unsigned int &lefts, unsigned int &rights, unsigned int size, unsigned int rIndex);
+        unsigned int &lefts, unsigned int &rights, unsigned int size, unsigned int rIndex);
     void splitinsert(int mode, float median, int axis, unsigned int size, unsigned int rIndex);
     void halfsplitinsert(int mode, AABB &lAABB, AABB &rAABB, 
-           unsigned int &lefts, unsigned int &rights, unsigned int size, unsigned int rIndex, unsigned int &rcIndex);
+        unsigned int &lefts, unsigned int &rights, unsigned int size, unsigned int rIndex, unsigned int &rcIndex);
     void construct(unsigned int node, bool isLeft, unsigned int size, const AABB& pAABB,
-                    unsigned int rIndex, int depth);
+        unsigned int rIndex, int depth);
     unsigned int m_NodeUsed;
     unsigned int maxReserve;
 

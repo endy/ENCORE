@@ -19,13 +19,13 @@ public:
     virtual void keyboard( unsigned char key ) {}
 
     virtual void build(std::list<IModel*> &modelList);
-    
+
 #ifdef WIN32
-		virtual void buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD );
+    virtual void buildGPU(std::list<IModel*> &modelList, std::list<Triangle*> &triangleList, GPUAccelerationStructureData& l_pASD );
     virtual void setGPUParameters( CShader& l_Shader, GPUAccelerationStructureData& l_ASD );
 #endif
 
-		virtual HitInfo intersect(Ray& l_pRay );
+    virtual bool intersect(Ray& l_pRay, HitInfo* pHitInfo);
 
 private:
     std::list< IPrimitive* > m_lpAllPrimitives;

@@ -775,84 +775,94 @@ void Bvh::draw()
 }
 */
 
-HitInfo Bvh::intersect( Ray& l_pRay )
+bool Bvh::intersect( Ray& l_pRay, HitInfo* pHitInfo )
 {
     bool found = false;
-    HitInfo info;
+    pHitInfo->hitTime = POS_INF;
+    pHitInfo->bHasInfo = false;
+
     //double maxhit = info.hitTime;
     float tmin, tmax;
     float lhit, rhit,hit1, hit2;
     hit1 = POS_INF;
     
     if(!myBound.Intersect(l_pRay, tmin, tmax))
-        return info;
+    {
+        return false;
+    }
 
     std::deque<TINFO> todo;
     bool lefthit, righthit;
     lefthit = righthit = false;
     bvhNode* current = &bTree[0];
-    while(!found)
+    while (!found)
     {
-        //if(info.hitTime < tmin)
-        //    break;
-        if(current->extra) // is leaf
+        if (current->extra) // is leaf
         {
-            if(info.hitTime == POS_INF || hit1 < info.hitTime)
+            if (pHitInfo->hitTime == POS_INF || hit1 < pHitInfo->hitTime)
             {
-                HitInfo newinfo = current->pTris->intersect(l_pRay);
-                if(newinfo.hitTime < info.hitTime)
-                    info = newinfo;
+                HitInfo newinfo;
+                current->pTris->intersect(l_pRay, &newinfo);
+                if(newinfo.hitTime < pHitInfo->hitTime)
+                {
+                    *pHitInfo = newinfo;
+                    pHitInfo->bHasInfo = true;
+                }
             }
-            if(!todo.empty())
+
+            if( !todo.empty())
             {
                 current = &bTree[todo[0].index];
                 hit1 = todo[0].tmin;
                 todo.pop_front();
             }
             else
+            {
                 found = true;
+            }
         }
         else // is node
         {
             lefthit = righthit = false;
             unsigned int left = current->leftChild;
             unsigned int right = left+1;
-            if(info.hitTime == POS_INF || hit1 < info.hitTime)
+            if (pHitInfo->hitTime == POS_INF || hit1 < pHitInfo->hitTime)
             {
-                if(bTree[left].bound.Intersect(l_pRay, lhit,hit2))
+                if (bTree[left].bound.Intersect(l_pRay, lhit, hit2))
+                {
                     lefthit = true;
-                if(bTree[right].bound.Intersect(l_pRay, rhit, hit2))
+                }
+
+                if (bTree[right].bound.Intersect(l_pRay, rhit, hit2))
+                {
                     righthit = true;
+                }
             }
             
-            if(lefthit && righthit)
+            if (lefthit && righthit)
             {
-                if(rhit > lhit)
+                if (rhit > lhit)
                 {
                     current = &bTree[left];
                     todo.push_front(TINFO(right, rhit));
                     hit1 = lhit;
-                    //info = info1;
                 }
                 else
                 {
                     current = &bTree[right];
                     todo.push_front(TINFO(left, lhit));
                     hit1 = rhit;
-                    //info = info2;
                 }
             }
             else if(lefthit)
             {
                 current = &bTree[left];
                 hit1 = lhit;
-                //info = info1;
             }
             else if(righthit)
             {
                 current = &bTree[right];
                 hit1 = rhit;
-                //info = info2;
             }
             else
             {
@@ -863,14 +873,13 @@ HitInfo Bvh::intersect( Ray& l_pRay )
                     todo.pop_front();
                 }
                 else
+                {
                     break; // hit nothing
+                }
             }
-            //break;
-
         }
     }
-    //printf("--------------\n");
-        
-    return info;
+
+    return pHitInfo->bHasInfo;
 }
 

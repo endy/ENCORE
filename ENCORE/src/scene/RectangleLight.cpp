@@ -91,26 +91,22 @@ RectangleLight::~RectangleLight()
     }
 }
 
-HitInfo RectangleLight::intersect(Ray& r)
+bool RectangleLight::intersect(Ray& l_Ray, HitInfo* pHitInfo)
 {
-    HitInfo info = m_Prim1->intersect(r);
-
-    if(info.bHasInfo)
+    if(m_Prim1->intersect(l_Ray, pHitInfo))
     {
-        info.hitObject = this;
-        return info;
+        pHitInfo->hitObject = this;
+        return true;
     }
 
-    info = m_Prim2->intersect(r);
-    
-    if(info.bHasInfo)
+    if(m_Prim2->intersect(l_Ray, pHitInfo))
     {
-        info.hitObject = this;
-        return info;
+        pHitInfo->hitObject = this;
+        return true;
     }
     else
     {
-        return info;
+        return false;
     }
 }
 

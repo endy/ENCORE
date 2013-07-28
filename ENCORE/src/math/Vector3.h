@@ -128,7 +128,7 @@ namespace encore
 
 	private: // data
 
-        /// floathe vector's components
+        /// float vector's components
         float m_Components[3];
 
   	};
