@@ -1,0 +1,3 @@
+[submodule "ENCORE/lib/IvyEngine"]
+	path = ENCORE/lib/IvyEngine
+	url = git@github.com:endy/Ivy.git
