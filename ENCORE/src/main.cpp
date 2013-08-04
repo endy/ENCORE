@@ -20,6 +20,8 @@
 #endif // __GCC__
 #endif
 
+#include "EncoreApp.h"
+
 // renderers
 #include "OpenGLRenderer.h"
 #include "PhotonMapperCPU.h"
@@ -130,6 +132,9 @@ std::string g_outputImageFilename;
 std::string g_logFilename;
 int g_MaxFrames = 0;
 bool g_RepeatRender = false;
+
+
+
 
 ////////  PROTOTYPES ////////////////////////////
 void idle();
@@ -599,11 +604,10 @@ void idle( void )
     Sleep( 10 );
 }
 
-
-
-
 int main(int argc, char** argv)
 {
+    EncoreApp* pEncoreApp = EncoreApp::Create();
+
     std::cout << "ENCORE v1.0" << std::endl;
     std::cout << "Developed by: Chen-Hao Chang, Brandon Light, and Peter Lohrman" << std::endl;
 

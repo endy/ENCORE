@@ -187,6 +187,7 @@
     <ClCompile Include="..\..\lib\stb_image\stb_image_write.c">
       <Filter>thirdparty</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\EncoreApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\accelerators\AccelerationStructure.h">
@@ -366,6 +367,7 @@
     <ClInclude Include="..\..\lib\stb_image\stb_image_write.h">
       <Filter>thirdparty</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\EncoreApp.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\config\config.txt">
