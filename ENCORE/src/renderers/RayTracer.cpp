@@ -489,8 +489,6 @@ void RayTracer::RenderSceneImage()
 
     glDisable(GL_TEXTURE_2D);
 
-    glutSwapBuffers(); 
-
     Singleton<Logfile>::Get().Stream().flush();
 }
 

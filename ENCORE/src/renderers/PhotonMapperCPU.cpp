@@ -308,7 +308,7 @@ void PhotonMapperCPU::RenderPhotonTraces()
         glEnd();
 
     }
-    glutSwapBuffers();
+  //  glutSwapBuffers();
 }
 
 void PhotonMapperCPU::RenderIrrCache()
@@ -344,7 +344,7 @@ void PhotonMapperCPU::RenderIrrCache()
     }
 
     */
-    glutSwapBuffers();
+    //glutSwapBuffers();
 }
 
 void PhotonMapperCPU::RenderRays()
@@ -399,7 +399,7 @@ void PhotonMapperCPU::RenderRays()
     //}
     glEnd();
 
-    glutSwapBuffers();
+    //glutSwapBuffers();
 
 }
 
