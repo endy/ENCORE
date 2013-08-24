@@ -5,6 +5,8 @@
 #include "Triangle.h"
 #include "Common.h"
 
+#include "IvyGL.h"
+
 
 OpenGLRenderer::OpenGLRenderer(void)
 : m_pVertexIndices(NULL), m_pVertexCoords(NULL), m_pVertexNormals(NULL), m_pVertexColors(NULL)
@@ -160,8 +162,6 @@ void OpenGLRenderer::render( void )
     
 
     dwRenderTime = EncoreGetTime() - dwRenderTime;
-
-    glutSwapBuffers();
 }
 
 void OpenGLRenderer::deinit(void)

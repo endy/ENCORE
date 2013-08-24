@@ -3,14 +3,7 @@
 #include "RayTracer.h"
 #include "Tonemap.h"
 
-#ifdef WIN32
-#include <Windows.h>
-#include <GL\glut.h>
-#elif __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
+#include "IvyGL.h"
 
 #include "TextureManager.h"
 #include "Primitive.h"

@@ -1,6 +1,11 @@
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///     ENCORE Rendering App
+///
+///     Copyright 2013, Brandon Light
+///     All rights reserved.
+///
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 ////// ENCORE HEADERS //////
@@ -31,13 +36,6 @@
 
 #include "DynamicScene.h"
 
-#ifdef WIN32
-#include "GL/glut.h"
-#elif __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
 
 #ifndef WIN32
 typedef unsigned int DWORD;
@@ -186,23 +184,12 @@ bool EncoreApp::Configure(
     bool ret = IvyApp::Configure(argc, argv);
 
     // read ENCORE args
-   // if (argc != 3)
-    {
-        // Print usage
-   //     printf("\n\nUsage:  encore.exe <config file> <image name>\n\n");
 
-   //     printf("\n\n\nClosing in 10 seconds...\n");
-   //     Sleep( 5000 );
-    }
-    //else if(argc == 3)
-    {
-        // only supported argument is the config file name
-       // g_configFile = argv[1];
-        g_outputImageFilename = "output.png"; //argv[2];
+    g_outputImageFilename = "output.png";
 
-        g_BatchName = "defaultBatch";
-        g_TestName  = "defaultTest";
-    }
+    g_BatchName = "defaultBatch";
+    g_TestName  = "defaultTest";
+
 
     // initialize configs
     string var;
@@ -311,12 +298,6 @@ bool EncoreApp::Configure(
             g_bAnimateCamera = false;
         }
     }
-
-
-  //  glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-  //  glutInitWindowPosition(WINDOW_LEFT, WINDOW_TOP);
-  //  glutCreateWindow(Title);
-
 
     return ret;
 }
@@ -517,14 +498,8 @@ void EncoreApp::Run()
 
        // glClear(GL_COLOR_BUFFER_BIT);
 
-      //  SimpleProfiler frameProf; 
         if(!m_pRenderer->IsRefineInProgress())
         {
-         //   frameProf.Start();
-            std::string logLine;
-            Singleton<Logfile>::Get().Stream() << "----------------- FRAME "
-                << intToString(framecount) << " -------------------------" << std::endl;
-
             RenderCount++;
         }
 
@@ -532,14 +507,6 @@ void EncoreApp::Run()
 
         if(m_pRenderer->IsImageComplete())
         {
-          //  frameProf.Stop();
-          //  frameProf.PrintLastTime("Frame Render Time: ");
-
-            framecount++;
-          //  std::string newTitle = Title;
-          //  newTitle += ": Frame " + intToString(framecount);
-         //   glutSetWindowTitle(newTitle.c_str());
-
             if(g_MaxFrames > 0 && g_MaxFrames <= framecount)
             {
                 quit = true;

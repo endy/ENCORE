@@ -24,11 +24,7 @@ PhotonMapperCPU.cpp
 #include "Singleton.h"
 #include "Logfile.h"
 
-#ifdef WIN32
-#include <GL/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
+#include "IvyGL.h"
 
 #ifndef WIN32
 #define GetTickCount() 0
@@ -308,7 +304,6 @@ void PhotonMapperCPU::RenderPhotonTraces()
         glEnd();
 
     }
-  //  glutSwapBuffers();
 }
 
 void PhotonMapperCPU::RenderIrrCache()
@@ -344,7 +339,6 @@ void PhotonMapperCPU::RenderIrrCache()
     }
 
     */
-    //glutSwapBuffers();
 }
 
 void PhotonMapperCPU::RenderRays()
@@ -398,8 +392,6 @@ void PhotonMapperCPU::RenderRays()
     //    glVertex3f(p1.X()+ 1, p1.Y()+ 1, p1.Z() + 1);
     //}
     glEnd();
-
-    //glutSwapBuffers();
 
 }
 
@@ -471,7 +463,7 @@ void PhotonMapperCPU::RenderPhotons()
 
         glPushMatrix();
         glTranslatef(l->GetPointOfEmission().X(), l->GetPointOfEmission().Y(), l->GetPointOfEmission().Z());
-        glutSolidCube(0.1f);
+       // glutSolidCube(0.1f);
         glPopMatrix();
     }
 
@@ -506,8 +498,6 @@ void PhotonMapperCPU::RenderPhotons()
         glEnd();
     }
 #endif
-
-    glutSwapBuffers();
 }
 
 void PhotonMapperCPU::EmitPhotons()

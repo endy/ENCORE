@@ -191,7 +191,7 @@ void GPURayTracer::render( void )
 //    DisplayKernel();
 
     glFinish();
-    glutSwapBuffers();
+
     glPopAttrib();
 }
 
