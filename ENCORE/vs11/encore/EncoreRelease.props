@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <IvySolutionDir>C:\Projects\ENCORE\ENCORE\lib\IvyEngine\IvyProjects\</IvySolutionDir>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\lib\glew-1.7.0-win32\include;..\..\lib\freeglut-2.8.0-1\include;..\..\lib\stb_image;..\..\lib\IvyEngine\IvyProjects\IvyEngine\core;..\..\lib\IvyEngine\IvyProjects\IvyEngine\gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>..\..\lib\freeglut-2.8.0-1\lib;..\..\lib\IvyEngine\IvyProjects\x86\ReleaseGL;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>IvyEngine32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="IvySolutionDir">
+      <Value>$(IvySolutionDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
