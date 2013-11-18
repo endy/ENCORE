@@ -127,9 +127,6 @@ Camera cam;
 Options g_ConfigOptions;
 unsigned long RenderCount = 0;
 
-// LOGGING
-int framecount = 0;
-
 // TESTING
 fstream g_TestDataFile;
 std::string g_BatchName;
@@ -428,6 +425,10 @@ void EncoreApp::Run()
     InitGL2();
 
     BOOL quit = FALSE;
+    char windowName[256];
+    sprintf(windowName, "ENCORE (Frame %d)", RenderCount);
+    m_pWindow->SetWindowName(&windowName[0]);
+
     m_pWindow->Show();
     
     GLShader* pVSShader = GLShader::CreateFromFile(IvyVertexShader, "VertexShader", "shaders/gl2.vert");
@@ -501,13 +502,17 @@ void EncoreApp::Run()
         if(!m_pRenderer->IsRefineInProgress())
         {
             RenderCount++;
+
+            sprintf(windowName, "ENCORE (Frame %d)", RenderCount);
+            m_pWindow->SetWindowName(&windowName[0]);
         }
 
-        m_pRenderer->Refine();
+            m_pRenderer->Refine();
+
 
         if(m_pRenderer->IsImageComplete())
         {
-            if(g_MaxFrames > 0 && g_MaxFrames <= framecount)
+            if(g_MaxFrames > 0 && g_MaxFrames <= RenderCount)
             {
                 quit = true;
             }

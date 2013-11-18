@@ -39,15 +39,20 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="..\..\lib\IvyEngine\IvyProjects\Properties\IvyEngineRelease32.props" />
     <Import Project="EncoreRelease.props" />
-    <Import Project="OpenGLDebug32.props" />
+    <Import Project="IvyEngine32.props" />
+    <Import Project="OpenGL32.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
-    <Import Project="OpenGLDebug32.props" />
-    <Import Project="IvyEngineDebug32.props" />
     <Import Project="EncoreDebug.props" />
+    <Import Project="IvyEngine32.props" />
+    <Import Project="OpenGL32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="..\..\lib\IvyEngine\IvyProjects\Properties\OpenGL32.props" />
+    <Import Project="IvyEngine32.props" />
+    <Import Project="OpenGL32.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>

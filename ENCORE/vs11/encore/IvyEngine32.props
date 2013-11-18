@@ -5,8 +5,9 @@
     <IvyRootDir>$(SolutionDir)..\lib\IvyEngine\</IvyRootDir>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>$(IvyRootDir)IvyEngine\core;$(SolutionDir)IvyEngine\dx;$(SolutionDir)IvyEngine\gl;$(SolutionDir)..\Lib\stb_image;$(SolutionDir)..\Lib\Eigen_3.1.2;$(IncludePath)</IncludePath>
-    <LibraryPath>$(IvyRootDir)x86\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IvyRootDir)IvyEngine\core;$(IvyRootDir)IvyEngine\dx;$(SolutionDir)IvyEngine\gl;$(SolutionDir)..\Lib\stb_image;$(SolutionDir)..\Lib\Eigen_3.1.2;$(IncludePath)</IncludePath>
+    <LibraryPath>$(IvyRootDir)IvyProjects\IvyEngine\x86\$(Configuration)GL;$(LibraryPath)</LibraryPath>
+    <_PropertySheetDisplayName>IvyEngine32</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
