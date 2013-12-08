@@ -184,6 +184,12 @@ bool EncoreApp::Configure(
 
     g_outputImageFilename = "output.png";
 
+    ///@todo Use app config rather than read the command line parameter
+    if (argc >= 3)
+    {
+        g_outputImageFilename = argv[2];
+    }
+
     g_BatchName = "defaultBatch";
     g_TestName  = "defaultTest";
 
